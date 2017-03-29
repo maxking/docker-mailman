@@ -15,4 +15,6 @@ ADD assets/pidproxy.py /opt/pidproxy.py
 # Change the working directory.
 WORKDIR /opt/mailman
 
+EXPOSE 8001
+
 CMD /opt/run.sh

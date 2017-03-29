@@ -1,0 +1,22 @@
+version: '2'
+services:
+  mailman-core:
+    build:
+      context: ./core
+    image: mailman-core:latest
+    container_name: mailman-core
+    volumes:
+    - /opt/mailman/core:/opt/mailman/
+  mailman-web:
+    build:
+      context: ./web
+    image: mailman-web:latest
+    container_name: mailman-web
+    ports:
+    - "8000:8000"
+    depends_on:
+    - mailman-core
+    links:
+    - mailman-core:mailman-core
+    volumes:
+    - /opt/mailman/web:/opt/mailman-web-data
