@@ -38,4 +38,4 @@ python manage.py collectstatic --noinput
 python manage.py migrate
 
 # Run the web server.
-uwsgi --http-auto-chunked --http-keepalive
+uwsgi --http-auto-chunked --http-keepalive --static-map /static/=/opt/mailman-web-data/static/
