@@ -11,8 +11,8 @@ RUN apt-get update \
 				   git+https://gitlab.com/mailman/django-mailman3.git \
 				   git+https://gitlab.com/mailman/hyperkitty.git \
 				   whoosh \
-				   uwsgi
-
+				   uwsgi \
+				   psycopg2
 
 ADD mailman-web /opt/mailman-web
 

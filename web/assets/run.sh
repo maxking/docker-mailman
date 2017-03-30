@@ -20,6 +20,16 @@ if [[ ! $(pwd) == '/opt/mailman-web' ]]; then
 fi
 
 
+# Check if the settings file exists, exit it not.
+if [[ ! -e /opt/mailman-web-data/settings.py ]]; then
+	"Settings file does not exist, please provide one..."
+	exit 1
+fi
+
+# Copy the settings file from /opt/mailman-web-data/ to the pwd because
+# it is not on python-path.
+cp /opt/mailman-web-data/settings.py /opt/mailman-web/settings.py
+
 # Collect static for the django installation.
 python manage.py collectstatic --noinput
 
