@@ -2,9 +2,10 @@ FROM python:3.5
 
 MAINTAINER Abhilash Raj
 
+ENV DEBIAN_FRONTEND=noninteractive
 # Install the latest master branch of the mailman directly
 # from the Gitlab.
-RUN apt-get update && apt-get install -y postgresql-client \
+RUN apt-get update && apt-get install -y postgresql-client postfix \
     && pip install git+https://gitlab.com/mailman/mailman.git \
 	               psycopg2
 
