@@ -4,7 +4,9 @@ MAINTAINER Abhilash Raj
 
 # Install the latest master branch of the mailman directly
 # from the Gitlab.
-RUN pip install git+https://gitlab.com/mailman/mailman.git
+RUN apt-get update && apt-get install -y postgresql-client \
+    && pip install git+https://gitlab.com/mailman/mailman.git \
+	               psycopg2
 
 ADD assets/run.sh /opt/run.sh
 
@@ -17,4 +19,4 @@ WORKDIR /opt/mailman
 
 EXPOSE 8001
 
-CMD /opt/run.sh
+CMD ["/opt/run.sh"]

@@ -1,22 +1,47 @@
 version: '2'
+
 services:
   mailman-core:
     build:
       context: ./core
-    image: mailman-core:latest
+    image: maxking/mailman-core:latest
     container_name: mailman-core
     volumes:
     - /opt/mailman/core:/opt/mailman/
+    links:
+    - database:database
+    depends_on:
+    - database
+    environment:
+    - DATABASE_URL=postgres://mailman:mailmanpass@database/mailmandb
+
   mailman-web:
     build:
       context: ./web
-    image: mailman-web:latest
+    image: maxking/mailman-web:latest
     container_name: mailman-web
     ports:
     - "8000:8000"
     depends_on:
-    - mailman-core
+    - database
     links:
     - mailman-core:mailman-core
+    - database:database
     volumes:
     - /opt/mailman/web:/opt/mailman-web-data
+    environment:
+    - UWSGI_WSGI_FILE=wsgi.py
+    - UWSGI_HTTP=:8000
+    - UWSGI_WORKERS=2
+    - UWSGI_THREADS=4
+    - DATABASE_URL=postgres://mailman:mailmanpass@database/mailmandb
+
+  database:
+    environment:
+      POSTGRES_DB: mailmandb
+      POSTGRES_USER: mailman
+      POSTGRES_PASSWORD: mailmanpass
+    restart: always
+    image: postgres:9.6
+    volumes:
+    - /opt/mailman/database:/var/lib/postgresql/data
