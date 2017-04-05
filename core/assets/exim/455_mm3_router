@@ -1,0 +1,15 @@
+# Place this file at
+# /etc/exim4/conf.d/router/455_mm3_router
+
+mailman3_router:
+  driver = accept
+  domains = +mm_domains
+  require_files = MM3_LISTCHK
+  local_part_suffix_optional
+  local_part_suffix = -admin : \
+     -bounces   : -bounces+* : \
+     -confirm   : -confirm+* : \
+     -join      : -leave     : \
+     -owner     : -request   : \
+     -subscribe : -unsubscribe
+  transport = mailman3_transport

@@ -1,0 +1,11 @@
+# Place this file at
+# /etc/exim4/conf.d/router/55_mm3_transport
+
+mailman3_transport:
+  debug_print = "Email for mailman"
+  driver = smtp
+  protocol = lmtp
+  allow_localhost
+  hosts = 172.18.0.3
+  port = 8024
+  rcpt_include_affixes = true

@@ -1,0 +1,16 @@
+# Place this file at
+# /etc/exim4/conf.d/main/25_mm3_macros
+
+domainlist mm_domains=MY_DOMAIN_NAME
+
+MM3_LMTP_PORT=8024
+MM3_HOME=/opt/mailman/core/var
+
+
+################################################################
+# The configuration below is boilerplate:
+# you should not need to change it.
+
+# The path to the list receipt (used as the required file when
+# matching list addresses)
+MM3_LISTCHK=MM3_HOME/lists/${local_part}.${domain}
