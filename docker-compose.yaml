@@ -6,6 +6,7 @@ services:
       context: ./core
     image: maxking/mailman-core:latest
     container_name: mailman-core
+    hostname: mailman-core
     volumes:
     - /opt/mailman/core:/opt/mailman/
     links:
@@ -14,14 +15,16 @@ services:
     - database
     environment:
     - DATABASE_URL=postgres://mailman:mailmanpass@database/mailmandb
+    networks:
+      mailman:
+        ipv4_address: 172.19.199.2
 
   mailman-web:
     build:
       context: ./web
     image: maxking/mailman-web:latest
     container_name: mailman-web
-    ports:
-    - "8000:8000"
+    hostname: mailman-web
     depends_on:
     - database
     links:
@@ -35,6 +38,9 @@ services:
     - UWSGI_WORKERS=2
     - UWSGI_THREADS=4
     - DATABASE_URL=postgres://mailman:mailmanpass@database/mailmandb
+    networks:
+      mailman:
+        ipv4_address: 172.19.199.3
 
   database:
     environment:
@@ -45,3 +51,15 @@ services:
     image: postgres:9.6
     volumes:
     - /opt/mailman/database:/var/lib/postgresql/data
+    networks:
+      mailman:
+        ipv4_address: 172.19.199.4
+
+networks:
+   mailman:
+     driver: bridge
+     ipam:
+       driver: default
+       config:
+       -
+         subnet: 172.19.199.0/24
