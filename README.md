@@ -188,6 +188,13 @@ exit 0
 
 Please do not forget to make the script executable (chmod +x certbot-renew.sh).
 
+
+LICENSE
+=======
+
+This repository is licensed under MIT License. Please see the LICENSE file for
+more details.
+
 [1]: http://list.org
 [2]: https://www.docker.com/
 [3]: https://docs.docker.com/compose/
