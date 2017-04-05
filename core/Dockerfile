@@ -7,7 +7,8 @@ ENV DEBIAN_FRONTEND=noninteractive
 # from the Gitlab.
 RUN apt-get update && apt-get install -y postgresql-client postfix \
     && pip install git+https://gitlab.com/mailman/mailman.git \
-	               psycopg2
+	               git+https://gitlab.com/mailman/mailman-hyperkitty.git \
+	               psycopg2 ipython
 
 ADD assets/run.sh /opt/run.sh
 
