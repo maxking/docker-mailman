@@ -160,9 +160,9 @@ Web UI from. It doesn't have to be same as the one used for Exim(or any MTA).
 Also, change `ssl_certificate` and `ssl_certificate_key` options to point at
 your SSL certificate and ceritfiicate keys. If you don't happen to have one, you
 can get one for free from [Lets Encrypt][9]. They have a very nifty tool called
-[certbot][10] that can be used to obtain the SSL certificates typically stored
+[certbot][10] that can be used to obtain the SSL certificates (typically stored
 in the location mentioned above in the configuraiton if you replace
-MY_DOMAIN_NAME with your domain name.
+MY_DOMAIN_NAME with your domain name).
 
 SSL Certificates from Lets Encrypt need to be renewed every 90 days. You can
 setup a cron job to do the job. I have this small shell script(certbot-renew.sh)
