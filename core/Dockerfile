@@ -5,10 +5,11 @@ MAINTAINER Abhilash Raj
 ENV DEBIAN_FRONTEND=noninteractive
 # Install the latest master branch of the mailman directly
 # from the Gitlab.
-RUN apt-get update && apt-get install -y postgresql-client \
-    && pip install git+https://gitlab.com/mailman/mailman.git \
-	               git+https://gitlab.com/mailman/mailman-hyperkitty.git \
-	               psycopg2 ipython
+RUN apt-get update && apt-get install -y postgresql-client wget \
+	&& wget -O mailman.zip https://gitlab.com/mailman/mailman/repository/archive.zip?ref=master  \
+	&& wget -O mailman_hyperkitty.zip https://gitlab.com/mailman/mailman-hyperkitty/repository/archive.zip?ref=master  \
+	&& pip install mailman.zip mailman_hyperkitty.zip ipython psycopg2 \
+	&& rm mailman.zip mailman_hyperkitty.zip
 
 ADD assets/run.sh /opt/run.sh
 
