@@ -169,7 +169,7 @@ DATABASES = {
 
 # If you're behind a proxy, use the X-Forwarded-Host header
 # See https://docs.djangoproject.com/en/1.8/ref/settings/#use-x-forwarded-host
-# USE_X_FORWARDED_HOST = True
+USE_X_FORWARDED_HOST = True
 
 # And if your proxy does your SSL encoding for you, set SECURE_PROXY_SSL_HEADER
 # https://docs.djangoproject.com/en/1.8/ref/settings/#secure-proxy-ssl-header
@@ -177,23 +177,23 @@ DATABASES = {
 # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_SCHEME', 'https')
 
 # Other security settings
-# SECURE_SSL_REDIRECT = True
+SECURE_SSL_REDIRECT = True
 # If you set SECURE_SSL_REDIRECT to True, make sure the SECURE_REDIRECT_EXEMPT
 # contains at least this line:
-# SECURE_REDIRECT_EXEMPT = [
-#     "archives/api/mailman/.*",  # Request from Mailman.
-#     ]
-# SESSION_COOKIE_SECURE = True
+SECURE_REDIRECT_EXEMPT = [
+    # Request from Mailman.
+    "archives/api/mailman/.*",
+     ]
+SESSION_COOKIE_SECURE = True
 # SECURE_CONTENT_TYPE_NOSNIFF = True
-# SECURE_BROWSER_XSS_FILTER = True
-# CSRF_COOKIE_SECURE = True
+SECURE_BROWSER_XSS_FILTER = True
+CSRF_COOKIE_SECURE = True
 # CSRF_COOKIE_HTTPONLY = True
-# X_FRAME_OPTIONS = 'DENY'
+X_FRAME_OPTIONS = 'DENY'
 
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME':
@@ -396,12 +396,6 @@ HAYSTACK_CONNECTIONS = {
     },
 }
 
-
-try:
-    os.mkdir('logs')
-except OSError:
-    pass
-
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
 # the site admins on every HTTP 500 error when DEBUG=False.
@@ -436,17 +430,17 @@ LOGGING = {
     'loggers': {
         'django.request': {
             'handlers': ['mail_admins', 'file'],
-            'level': 'ERROR',
+            'level': 'INFO',
             'propagate': True,
         },
         'django': {
             'handlers': ['file'],
-            'level': 'ERROR',
+            'level': 'INFO',
             'propagate': True,
         },
         'hyperkitty': {
             'handlers': ['file'],
-            'level': 'DEBUG',
+            'level': 'INFO',
             'propagate': True,
         },
         'postorius': {
@@ -478,19 +472,9 @@ LOGGING = {
 #    }
 #}
 
-
-# When DEBUG is True, don't actually send emails to the SMTP server, just store
-# them in a directory. This way you won't accidentally spam your mailing-lists
-# while you're fiddling with the code.
-if DEBUG == True:
-    EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
-    EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'emails')
-
-
 #
 # HyperKitty-specific
 #
-
 # Only display mailing-lists from the same virtual host as the webserver
 FILTER_VHOST = False
 
