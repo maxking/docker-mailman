@@ -425,7 +425,7 @@ LOGGING = {
             'level': 'INFO',
             'class': 'logging.handlers.RotatingFileHandler',
             #'class': 'logging.handlers.WatchedFileHandler',
-            'filename': '/opt/mailman-web-data/logs/mailmanweb.log'
+            'filename': '/opt/mailman-web-data/logs/mailmanweb.log',
             'formatter': 'verbose',
         },
         'console': {
