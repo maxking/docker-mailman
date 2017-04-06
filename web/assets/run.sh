@@ -25,19 +25,13 @@ if [[ ! -e /opt/mailman-web-data/logs/mailmanweb.log ]]; then
 fi
 
 
-# Check if the settings file exists, exit it not.
-if [[ ! -e /opt/mailman-web-data/settings.py ]]; then
-	echo "Settings file does not exist, please provide one..."
-	exit 1
-fi
-
-# Copy the settings file from /opt/mailman-web-data/ to the pwd because
-# it is not on python-path.
-cp /opt/mailman-web-data/settings.py /opt/mailman-web/settings.py
-
 # Check if the settings_local.py file exists, if yes, copy it too.
 if [[ -e /opt/mailman-web-data/settings_local.py ]]; then
+	echo "Copying settings_local.py ..."
 	cp /opt/mailman-web-data/settings_local.py /opt/mailman-web/settings_local.py
+else
+	echo "settings_local.py not found, it is highly recommended that you provide one/"
+	echo "Using default configuration to run."
 fi
 
 # Collect static for the django installation.
