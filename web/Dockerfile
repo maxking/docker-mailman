@@ -32,7 +32,4 @@ WORKDIR /opt/mailman-web
 
 EXPOSE 8000
 
-ENV UWSGI_WSGI_FILE=wsgi.py UWSGI_HTTP=:8000 UWSGI_WORKERS=2 \
-    UWSGI_THREADS=4
-
-CMD ["/opt/run.sh"]
+ENTRYPOINT ["/opt/run.sh"]

@@ -22,4 +22,4 @@ WORKDIR /opt/mailman
 
 EXPOSE 8001
 
-CMD ["/opt/run.sh"]
+ENTRYPOINT ["/opt/run.sh"]
