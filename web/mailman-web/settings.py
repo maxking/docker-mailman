@@ -27,6 +27,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import dj_database_url
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -47,16 +48,17 @@ SITE_ID = 1
 ALLOWED_HOSTS = [
     "localhost",  # Archiving API from Mailman, keep it.
     # "lists.your-domain.org",
+    os.environ.get('SERVE_FROM_DOMAIN'),
     # Add here all production URLs you may have.
     "mailman-web",
 ]
 
 # Mailman API credentials
-MAILMAN_REST_API_URL = 'http://mailman-core:8001'
-MAILMAN_REST_API_USER = 'restadmin'
-MAILMAN_REST_API_PASS = 'restpass'
-MAILMAN_ARCHIVER_KEY = 'ASmallAPIKey'
-MAILMAN_ARCHIVER_FROM = ('mailman-web', '172.19.199.3')
+MAILMAN_REST_API_URL = os.environ.get('MAILMAN_REST_URL', 'http://mailman-core:8001')
+MAILMAN_REST_API_USER = os.environ.get('MAILMAN_REST_USER', 'restadmin')
+MAILMAN_REST_API_PASS = os.environ.get('MAILMAN_REST_PASSWORD', 'restpass')
+MAILMAN_ARCHIVER_KEY = os.environ.get('HYPERKITTY_API_KEY')
+MAILMAN_ARCHIVER_FROM = ('mailman-web', os.environ.get('DJANGO_HOST_IP', '172.19.199.3'))
 
 # Application definition
 
@@ -142,8 +144,12 @@ WSGI_APPLICATION = 'wsgi.application'
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
 
-DATABASES['default'] = dj-database-url.config(conn_max_age=600)
-
+# This uses $DATABASE_URL from the environment variable to create a
+# django-style-config-dict.
+# https://github.com/kennethreitz/dj-database-url
+DATABASES = {
+    'default': dj_database_url.config(conn_max_age=600)
+}
 
 # If you're behind a proxy, use the X-Forwarded-Host header
 # See https://docs.djangoproject.com/en/1.8/ref/settings/#use-x-forwarded-host
@@ -262,13 +268,11 @@ SERVER_EMAIL = 'root@localhost.local'
 
 # Change this when you have a real email backend
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = '172.19.199.1'
-EMAIL_PORT = 25
+EMAIL_HOST = os.environ.get('SMTP_HOST', '172.19.199.1')
+EMAIL_PORT = os.environ.get('SMTP_PORT', 25)
 EMAIL_HOST_USER = ''
 EMAIL_HOST_PASSWORD = ''
 EMAIL_USE_TLS = False
-DEFAULT_FROM_EMAIL = 'Admin <admin@localhost.local>'
-
 
 # Compatibility with Bootstrap 3
 from django.contrib.messages import constants as messages  # flake8: noqa
@@ -404,6 +408,8 @@ LOGGING = {
             'class': 'logging.StreamHandler',
             'formatter': 'simple',
         },
+        # TODO: use an environment variable $DJ_LOG_URL to configure the logging
+        # using an environment variable.
     },
     'loggers': {
         'django.request': {

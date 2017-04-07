@@ -188,6 +188,76 @@ exit 0
 
 Please do not forget to make the script executable (chmod +x certbot-renew.sh).
 
+Configuration
+=============
+
+Most of the configuraiton is supposed to be handled through environment
+variables in the `docker-compose.yaml`.
+
+### Mailman-web
+These are the settings that you MUST change before deploying:
+
+- `SERVE_FROM_DOMAIN`: The domain name from which Django will be served. To be
+  added to `ALLOWED_HOSTS` in django settings. Default value is not set.
+
+- `HYPERKITT_API_KEY`: Hyperkitty's API Key, should be set to the same value as
+  set for the mailman-core.
+
+These are the settings that are set to sane default and you do not need to
+change them unless you know what you want.
+
+- `DATABASE_URL`: URL of the type
+  `driver://user:password@hostname:port/databasename` for the django to use. If
+  not set, the default is set to
+  `sqlite:///opt/mailman-web-data/mailmanweb.db`. The standard
+  docker-compose.yaml comes with it set to a postgres database. It is not must
+  to change this if you are happy with postgresql.
+
+- `MAILMAN_REST_URL`: The URL to the Mailman core's REST API server.  Defaut
+  value is `http://mailman-core:8001`.
+
+- `MAILMAN_REST_USER`: Mailman's REST API username. Default value is `restadmin`
+
+- `MAILMAN_REST_PASSWORD`: Mailman's REST API user's password. Default value is
+  `restpass`
+
+- `DJANGO_HOST_IP`: IP of the container from which the django will be
+  served. Default value is `172.19.199.3`.
+
+- `SMTP_HOST`: IP Address/hostname from which you will be sending
+  emails. Default value is `172.19.199.1`, which is the address of the Host OS.
+
+- `SMTP_PORT`: Port used for SMTP. Default is `25`.
+
+
+### Mailman-Core
+
+These are the variables that you MUST change before deploying:
+
+- `HYPERKITT_API_KEY`: Hyperkitty's API Key, should be set to the same value as
+  set for the mailman-core.
+
+- `DATABASE_CLASS`: Default value is `mailman.database.sqlite.SQLiteDatabase`.
+
+These are the variables that you don't need to change if you are using a
+standard version of docker-compose.yaml from this repository.
+
+- `MM_HOSTNAME`: Default value is `mailman-core`
+
+- `SMTP_HOST`: IP Address/hostname from which you will be sending
+  emails. Default value is `172.19.199.1`, which is the address of the Host OS.
+
+- `SMTP_PORT`: Port used for SMTP. Default is `25`.
+
+- `HYPERKITTY_API_URL`: Default value is `http://mailman-web:8000/hyperkitty`
+
+- `DATABASE_URL`: URL of the type
+  `driver://user:password@hostname:port/databasename` for the django to use. If
+  not set, the default is set to
+  `sqlite:///opt/mailman-web-data/mailmanweb.db`. The standard
+  docker-compose.yaml comes with it set to a postgres database. It is not must
+  to change this if you are happy with postgresql.
+
 
 LICENSE
 =======

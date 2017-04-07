@@ -1,29 +1,8 @@
 #! /bin/bash
 set -e
 
-# Check if $DATABASE_URL is defined, if not, use a standard sqlite database.
-#
-# If the $DATABASE_URL is defined and is postgres, check if it is available
-# yet. Do not start the container before the postgresql boots up.
-#
-# If the $DATABASE_URL is defined and is mysql, check if the database is
-# available before the container boots up.
-#
-# TODO: Check the database type and detect if it is up based on that. For now,
-# assume that postgres is being used if DATABASE_URL is defined.
-if [[ -z "$DATABASES_URL" ]]; then
-	echo "$DATABASE_URL is not defined. Using sqlite database..."
-	DATABASE_URL="sqlite:///opt/mailman-web-data/database/mailmanweb.db"
-	DATABASE_TYPE='sqlite'
-	if [[ ! -e "/opt/mailman-web-data/database" ]]; then
-		mkdir -p /opt/mailman-web-data/database/
-	fi
-else
-	DATABASE_TYPE='postgres'
-	wait_for_postgres()
-fi
 
-function wait_for_postgres {
+function wait_for_postgres () {
 	# Check if the postgres database is up and accepting connections before
 	# moving forward.
 	# TODO: Use python's psycopg2 module to do this in python instead of
@@ -35,13 +14,45 @@ function wait_for_postgres {
 	>&2 echo "Postgres is up - continuing"
 }
 
-function check_or_create {
+function check_or_create () {
 	# Check if the path exists, if not, create the directory.
 	if [[ ! -e dir ]]; then
 		echo "$1 does not exist, creating ..."
 		mkdir "$1"
 	fi
 }
+
+# function postgres_ready(){
+# python << END
+# import sys
+# import psycopg2
+# try:
+#     conn = psycopg2.connect(dbname="$POSTGRES_DB", user="$POSTGRES_USER", password="$POSTGRES_PASSWORD", host="postgres")
+# except psycopg2.OperationalError:
+#     sys.exit(-1)
+# sys.exit(0)
+# END
+# }
+
+# Check if $DATABASE_URL is defined, if not, use a standard sqlite database.
+#
+# If the $DATABASE_URL is defined and is postgres, check if it is available
+# yet. Do not start the container before the postgresql boots up.
+#
+# If the $DATABASE_URL is defined and is mysql, check if the database is
+# available before the container boots up.
+#
+# TODO: Check the database type and detect if it is up based on that. For now,
+# assume that postgres is being used if DATABASE_URL is defined.
+
+if [[ ! -v DATABASE_URL ]]; then
+	echo "DATABASE_URL is not defined. Using sqlite database..."
+	export DATABASE_URL=sqlite://mailmanweb.db
+	export DATABASE_TYPE='sqlite'
+else
+	export DATABASE_TYPE='postgres'
+	wait_for_postgres
+fi
 
 # Check if we are in the correct directory before running commands.
 if [[ ! $(pwd) == '/opt/mailman-web' ]]; then
@@ -57,7 +68,7 @@ if [[ ! -e /opt/mailman-web-data/logs/mailmanweb.log ]]; then
 	touch /opt/mailman-web-data/logs/mailmanweb.log
 fi
 
-if [[ ! -e /opt/mailman-web-data/logs/mailmanweb.log ]]; then
+if [[ ! -e /opt/mailman-web-data/logs/uwsgi.log ]]; then
 	echo "Creating log file for uwsgi.."
 	touch /opt/mailman-web-data/logs/uwsgi.log
 fi
@@ -84,10 +95,17 @@ python manage.py migrate
 # It can also point to a logging daemon accessible at a URL.
 if [[ -z "$UWSGI_LOG_URL" ]]; then
 	echo "No $UWSGI_LOG_URL defined, logging uwsgi to /opt/mailman-web-data/logs/uwsgi.log ..."
-	UWSGI_LOG_URL='/opt/mailman-web-data/logs/uwsgi.log'
+	export UWSGI_LOG_URL='/opt/mailman-web-data/logs/uwsgi.log'
 	if [[ ! -e "$UWSGI_LOG_URL" ]]; then
 		touch "$UWSGI_LOG_URL"
 	fi
+fi
+
+if [[ -z "$UWSGI_WSGI_FILE" ]]; then
+	export UWSGI_WSGI_FILE="wsgi.py"
+	export UWSGI_HTTP=":8000"
+	export UWSGI_WORKERS=2
+	export UWSGI_THREADS=4
 fi
 
 # Run the web server.
