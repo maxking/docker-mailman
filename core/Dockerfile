@@ -13,10 +13,6 @@ RUN apt-get update && apt-get install -y postgresql-client wget \
 
 ADD assets/run.sh /opt/run.sh
 
-# Pidproxy is our sort-of process watcher that sends any
-# signal that it receives to the mailman's master process.
-ADD assets/pidproxy.py /opt/pidproxy.py
-
 # Change the working directory.
 WORKDIR /opt/mailman
 
