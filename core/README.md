@@ -96,4 +96,13 @@ base_url: $HYPERKITTY_URL
 api_key: $HYPERKITTY_API_KEY
 ```
 
-[1]: https://github.com/maxking/docker-mailman.git
+MTA
+===
+
+[Exim4][2] is the recommended MTA for this image. The [recommended
+configuration][3] to run exim for this image can be found on github repository.
+
+
+[1]: https://github.com/maxking/docker-mailman
+[2]: http://www.exim.org
+[3]: https://github.com/maxking/docker-mailman#setting-up-your-mta
