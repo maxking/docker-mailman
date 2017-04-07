@@ -70,7 +70,7 @@ $ mkdir -p /opt/mailman/core
 $ mkdir -p /opt/mailman/web
 $ git clone https://github.com/maxking/docker-mailman
 $ cd docker-mailman
-# Change some configuration variables as mentioned below.
+# Change some configuration variables as mentioned above.
 $ docker-compose up
 ```
 
