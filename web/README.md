@@ -43,6 +43,9 @@ change them unless you know what you want.
 
 - `SMTP_PORT`: Port used for SMTP. Default is `25`.
 
+- `DJANGO_LOG_URL`: Path to the django's log file. Defaults to
+  `/opt/mailman-web-data/logs/mailmanweb.log`.
+
 Running
 =======
 

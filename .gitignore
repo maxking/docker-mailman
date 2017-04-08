@@ -2,3 +2,4 @@
 *.log
 *.log
 *.sass-cache/
+/web/mailman-web/settings_local.py

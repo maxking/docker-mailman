@@ -15,6 +15,7 @@ services:
     - database
     environment:
     - DATABASE_URL=postgres://mailman:mailmanpass@database/mailmandb
+    - HYPERKITTY_API_KEY=someapikey
     networks:
       mailman:
         ipv4_address: 172.19.199.2
@@ -38,6 +39,7 @@ services:
     - UWSGI_WORKERS=2
     - UWSGI_THREADS=4
     - DATABASE_URL=postgres://mailman:mailmanpass@database/mailmandb
+    - HYPERKITTY_API_KEY=someapikey
     networks:
       mailman:
         ipv4_address: 172.19.199.3

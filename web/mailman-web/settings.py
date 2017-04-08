@@ -48,9 +48,10 @@ SITE_ID = 1
 ALLOWED_HOSTS = [
     "localhost",  # Archiving API from Mailman, keep it.
     # "lists.your-domain.org",
-    os.environ.get('SERVE_FROM_DOMAIN'),
     # Add here all production URLs you may have.
     "mailman-web",
+    "172.19.199.3",
+    os.environ.get('SERVE_FROM_DOMAIN'),
 ]
 
 # Mailman API credentials
@@ -168,12 +169,12 @@ SECURE_REDIRECT_EXEMPT = [
     # Request from Mailman.
     "archives/api/mailman/.*",
      ]
-SESSION_COOKIE_SECURE = True
+# SESSION_COOKIE_SECURE = True
 # SECURE_CONTENT_TYPE_NOSNIFF = True
-SECURE_BROWSER_XSS_FILTER = True
-CSRF_COOKIE_SECURE = True
+# SECURE_BROWSER_XSS_FILTER = True
+# CSRF_COOKIE_SECURE = True
 # CSRF_COOKIE_HTTPONLY = True
-X_FRAME_OPTIONS = 'DENY'
+# X_FRAME_OPTIONS = 'DENY'
 
 
 # Password validation
@@ -401,7 +402,7 @@ LOGGING = {
             'level': 'INFO',
             'class': 'logging.handlers.RotatingFileHandler',
             #'class': 'logging.handlers.WatchedFileHandler',
-            'filename': '/opt/mailman-web-data/logs/mailmanweb.log',
+            'filename': os.environ.get('DJANGO_LOG_URL','/opt/mailman-web-data/logs/mailmanweb.log'),
             'formatter': 'verbose',
         },
         'console': {

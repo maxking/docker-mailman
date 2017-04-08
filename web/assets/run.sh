@@ -94,7 +94,7 @@ python manage.py migrate
 # to /opt/mailman-web/logs/uwsgi.log
 # It can also point to a logging daemon accessible at a URL.
 if [[ -z "$UWSGI_LOG_URL" ]]; then
-	echo "No $UWSGI_LOG_URL defined, logging uwsgi to /opt/mailman-web-data/logs/uwsgi.log ..."
+	echo "No UWSGI_LOG_URL defined, logging uwsgi to /opt/mailman-web-data/logs/uwsgi.log ..."
 	export UWSGI_LOG_URL='/opt/mailman-web-data/logs/uwsgi.log'
 	if [[ ! -e "$UWSGI_LOG_URL" ]]; then
 		touch "$UWSGI_LOG_URL"
@@ -103,7 +103,7 @@ fi
 
 if [[ -z "$UWSGI_WSGI_FILE" ]]; then
 	export UWSGI_WSGI_FILE="wsgi.py"
-	export UWSGI_HTTP=":8000"
+	export UWSGI_HTTP=:8000
 	export UWSGI_WORKERS=2
 	export UWSGI_THREADS=4
 fi
