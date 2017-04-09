@@ -33,7 +33,7 @@ function wait_for_postgres () {
 #
 # TODO: Check the database type and detect if it is up based on that. For now,
 # assume that postgres is being used if DATABASE_URL is defined.
-if [[ -z "$DATABASES_URL" ]]; then
+if [[ ! -v "$DATABASES_URL" ]]; then
 	echo "DATABASE_URL is not defined. Using sqlite database..."
 	export DATABASE_URL=sqlite:///mailman.db
 	export DATABASE_TYPE='sqlite'
@@ -128,7 +128,7 @@ function term_handler () {
 trap 'kill ${!}; term_handler' SIGTERM
 
 # Start the mailman server. Mailman will start the master runner and then exit.
-mailman -C /config/mailman.cfg start &
+mailman -C /config/mailman.cfg start --force &
 
 # wait forever.
 while true

@@ -162,13 +162,6 @@ USE_X_FORWARDED_HOST = True
 # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_SCHEME', 'https')
 
 # Other security settings
-SECURE_SSL_REDIRECT = True
-# If you set SECURE_SSL_REDIRECT to True, make sure the SECURE_REDIRECT_EXEMPT
-# contains at least this line:
-SECURE_REDIRECT_EXEMPT = [
-    # Request from Mailman.
-    "archives/api/mailman/.*",
-     ]
 # SESSION_COOKIE_SECURE = True
 # SECURE_CONTENT_TYPE_NOSNIFF = True
 # SECURE_BROWSER_XSS_FILTER = True
