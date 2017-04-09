@@ -61,7 +61,6 @@ if [[ ! $(pwd) == '/opt/mailman-web' ]]; then
 fi
 
 # Check if the logs directory is setup.
-
 if [[ ! -e /opt/mailman-web-data/logs/mailmanweb.log ]]; then
 	echo "Creating log file for mailman web"
 	mkdir -p /opt/mailman-web-data/logs/
@@ -78,7 +77,7 @@ if [[ -e /opt/mailman-web-data/settings_local.py ]]; then
 	echo "Copying settings_local.py ..."
 	cp /opt/mailman-web-data/settings_local.py /opt/mailman-web/settings_local.py
 else
-	echo "settings_local.py not found, it is highly recommended that you provide one/"
+	echo "settings_local.py not found, it is highly recommended that you provide one"
 	echo "Using default configuration to run."
 fi
 
@@ -93,7 +92,7 @@ python manage.py migrate
 # It can be changed by $UWSGI_LOG_URL environment variable, which if not set points
 # to /opt/mailman-web/logs/uwsgi.log
 # It can also point to a logging daemon accessible at a URL.
-if [[ -z "$UWSGI_LOG_URL" ]]; then
+if [[ ! -v UWSGI_LOG_URL ]]; then
 	echo "No UWSGI_LOG_URL defined, logging uwsgi to /opt/mailman-web-data/logs/uwsgi.log ..."
 	export UWSGI_LOG_URL='/opt/mailman-web-data/logs/uwsgi.log'
 	if [[ ! -e "$UWSGI_LOG_URL" ]]; then
@@ -101,7 +100,7 @@ if [[ -z "$UWSGI_LOG_URL" ]]; then
 	fi
 fi
 
-if [[ -z "$UWSGI_WSGI_FILE" ]]; then
+if [[ ! -v UWSGI_WSGI_FILE ]]; then
 	export UWSGI_WSGI_FILE="wsgi.py"
 	export UWSGI_HTTP=:8000
 	export UWSGI_WORKERS=2

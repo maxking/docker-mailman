@@ -33,7 +33,7 @@ function wait_for_postgres () {
 #
 # TODO: Check the database type and detect if it is up based on that. For now,
 # assume that postgres is being used if DATABASE_URL is defined.
-if [[ ! -v "$DATABASES_URL" ]]; then
+if [[ ! -v DATABASES_URL ]]; then
 	echo "DATABASE_URL is not defined. Using sqlite database..."
 	export DATABASE_URL=sqlite:///mailman.db
 	export DATABASE_TYPE='sqlite'
@@ -41,22 +41,22 @@ if [[ ! -v "$DATABASES_URL" ]]; then
 fi
 
 
-if [[ "DATABASE_TYPE" = 'postgres' ]]
+if [[ "$DATABASE_TYPE" = 'postgres' ]]
 then
 	wait_for_postgres
 fi
 
 # Check if $MM_HOSTNAME is set, if not, set it to a default value.
 # TODO: Factor this out to a function.
-if [[ -z "$MM_HOSTNAME" ]]; then
+if [[ ! -v MM_HOSTNAME ]]; then
 	export MM_HOSTNAME=mailman-core
 fi
 
-if [[ -z "$SMTP_HOST" ]]; then
+if [[ ! -v SMTP_HOST ]]; then
 	export SMTP_HOST='172.19.199.1'
 fi
 
-if [[ -z "$SMTP_PORT" ]]; then
+if [[ ! -v SMTP_PORT ]]; then
 	export SMTP_PORT=25
 fi
 
@@ -98,15 +98,15 @@ then
 fi
 
 
-if [[ -z "$HYPERKITTY_API_KEY" ]]; then
+if [[ ! -v HYPERKITTY_API_KEY ]]; then
 	echo "HYPERKITTY_API_KEY not defined, please set this environment variable..."
 	echo "exiting..."
 	exit 1
 fi
 
-if [[ -z "$HYPERKITTY_URL" ]]; then
+if [[ -v HYPERKITTY_URL ]]; then
 	echo "HYPERKITTY_URL not set, using the default value of http://mailman-web:8000/hyperkitty"
-	HYPERKITTY_URL="http://mailman-web:8000/hyperkitty/"
+	export HYPERKITTY_URL="http://mailman-web:8000/hyperkitty/"
 fi
 
 # Generate a basic mailman-hyperkitty.cfg.
