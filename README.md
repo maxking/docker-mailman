@@ -55,7 +55,21 @@ These are the variables that you MUST change before deploying:
 - `HYPERKITT_API_KEY`: Hyperkitty's API Key, should be set to the same value as
   set for the mailman-core.
 
-- `DATABASE_CLASS`: Default value is `mailman.database.sqlite.SQLiteDatabase`.
+- `DATABASE_URL`: URL of the type
+  `driver://user:password@hostname:port/databasename` for the django to use. If
+  not set, the default is set to
+  `sqlite:///opt/mailman-web-data/mailmanweb.db`. The standard
+  docker-compose.yaml comes with it set to a postgres database. It is not must
+  to change this if you are happy with postgresql.
+
+- `DATABASE_TYPE`: It's value can be one of `sqlite`, `postgres` or `mysql` as
+  these are the only three database types that Mailman 3 supports. It's defualt
+  value is set to `sqlite` along with the default database class and default
+  database url above.
+
+- `DATABASE_CLASS`: Default value is
+  `mailman.database.sqlite.SQLiteDatabase`. The values for this can be found in
+  the mailman's documentation [here][11].
 
 For more details on how to configure this image, please look [Mailman-core's
 Readme](core/README.md)
@@ -247,3 +261,4 @@ more details.
 [8]: http://exim.org/
 [9]: https://letsencrypt.org/
 [10]: https://certbot.eff.org/
+[11]: https://mailman.readthedocs.io/en/latest/src/mailman/docs/database.html
