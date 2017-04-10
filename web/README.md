@@ -35,8 +35,8 @@ change them unless you know what you want.
 - `MAILMAN_REST_PASSWORD`: Mailman's REST API user's password. Default value is
   `restpass`
 
-- `DJANGO_HOST_IP`: IP of the container from which the django will be
-  served. Default value is `172.19.199.3`.
+- `MAILMAN_HOST_IP`: IP of the Container from which Mailman will send emails to
+  hyperkitty (django). Set to `172.19.199.2` by default.
 
 - `SMTP_HOST`: IP Address/hostname from which you will be sending
   emails. Default value is `172.19.199.1`, which is the address of the Host OS.
