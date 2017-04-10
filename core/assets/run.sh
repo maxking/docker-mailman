@@ -117,21 +117,4 @@ api_key: $HYPERKITTY_API_KEY
 EOF
 
 
-# SIGTERM Handler so that the container shuts down gracefully.
-function term_handler () {
-	echo "Stopping mailman ..."
-	mailman stop
-	exit 143 # SIGTERM
-}
-
-# Set the trap for SIGTERM.
-trap 'kill ${!}; term_handler' SIGTERM
-
-# Start the mailman server. Mailman will start the master runner and then exit.
-mailman -C /config/mailman.cfg start --force &
-
-# wait forever.
-while true
-do
-  tail -f /dev/null & wait ${!}
-done
+exec "$@"
