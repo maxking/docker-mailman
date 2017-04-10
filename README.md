@@ -1,3 +1,5 @@
+permalink: /
+
 GNU Mailman 3 Deployment with Docker
 ====================================
 
