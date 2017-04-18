@@ -16,7 +16,7 @@ services:
     environment:
     - DATABASE_URL=postgres://mailman:mailmanpass@database/mailmandb
     - DATABASE_TYPE=postgres
-    - DATABASE_CLASS=mailman.database.postgres.PostgreSQLDatabase
+    - DATABASE_CLASS=mailman.database.postgresql.PostgreSQLDatabase
     - HYPERKITTY_API_KEY=someapikey
     networks:
       mailman:
