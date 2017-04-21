@@ -60,6 +60,10 @@ if [[ ! -v SMTP_PORT ]]; then
 	export SMTP_PORT=25
 fi
 
+if [[ ! -v HYPERKITTY_URL ]]; then
+	export HYPERKITTY_URL=http://mailman-web:8000/
+fi
+
 if [[ ! -d /config/ ]]; then
 	mkdir /config/
 fi
