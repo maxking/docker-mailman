@@ -46,7 +46,7 @@ These are the settings that you MUST change before deploying:
 - `SERVE_FROM_DOMAIN`: The domain name from which Django will be served. To be
   added to `ALLOWED_HOSTS` in django settings. Default value is not set.
 
-- `HYPERKITT_API_KEY`: Hyperkitty's API Key, should be set to the same value as
+- `HYPERKITTY_API_KEY`: Hyperkitty's API Key, should be set to the same value as
   set for the mailman-core.
 
 For more detauls on how to configura this image, please look at [Mailman-web's
