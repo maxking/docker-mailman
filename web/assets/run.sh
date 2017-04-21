@@ -107,5 +107,4 @@ if [[ ! -v UWSGI_WSGI_FILE ]]; then
 	export UWSGI_THREADS=4
 fi
 
-# Run the web server.
-uwsgi --http-auto-chunked --http-keepalive --logto "$UWSGI_LOG_URL"
+exec $@
