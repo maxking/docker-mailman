@@ -49,7 +49,7 @@ These are the settings that you MUST change before deploying:
 - `HYPERKITTY_API_KEY`: Hyperkitty's API Key, should be set to the same value as
   set for the mailman-core.
 
-For more detauls on how to configura this image, please look at [Mailman-web's
+For more detauls on how to configure this image, please look at [Mailman-web's
 Readme](web/README.md)
 
 ### Mailman-Core
@@ -122,7 +122,7 @@ this. However, these are very easy to understand if you know how docker works.
 - Spin off mailman-core container which has a static IP address of
   `172.19.199.2` in the mailman bridge network created above. It has
   GNU Mailman 3 core running inside it. Mailman core's REST API is available at
-  port 8000 and LMTP server listens at port 8024.
+  port 8001 and LMTP server listens at port 8024.
 
 - Spin off mailman-web container which has a django application running with
   both Mailman's web frontend Portorius and Mailman's Web based Archiver
@@ -160,7 +160,7 @@ possible to provide a way to actually expect nothing from the host and have
 everything running inside containers.
 
 It is recomended to use [Exim4][8] along with this setup. Technically, it
-possible to use any other MTA like postfix too, but I haven't yet been able to
+possible to use any other MTA like postfix, but I haven't yet been able to
 figure out a clean way to communicate with postfix on the host.
 
 Exim should be setup to relay emails from `172.19.199.3` and `172.19.199.2`. The
