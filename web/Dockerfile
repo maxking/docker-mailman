@@ -23,6 +23,7 @@ RUN wget -O mailmanclient.zip https://gitlab.com/mailman/mailmanclient/repositor
 				             psycopg2 \
 				             dj-database-url \
 							 pymysql \
+							 redis\
 	&& rm mailmanclient.zip postorius.zip hyperkitty.zip django-mailman3.zip
 
 ADD mailman-web /opt/mailman-web

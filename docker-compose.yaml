@@ -56,13 +56,13 @@ services:
         ipv4_address: 172.19.199.4
 
   redis:
-  restart: always
-  image: redis:3.0-alpine
-  volumes:
-  - /opt/mailman/redis:/data
-  networks:
-    mailman:
-	  ipv4_address:172.19.199.5
+    restart: always
+    image: redis:3.0-alpine
+    volumes:
+      - /opt/mailman/redis:/data
+    networks:
+      mailman:
+        ipv4_address: 172.19.199.5
 
 networks:
    mailman:
