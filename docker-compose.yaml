@@ -2,8 +2,6 @@ version: '2'
 
 services:
   mailman-core:
-    build:
-      context: ./core
     image: maxking/mailman-core:latest
     container_name: mailman-core
     hostname: mailman-core
@@ -23,8 +21,6 @@ services:
         ipv4_address: 172.19.199.2
 
   mailman-web:
-    build:
-      context: ./web
     image: maxking/mailman-web:latest
     container_name: mailman-web
     hostname: mailman-web
