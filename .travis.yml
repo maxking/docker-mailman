@@ -7,8 +7,7 @@ language: python
 
 install:
   - docker --version
-  - docker build -t maxking/mailman-core core/
-  - docker build -t maxking/mailman-web web/
+  - ./build.sh
   - sudo pip install docker-compose
   - docker-compose --version
 
