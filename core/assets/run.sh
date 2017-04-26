@@ -20,7 +20,7 @@ function wait_for_postgres () {
 	# 	sleep 1
 	# done
 	# >&2 echo "Postgres is up - continuing"
-	sleep 10
+	sleep 5
 	# TODO: Just sleep and do not require postgres client for the image maybe.
 }
 
