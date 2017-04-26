@@ -20,7 +20,7 @@ function wait_for_postgres () {
 	# 	sleep 1
 	# done
 	# >&2 echo "Postgres is up - continuing"
-	sleep 10
+	sleep 5
 	# TODO: Just sleep and do not require postgres client for the image maybe.
 }
 
@@ -97,10 +97,10 @@ class: $DATABASE_CLASS
 url: $DATABASE_URL
 EOF
 
-if [[ -e /opt/mailman/mailman.cfg ]]
+if [[ -e /opt/mailman/mailman-extra.cfg ]]
 then
-	echo "Found configuration file at /opt/mailman/mailman.cfg"
-	cat /opt/mailman/mailman.cfg >> /config/mailman.cfg
+	echo "Found configuration file at /opt/mailman/mailman-extra.cfg"
+	cat /opt/mailman/mailman-extra.cfg >> /config/mailman.cfg
 fi
 
 
@@ -122,5 +122,6 @@ base_url: $HYPERKITTY_URL
 api_key: $HYPERKITTY_API_KEY
 EOF
 
+export MAILMAN_CONFIG_FILE=/config/mailman.cfg
 
 exec "$@"

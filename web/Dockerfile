@@ -5,9 +5,10 @@ MAINTAINER Abhilash Raj
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update \
-	&& apt-get install -y ruby-sass \
+	&& apt-get install -y --no-install-recommends ruby-sass \
 					   wget \
-					   postgresql-client
+					   postgresql-client \
+	&& rm -rf /var/lib/apt/lists/*
 
 RUN wget -O mailmanclient.zip https://gitlab.com/mailman/mailmanclient/repository/archive.zip?ref=master \
 	&& wget -O postorius.zip https://gitlab.com/mailman/postorius/repository/archive.zip?ref=master \
@@ -22,6 +23,7 @@ RUN wget -O mailmanclient.zip https://gitlab.com/mailman/mailmanclient/repositor
 				             psycopg2 \
 				             dj-database-url \
 							 pymysql \
+							 redis\
 	&& rm mailmanclient.zip postorius.zip hyperkitty.zip django-mailman3.zip
 
 ADD mailman-web /opt/mailman-web

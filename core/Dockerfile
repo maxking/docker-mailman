@@ -22,4 +22,4 @@ EXPOSE 8001
 
 ENTRYPOINT ["/opt/run.sh"]
 
-CMD ["/usr/local/bin/master", "-C",  "/config/mailman.cfg"]
+CMD ["/usr/local/bin/master"]

@@ -455,6 +455,19 @@ LOGGING = {
 # Only display mailing-lists from the same virtual host as the webserver
 FILTER_VHOST = False
 
+Q_CLUSTER = {
+    'redis': {
+        'host': 'redis',
+        'port': 6379,
+        'db': 0,
+        'password': None,
+        'socket_timeout': None,
+        'charset': 'utf-8',
+        'errors': 'strict',
+        'unix_socket_path': None
+    }
+}
+
 
 try:
     from settings_local import *
