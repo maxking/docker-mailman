@@ -88,15 +88,14 @@ python manage.py collectstatic --noinput
 # this command will upgrade the database.
 python manage.py migrate
 
-# Check if there is a non-standard location for logging defined.
-# It can be changed by $UWSGI_LOG_URL environment variable, which if not set points
-# to /opt/mailman-web/logs/uwsgi.log
-# It can also point to a logging daemon accessible at a URL.
-if [[ ! -v UWSGI_LOG_URL ]]; then
-	echo "No UWSGI_LOG_URL defined, logging uwsgi to /opt/mailman-web-data/logs/uwsgi.log ..."
-	export UWSGI_LOG_URL='/opt/mailman-web-data/logs/uwsgi.log'
-	if [[ ! -e "$UWSGI_LOG_URL" ]]; then
-		touch "$UWSGI_LOG_URL"
+
+# Log to the default location /opt/mailman-web-data/logs/uwsgi.log if the
+# logging variable is not set.
+if [[ ! -v UWSGI_LOGTO ]]; then
+	echo "No UWSGI_LOGTO defined, logging uwsgi to /opt/mailman-web-data/logs/uwsgi.log ..."
+	export UWSGI_LOGTO='/opt/mailman-web-data/logs/uwsgi.log'
+	if [[ ! -e "$UWSGI_LOGTO" ]]; then
+		touch "$UWSGI_LOGTO"
 	fi
 fi
 
