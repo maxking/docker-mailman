@@ -35,4 +35,4 @@ EXPOSE 8000
 
 ENTRYPOINT ["/opt/run.sh"]
 
-CMD ["uwsgi", "--http-auto-chunked --http-keepalive --logto $UWSGI_LOG_URL"]
+CMD ["uwsgi", "--http-auto-chunked","--http-keepalive"]
