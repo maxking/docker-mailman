@@ -60,6 +60,13 @@ also want to get a SSL certificate if you don't already have one. [Lets
 Encrypt][4] provides free SSL certiticates for everyone and there are _some_
 instructions about that also.
 
+After the first run, you can create a superuser for django using the following
+command:
+
+```bash
+    $ docker exec -it mailman-web python manage.py createsuperuser
+```
+
 [1]: https://gitlab.com/mailman
 [3]: https://github.com/maxking/docker-mailman/
 [2]: https://github.com/maxking/docker-mailman/blob/master/docker-compose.yaml
