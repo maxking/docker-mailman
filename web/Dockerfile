@@ -13,15 +13,15 @@ RUN wget -O mailmanclient.zip https://gitlab.com/mailman/mailmanclient/repositor
 	&& wget -O postorius.zip https://gitlab.com/mailman/postorius/repository/archive.zip?ref=master \
 	&& wget -O django-mailman3.zip https://gitlab.com/mailman/django-mailman3/repository/archive.zip?ref=master \
 	&& wget -O hyperkitty.zip https://gitlab.com/mailman/hyperkitty/repository/archive.zip?ref=master \
-    && python -m pip install mailmanclient.zip \
-	                         postorius.zip \
-							 django-mailman3.zip \
-							 hyperkitty.zip \
-		  				     whoosh \
-				             uwsgi \
-				             psycopg2 \
-				             dj-database-url \
-							 pymysql \
+    && python -m pip install -U mailmanclient.zip \
+	                         	postorius.zip \
+							 	django-mailman3.zip \
+							 	hyperkitty.zip \
+		  				     	whoosh \
+				             	uwsgi \
+				             	psycopg2 \
+				             	dj-database-url \
+							 	pymysql \
 	&& rm mailmanclient.zip postorius.zip hyperkitty.zip django-mailman3.zip
 
 ADD mailman-web /opt/mailman-web
