@@ -12,8 +12,8 @@ version: '2'
 
 services:
   mailman-core:
-    image:maxking/mailman-core:$TAG
+    image: maxking/mailman-core:$TAG
 
   mailman-web:
-    image:maxking/mailman-web:$TAG
+    image: maxking/mailman-web:$TAG
 EOF
