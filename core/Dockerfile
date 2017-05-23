@@ -22,4 +22,6 @@ EXPOSE 8001
 
 ENTRYPOINT ["/opt/run.sh"]
 
+ENV MAILMAN_CONFIG_FILE /config/mailman.cfg
+
 CMD ["/usr/local/bin/master"]

@@ -122,6 +122,4 @@ base_url: $HYPERKITTY_URL
 api_key: $HYPERKITTY_API_KEY
 EOF
 
-export MAILMAN_CONFIG_FILE=/config/mailman.cfg
-
 exec "$@"
