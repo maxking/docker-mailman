@@ -8,6 +8,8 @@ fi
 
 
 cat > docker-test.yaml <<EOF
+version: '2'
+
 services:
   mailman-core:
     image:maxking/mailman-core:$TAG
