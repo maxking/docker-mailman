@@ -83,6 +83,7 @@ INSTALLED_APPS = (
     'compressor',
     'haystack',
     'django_extensions',
+    'django_q',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -155,19 +156,6 @@ DATABASES = {
 # See https://docs.djangoproject.com/en/1.8/ref/settings/#use-x-forwarded-host
 USE_X_FORWARDED_HOST = True
 
-# And if your proxy does your SSL encoding for you, set SECURE_PROXY_SSL_HEADER
-# https://docs.djangoproject.com/en/1.8/ref/settings/#secure-proxy-ssl-header
-# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_SCHEME', 'https')
-
-# Other security settings
-# SESSION_COOKIE_SECURE = True
-# SECURE_CONTENT_TYPE_NOSNIFF = True
-# SECURE_BROWSER_XSS_FILTER = True
-# CSRF_COOKIE_SECURE = True
-# CSRF_COOKIE_HTTPONLY = True
-# X_FRAME_OPTIONS = 'DENY'
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
@@ -204,59 +192,31 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.8/howto/static-files/
-
-# Absolute path to the directory static files should be collected to.
-# Don't put anything in this directory yourself; store your static files
-# in apps' "static/" subdirectories and in STATICFILES_DIRS.
-# Example: "/var/www/example.com/static/"
 STATIC_ROOT = '/opt/mailman-web-data/static'
 
-# URL prefix for static files.
-# Example: "http://example.com/static/", "http://static.example.com/"
 STATIC_URL = '/static/'
 
 # Additional locations of static files
-STATICFILES_DIRS = (
-    # Put strings here, like "/home/html/static" or "C:/www/django/static".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-    # BASE_DIR + '/static/',
-)
+
 
 # List of finder classes that know how to find static files in
 # various locations.
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    # 'django.contrib.staticfiles.finders.DefaultStorageFinder',
     'compressor.finders.CompressorFinder',
 )
 
-# Django 1.6+ defaults to a JSON serializer, but it won't work with
-# django-openid, see
-# https://bugs.launchpad.net/django-openid-auth/+bug/1252826
-SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 
+SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 
 LOGIN_URL = 'account_login'
 LOGIN_REDIRECT_URL = 'list_index'
 LOGOUT_URL = 'account_logout'
 
-
-# If you enable internal authentication, this is the address that the emails
-# will appear to be coming from. Make sure you set a valid domain name,
-# otherwise the emails may get rejected.
-# https://docs.djangoproject.com/en/1.8/ref/settings/#default-from-email
-# DEFAULT_FROM_EMAIL = "mailing-lists@you-domain.org"
 DEFAULT_FROM_EMAIL = 'postorius@localhost.local'
 
-# If you enable email reporting for error messages, this is where those emails
-# will appear to be coming from. Make sure you set a valid domain name,
-# otherwise the emails may get rejected.
-# https://docs.djangoproject.com/en/1.8/ref/settings/#std:setting-SERVER_EMAIL
-# SERVER_EMAIL = 'root@your-domain.org'
+
 SERVER_EMAIL = 'root@localhost.local'
 
 # Change this when you have a real email backend
@@ -318,25 +278,6 @@ SOCIALACCOUNT_PROVIDERS = {
 }
 
 
-#
-# Gravatar
-# https://github.com/twaddington/django-gravatar
-#
-# Gravatar base url.
-# GRAVATAR_URL = 'http://cdn.libravatar.org/'
-# Gravatar base secure https url.
-# GRAVATAR_SECURE_URL = 'https://seccdn.libravatar.org/'
-# Gravatar size in pixels.
-# GRAVATAR_DEFAULT_SIZE = '80'
-# An image url or one of the following: 'mm', 'identicon', 'monsterid',
-# 'wavatar', 'retro'.
-# GRAVATAR_DEFAULT_IMAGE = 'mm'
-# One of the following: 'g', 'pg', 'r', 'x'.
-# GRAVATAR_DEFAULT_RATING = 'g'
-# True to use https by default, False for plain http.
-# GRAVATAR_DEFAULT_SECURE = True
-
-#
 # django-compressor
 # https://pypi.python.org/pypi/django_compressor
 #
@@ -345,16 +286,13 @@ COMPRESS_PRECOMPILERS = (
    ('text/x-scss', 'sass -t compressed {infile} {outfile}'),
    ('text/x-sass', 'sass -t compressed {infile} {outfile}'),
 )
+
 # On a production setup, setting COMPRESS_OFFLINE to True will bring a
 # significant performance improvement, as CSS files will not need to be
 # recompiled on each requests. It means running an additional "compress"
 # management command after each code upgrade.
 # http://django-compressor.readthedocs.io/en/latest/usage/#offline-compression
 # COMPRESS_OFFLINE = True
-
-# Needed for debug mode
-# INTERNAL_IPS = ('127.0.0.1',)
-
 
 #
 # Full-text search engine
@@ -440,21 +378,17 @@ LOGGING = {
 }
 
 
-# Using the cache infrastructure can significantly improve performance on a
-# production setup. This is an example with a local Memcached server.
-#CACHES = {
-#    'default': {
-#        'BACKEND': 'django.core.cache.backends.memcached.PyLibMCCache',
-#        'LOCATION': '127.0.0.1:11211',
-#    }
-#}
-
-#
 # HyperKitty-specific
 #
 # Only display mailing-lists from the same virtual host as the webserver
 FILTER_VHOST = False
 
+
+Q_CLUSTER = {
+    'timeout': 300,
+    'save_limit': 100,
+    'orm': 'default',
+}
 
 try:
     from settings_local import *
