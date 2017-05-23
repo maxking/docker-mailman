@@ -1,3 +1,5 @@
+#!/bin/sh
+
 if [ "$TRAVIS_BRANCH" = "master" ]; then
     TAG="latest"
 else
