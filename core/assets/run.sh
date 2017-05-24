@@ -4,7 +4,7 @@ set -e
 # Check if the master lock exists for the mailman.
 # It means that that either some other mailman process is running or
 # the last time mailman did not exit clean.
-if [[ -e /opt/mailman/core/var/locks/master.lck ]]; then
+if [[ -e /opt/mailman/var/locks/master.lck ]]; then
 	echo "The mailman's master lock file still exists at /opt/mailman/core/var/locks/master.lck"
 	echo "Please remove the lock file before trying to run this container again."
 	exit 1
