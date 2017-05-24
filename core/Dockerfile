@@ -24,4 +24,6 @@ ENTRYPOINT ["/opt/run.sh"]
 
 ENV MAILMAN_CONFIG_FILE /config/mailman.cfg
 
+RUN adduser -S mailman
+
 CMD ["/usr/local/bin/master"]

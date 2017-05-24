@@ -122,9 +122,7 @@ base_url: $HYPERKITTY_URL
 api_key: $HYPERKITTY_API_KEY
 EOF
 
-# Now finally create the mailman user and provide it write access to the var
-# directory.
-adduser mailman
-chown -R mailman .
+# Now chown the places where mailman wants to write stuff.
+chown -R mailman /opt/mailman
 
 exec su-exec mailman "$@"
