@@ -6,12 +6,11 @@ MAINTAINER Abhilash Raj
 # from the Gitlab.
 RUN apk update \
     && apk add --virtual build-deps gcc python3-dev musl-dev wget \
-	&& apk add postgresql-dev bash su-exec \
-    && wget -O mailman.zip https://gitlab.com/mailman/mailman/repository/archive.zip?ref=master  \
-	&& wget -O mailman_hyperkitty.zip https://gitlab.com/mailman/mailman-hyperkitty/repository/archive.zip?ref=master  \
-	&& pip install mailman.zip mailman_hyperkitty.zip psycopg2 \
-	&& rm mailman.zip mailman_hyperkitty.zip \
-	&& apk del build-deps
+    && apk add postgresql-dev bash su-exec \
+    && wget -O mailman_hyperkitty.zip https://gitlab.com/mailman/mailman-hyperkitty/repository/archive.zip?ref=master  \
+    && pip install mailman_hyperkitty.zip psycopg2 mailman==3.1.0rc1 \
+    && rm mailman_hyperkitty.zip \
+    && apk del build-deps
 
 ADD assets/run.sh /opt/run.sh
 
