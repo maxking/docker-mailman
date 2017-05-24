@@ -28,7 +28,7 @@ function wait_for_postgres () {
 # If the $DATABASE_URL is defined and is postgres, check if it is available
 # yet. Do not start the container before the postgresql boots up.
 #
-# If the $DATABASE_URL is defined and is mysql, check if the database is
+# TODO: If the $DATABASE_URL is defined and is mysql, check if the database is
 # available before the container boots up.
 #
 # TODO: Check the database type and detect if it is up based on that. For now,
