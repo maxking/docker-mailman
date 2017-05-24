@@ -122,4 +122,7 @@ base_url: $HYPERKITTY_URL
 api_key: $HYPERKITTY_API_KEY
 EOF
 
-exec "$@"
+# Now chown the places where mailman wants to write stuff.
+chown -R mailman /opt/mailman
+
+exec su-exec mailman "$@"

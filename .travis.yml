@@ -18,6 +18,9 @@ before_script:
   - docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' mailman-web
   - docker-compose ps
   - sleep 30
+  - docker ps
+  - docker logs mailman-web
+  - docker logs mailman-core
 
 script:
    - tests/core.sh
