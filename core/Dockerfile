@@ -5,7 +5,7 @@ MAINTAINER Abhilash Raj
 # Install the latest master branch of the mailman directly
 # from the Gitlab.
 RUN apk update \
-    && apk add --virtual build-deps gcc python3-dev musl-dev wget \
+    && apk add --virtual build-deps gcc python3-dev musl-dev wget su-exec \
 	&& apk add postgresql-dev bash \
     && wget -O mailman.zip https://gitlab.com/mailman/mailman/repository/archive.zip?ref=master  \
 	&& wget -O mailman_hyperkitty.zip https://gitlab.com/mailman/mailman-hyperkitty/repository/archive.zip?ref=master  \
