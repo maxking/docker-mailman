@@ -10,20 +10,16 @@ RUN apt-get update \
                        postgresql-client \
     && rm -rf /var/lib/apt/lists/*
 
-RUN wget -O mailmanclient.zip https://gitlab.com/mailman/mailmanclient/repository/archive.zip?ref=master \
-    && wget -O postorius.zip https://gitlab.com/mailman/postorius/repository/archive.zip?ref=master \
-    && wget -O django-mailman3.zip https://gitlab.com/mailman/django-mailman3/repository/archive.zip?ref=master \
-    && wget -O hyperkitty.zip https://gitlab.com/mailman/hyperkitty/repository/archive.zip?ref=master \
-    && python -m pip install -U mailmanclient.zip \
-                                postorius.zip \
-                                hyperkitty.zip \
-                                whoosh \
-                                uwsgi \
-                                psycopg2 \
-                                dj-database-url \
-                                pymysql \
-    && python -m pip install -U django-mailman3.zip \
-    && rm mailmanclient.zip postorius.zip hyperkitty.zip django-mailman3.zip
+RUN python -m pip install -U mailmanclient==3.1.0 \
+                             postorius==1.1.0 \
+                             hyperkitty==1.1.0 \
+                             django-mailman3==1.1.0 \
+                             whoosh \
+                             uwsgi \
+                             psycopg2 \
+                             dj-database-url \
+                             pymysql \
+	&& python -m pip install -U django==1.10
 
 ADD mailman-web /opt/mailman-web
 
@@ -35,4 +31,4 @@ EXPOSE 8000
 
 ENTRYPOINT ["/opt/run.sh"]
 
-CMD ["uwsgi", "--http-auto-chunked","--http-keepalive"]
+CMD ["uwsgi", "--ini", "/opt/mailman-web/uwsgi.ini"]

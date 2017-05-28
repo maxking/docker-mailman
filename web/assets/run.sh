@@ -49,8 +49,9 @@ if [[ ! -v DATABASE_URL ]]; then
 	echo "DATABASE_URL is not defined. Using sqlite database..."
 	export DATABASE_URL=sqlite://mailmanweb.db
 	export DATABASE_TYPE='sqlite'
-else
-	export DATABASE_TYPE='postgres'
+fi
+
+if [[ "$DATABASE_TYPE" = 'postgres' ]]; then
 	wait_for_postgres
 fi
 
@@ -87,21 +88,5 @@ python manage.py collectstatic --noinput
 # Migrate all the data to the database if this is a new installation, otherwise
 # this command will upgrade the database.
 python manage.py migrate
-
-
-# Log to the default location /opt/mailman-web-data/logs/uwsgi.log if the
-# logging variable is not set.
-if [[ ! -v UWSGI_LOGTO ]]; then
-	echo "No UWSGI_LOGTO defined, logging uwsgi to /opt/mailman-web-data/logs/uwsgi.log ..."
-	export UWSGI_LOGTO='/opt/mailman-web-data/logs/uwsgi.log'
-	touch "$UWSGI_LOGTO"
-fi
-
-if [[ ! -v UWSGI_WSGI_FILE ]]; then
-	export UWSGI_WSGI_FILE="wsgi.py"
-	export UWSGI_HTTP=:8000
-	export UWSGI_WORKERS=2
-	export UWSGI_THREADS=4
-fi
 
 exec $@
