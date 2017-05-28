@@ -64,12 +64,8 @@ if [[ ! -v HYPERKITTY_URL ]]; then
 	export HYPERKITTY_URL=http://mailman-web:8000/
 fi
 
-if [[ ! -d /config/ ]]; then
-	mkdir /config/
-fi
-
 # Generate a basic mailman.cfg.
-cat > /config/mailman.cfg <<EOF
+cat > /etc/mailman.cfg <<EOF
 [mta]
 incoming: mailman.mta.exim4.LMTP
 outgoing: mailman.mta.deliver.deliver
@@ -88,7 +84,7 @@ hostname: $MM_HOSTNAME
 [archiver.hyperkitty]
 class: mailman_hyperkitty.Archiver
 enable: yes
-configuration: /config/mailman-hyperkitty.cfg
+configuration: /etc/mailman-hyperkitty.cfg
 
 [database]
 class: $DATABASE_CLASS
@@ -98,7 +94,7 @@ EOF
 if [[ -e /opt/mailman/mailman-extra.cfg ]]
 then
 	echo "Found configuration file at /opt/mailman/mailman-extra.cfg"
-	cat /opt/mailman/mailman-extra.cfg >> /config/mailman.cfg
+	cat /opt/mailman/mailman-extra.cfg >> /etc/mailman.cfg
 fi
 
 
@@ -114,7 +110,7 @@ if [[ -v HYPERKITTY_URL ]]; then
 fi
 
 # Generate a basic mailman-hyperkitty.cfg.
-cat > /config/mailman-hyperkitty.cfg <<EOF
+cat > /etc/mailman-hyperkitty.cfg <<EOF
 [general]
 base_url: $HYPERKITTY_URL
 api_key: $HYPERKITTY_API_KEY

@@ -92,7 +92,7 @@ hostname: $MM_HOSTNAME
 [archiver.hyperkitty]
 class: mailman_hyperkitty.Archiver
 enable: yes
-configuration: /config/mailman-hyperkitty.cfg
+configuration: /etc/mailman-hyperkitty.cfg
 
 [database]
 class: $DATABASE_CLASS

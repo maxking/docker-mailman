@@ -21,7 +21,7 @@ EXPOSE 8001
 
 ENTRYPOINT ["/opt/run.sh"]
 
-ENV MAILMAN_CONFIG_FILE /config/mailman.cfg
+ENV MAILMAN_CONFIG_FILE /etc/mailman.cfg
 
 RUN adduser -S mailman
 
