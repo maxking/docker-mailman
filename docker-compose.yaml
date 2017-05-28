@@ -32,6 +32,7 @@ services:
     volumes:
     - /opt/mailman/web:/opt/mailman-web-data
     environment:
+    - DATABASE_TYPE=postgres
     - DATABASE_URL=postgres://mailman:mailmanpass@database/mailmandb
     - HYPERKITTY_API_KEY=someapikey
     networks:
