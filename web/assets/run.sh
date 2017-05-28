@@ -94,9 +94,7 @@ python manage.py migrate
 if [[ ! -v UWSGI_LOGTO ]]; then
 	echo "No UWSGI_LOGTO defined, logging uwsgi to /opt/mailman-web-data/logs/uwsgi.log ..."
 	export UWSGI_LOGTO='/opt/mailman-web-data/logs/uwsgi.log'
-	if [[ ! -e "$UWSGI_LOGTO" ]]; then
-		touch "$UWSGI_LOGTO"
-	fi
+	touch "$UWSGI_LOGTO"
 fi
 
 if [[ ! -v UWSGI_WSGI_FILE ]]; then
