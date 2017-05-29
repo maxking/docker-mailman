@@ -89,4 +89,10 @@ python manage.py collectstatic --noinput
 # this command will upgrade the database.
 python manage.py migrate
 
+# Create a mailman user with the specific UID and GID and do not create home
+# directory for it. Also chown the logs directory to write the files.
+useradd -M -U -u 1000 mailman
+chown mailman:mailman /opt/mailman-web-data -R
+
+
 exec $@
