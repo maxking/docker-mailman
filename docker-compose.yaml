@@ -32,10 +32,7 @@ services:
     volumes:
     - /opt/mailman/web:/opt/mailman-web-data
     environment:
-    - UWSGI_WSGI_FILE=wsgi.py
-    - UWSGI_HTTP=:8000
-    - UWSGI_WORKERS=2
-    - UWSGI_THREADS=4
+    - DATABASE_TYPE=postgres
     - DATABASE_URL=postgres://mailman:mailmanpass@database/mailmandb
     - HYPERKITTY_API_KEY=someapikey
     networks:
