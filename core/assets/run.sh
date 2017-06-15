@@ -91,6 +91,16 @@ class: $DATABASE_CLASS
 url: $DATABASE_URL
 EOF
 
+# Generate a basic configuration to use postfix.
+cat > /etc/postfix-mailman.cfg <<EOF
+[postfix]
+transport_file_type: regex
+# While in regex mode, postmap_command is never used, a placeholder
+# is added here so that it doesn't break anything.
+postmap_command: true
+EOF
+
+
 if [[ -e /opt/mailman/mailman-extra.cfg ]]
 then
 	echo "Found configuration file at /opt/mailman/mailman-extra.cfg"

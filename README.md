@@ -15,13 +15,6 @@ run multi-container applications. This repository consists of a
 [`docker-compose.yaml`](docker-compose.yaml) file which is a set of
 configurations that can be used to deploy the [Mailman 3 Suite][4].
 
-While is not _official_ way to deploy Mailman 3, I will try my best to help if
-you encounter problems.
-
-For now, both `mailman-core` and `mailman-web` images are built from latest git
-branches for all the proejcts, but in future when Mailman 3.1 is released, I
-will have seperate images for latest and stable versions of the containers.
-
 Dependencies
 ============
 - Docker
@@ -31,7 +24,6 @@ To run this you first need to download docker for whichever operating system you
 are using. You can find documentation about [how to install][5]. It is
 recomended to use these instead of the one from your package managers. After you
 have downloaded and installed docker, install docker-compose from [here][6].
-
 
 
 Configuration
@@ -89,7 +81,7 @@ $ mkdir -p /opt/mailman/web
 $ git clone https://github.com/maxking/docker-mailman
 $ cd docker-mailman
 # Change some configuration variables as mentioned above.
-$ docker-compose start
+$ docker-compose up -d
 ```
 
 This command will do several things, most importantly:
@@ -136,10 +128,10 @@ this. However, these are very easy to understand if you know how docker works.
 
 - mailman-core mounts `/opt/mailman/core` from host OS at `/opt/mailman` in the
   container. Mailman's var directory is stored there so that it is accesible
-  from the host operating system. Mailman's configuration file is also expected
-  to be present there. A [production level
-  configuration](core/assets/mailman.cfg) is provided, but please do not change
-  anything there without the complete knowledge. Mailman also needs another
+  from the host operating system. Configuration for Mailman core is generated on
+  every run from the environement variables provided. Extra configuration can
+  also be provided at `/opt/mailman/core/mailman-extra.cfg` (on host), and will
+  be added to generated configuration file. Mailman also needs another
   configuration file called
   [mailman-hyperkitty.cfg](core/assets/mailman-hyperkitty.cfg) and is also
   expected to be at `/opt/mailman/core/` on the host OS.
@@ -155,17 +147,13 @@ this. However, these are very easy to understand if you know how docker works.
 Setting up your MTA
 ===================
 
-This setup assumes that the MTA is actually present on the host. In future it is
-possible to provide a way to actually expect nothing from the host and have
-everything running inside containers.
+The provided docker containers do not have an MTA in-built. You can either run
+your own MTA inside a container and have them relay emails to the mailman-core
+container or just install an MTA on the host and have them relay emails.
 
-It is recomended to use [Exim4][8] along with this setup. Technically, it
-possible to use any other MTA like postfix, but I haven't yet been able to
-figure out a clean way to communicate with postfix on the host.
-
-Exim should be setup to relay emails from `172.19.199.3` and `172.19.199.2`. The
-mailman specific configuration is provided in the repository at
-`core/assets/exim`. There are three files
+To use [Exim4][8], it should be setup to relay emails from `172.19.199.3` and
+`172.19.199.2`. The mailman specific configuration is provided in the repository
+at `core/assets/exim`. There are three files
 
 - [25_mm_macros](core/assets/exim/25_mm3_macros) to be placed at
   `/etc/exim4/conf.d/main/25_mm3_macros` in a typical debian instal of
@@ -178,6 +166,61 @@ mailman specific configuration is provided in the repository at
 - [55_mm3_transport](core/assets/exim/55_mm3_transport) to be placed at
   `/etc/exim4/conf.d/main/55_mm3_transport` in a typical debian instal of exim4.
 
+
+Also, the default cofiguration inside the mailman-core image has MTA set to
+Exim, but just for the reference, it looks like this:
+```
+# mailman.cfg
+[mta]
+incoming: mailman.mta.exim4.LMTP
+outgoing: mailman.mta.deliver.deliver
+lmtp_host: $MM_HOSTNAME                   # IP Address of mailman-core cotainer.
+lmtp_port: 8024
+smtp_host: $SMTP_HOST                     # IP Address of host where exim is.
+smtp_port: $SMTP_PORT                     # Port on which exim is listening.
+configuration: python:mailman.config.exim4
+```
+
+
+To use [Postfix][12], you can it should be setup to relay emails from
+`172.19.199.2` and `172.19.199.3`. The mailman specific configuration is
+mentioned below which you should add to you `main.cf` configuration file,
+which is typically at `/etc/postfix/main.cf` on debian based operating
+systems:
+
+```
+# master.cf
+
+# Support the default VERP delimiter.
+recipient_delimiter = +
+unknown_local_recipient_reject_code = 550
+owner_request_special = no
+
+transport_maps =
+    regexp:/opt/mailman/core/var/data/postfix_lmtp
+local_recipient_maps =
+    regexp:/opt/mailman/core/var/data/postfix_lmtp
+relay_domains =
+    regexp:/opt/mailman/core/var/data/postfix_domains
+```
+
+To configure Mailman to use Postfix, add the following to `mailman-extra.cfg` at
+`/opt/mailman/core/mailman-extra.cfg`.
+
+```
+# mailman-extra.cfg
+
+[mta]
+incoming: mailman.mta.postfix.LMTP
+outgoing: mailman.mta.deliver.deliver
+lmtp_host: 172.19.199.2                   # IP Address of mailman-core container
+lmtp_port: 8024
+smtp_host: 172.19.199.1                   # IP Address of host where postfix is.
+smtp_port: 25
+configuration: /etc/postfix-mailman.cfg
+```
+
+The configuration file `/etc/postfix-mailman.cfg` is generated automatically.
 
 Setting up your web server
 ==========================
@@ -204,10 +247,8 @@ server {
 
         location / {
                 # First attempt to serve request as file, then
-        proxy_set_header X-Real-IP  $remote_addr;
-        proxy_set_header X-Forwarded-For $remote_addr;
-        proxy_set_header Host $host;
-        proxy_pass http://172.19.199.3:8000;
+                include uwsgi_params;
+                uwsgi_pass 172.19.199.3:8000;
 
         }
 
@@ -266,3 +307,4 @@ more details.
 [9]: https://letsencrypt.org/
 [10]: https://certbot.eff.org/
 [11]: https://mailman.readthedocs.io/en/latest/src/mailman/docs/database.html
+[12]: http://www.postfix.org/

@@ -23,8 +23,10 @@ before_script:
   - docker logs mailman-core
 
 script:
-   - tests/core.sh
+  - sh tests/test.sh
+
+after_success:
+  - sh .travis/deploy_dockerhub.sh
 
 after_script:
    - docker-compose down
-   - sh .travis/deploy_dockerhub.sh
