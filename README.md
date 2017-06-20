@@ -70,6 +70,13 @@ These are the variables that you MUST change before deploying:
 For more details on how to configure this image, please look [Mailman-core's
 Readme](core/README.md)
 
+If you need more advanced configuration, you can have configuration files for
+Mailman Core and Django too. For Core, it needs to exist at
+`/opt/mailman/core/mailman-extra.cfg`, anything in the configuration file will
+override the default ones. For Django, you can add settings to
+`/opt/mailman/web/settings_local.py` where you can override the default
+settings.
+
 Running
 =======
 
@@ -121,7 +128,9 @@ this. However, these are very easy to understand if you know how docker works.
   running. [Uwsgi][7] server is used to run a web server with the configuration
   provided in this repository [here](web/assets/settings.py). You may want to
   change the setting `ALLOWED_HOSTS` in the settings before deploying the
-  application in production.
+  application in production. You can do that by adding a
+  `/opt/mailman/web/settings_local.py` which is imported by the Django when
+  running.
 
 - Spin off a postgresql database container which is used by both mailman-core
   and mailman-web as their primary database.
@@ -138,7 +147,7 @@ this. However, these are very easy to understand if you know how docker works.
 
 - mailman-web mounts `/opt/mailman/web` from the host OS to
   `/opt/mailman-web-data` in the container. It consists of the logs and
-  settings.py file for Django.
+  settings_local.py file for Django.
 
 - database mounts `/opt/mailman/database` at `/var/lib/postgresql/data` so that
   postgresql can persists its data even if the database containers are
