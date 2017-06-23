@@ -32,4 +32,6 @@ EXPOSE 8000
 
 ENTRYPOINT ["/opt/run.sh"]
 
+USER mailman
+
 CMD ["uwsgi", "--ini", "/opt/mailman-web/uwsgi.ini"]
