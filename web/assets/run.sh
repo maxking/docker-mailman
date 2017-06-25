@@ -93,4 +93,4 @@ python manage.py migrate
 # directory for it. Also chown the logs directory to write the files.
 chown -R mailman:mailman /opt/mailman-web-data
 
-exec $@
+gosu mailman $@
