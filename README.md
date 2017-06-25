@@ -15,6 +15,57 @@ run multi-container applications. This repository consists of a
 [`docker-compose.yaml`](docker-compose.yaml) file which is a set of
 configurations that can be used to deploy the [Mailman 3 Suite][4].
 
+Release
+=======
+
+The tags for the images are assumed to be release versions for images. This is
+going to be somewhat common philosophy of distributing Container images where
+the images with same tags are usually updated with the new functionality.
+
+Releases will follow the following rules:
+
+* Images tagged like A.B.C will never change. If you want to pin down versions
+  of Images, use these tags.
+
+* Images tagged with A.B will correspond to the latest A.B.C version
+  released. Releases in A.B series are supposed to be backwards compatible
+  i.e. any existing installation should not break when upgrading between
+  subversions of A.B.C. So, if you want the latest updates and want to
+  frequently update your installation without having to change the version
+  numbers, you can use this.
+
+* Any changes in the Mailman components of the Images will cause a bump in the
+  Minor version i.e. A.(B+1) will have one (and only one) updated Mailman
+  component from A.B. Also, significant change in functionality, that might
+  change how Images work or how people interact with the containers, can also
+  cause a bump in the minor version.
+
+* Major versions will change either when there are backwards imcompatible
+  changes or when the releases reach a certain set milestone.
+
+
+Security
+--------
+
+All the releases are signed and can be verified using [Docker Content
+Trust][14]. To make sure that your docker client actually verifies these
+signatures, you can enable Docker's content trust by setting an environment
+variable `DOCKER_CONTENT_TRUST`. In bash/zsh you can try this:
+
+```bash
+$ export DOCKER_CONTENT_TRUST=1
+```
+
+Or, alternatively, you can do this on a per-command basis without setting the
+environment variable above. For example, when pulling an image:
+
+```bash
+$ docker pull --disable-content-trust=false maxking/mailman-core:release
+```
+
+The above command will fail if the release tag doesn't exist or is not signed.
+
+
 Dependencies
 ============
 - Docker
@@ -317,3 +368,5 @@ more details.
 [10]: https://certbot.eff.org/
 [11]: https://mailman.readthedocs.io/en/latest/src/mailman/docs/database.html
 [12]: http://www.postfix.org/
+[13]: http://semver.org/
+[14]: https://docs.docker.com/engine/security/trust/content_trust/
