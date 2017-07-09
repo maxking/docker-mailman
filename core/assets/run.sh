@@ -114,7 +114,7 @@ if [[ ! -v HYPERKITTY_API_KEY ]]; then
 	exit 1
 fi
 
-if [[ -v HYPERKITTY_URL ]]; then
+if [[ ! -v HYPERKITTY_URL ]]; then
 	echo "HYPERKITTY_URL not set, using the default value of http://mailman-web:8000/hyperkitty"
 	export HYPERKITTY_URL="http://mailman-web:8000/hyperkitty/"
 fi
