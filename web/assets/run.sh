@@ -91,7 +91,6 @@ python manage.py migrate
 
 # Create a mailman user with the specific UID and GID and do not create home
 # directory for it. Also chown the logs directory to write the files.
-chown mailman:mailman /opt/mailman-web-data -R
+chown -R mailman:mailman /opt/mailman-web-data
 
-
-exec $@
+gosu mailman $@
