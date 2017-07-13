@@ -39,4 +39,4 @@ EXPOSE 8000 8080
 STOPSIGNAL SIGINT
 
 ENTRYPOINT ["/opt/run.sh"]
-CMD uwsgi --ini /opt/mailman-web/uwsgi.ini
+CMD ["uwsgi", "--ini", "/opt/mailman-web/uwsgi.ini"]
