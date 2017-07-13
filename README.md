@@ -309,7 +309,7 @@ server {
                 # First attempt to serve request as file, then
                 include uwsgi_params;
                 uwsgi_pass 172.19.199.3:8000;
-
+                uwsgi_read_timeout 300;
         }
 
 }
