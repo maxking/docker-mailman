@@ -80,8 +80,31 @@ have downloaded and installed docker, install docker-compose from [here][6].
 Configuration
 =============
 
-Most of the configuraiton is supposed to be handled through environment
-variables in the `docker-compose.yaml`.
+Most of the common configuraiton is handled through environment variables in the
+`docker-compose.yaml`. However, there is need for some extra configuration that
+interacts directly with the application. There are two configuration files on
+the host that interact directly with Mailman's settings. These files exist on
+the host running the containers and are imported at runtime in the containers.
+
+* `/opt/mailman/core/mailman-extra.cfg` : This is the configuration for Mailman
+  Core and anything that you add here will be added to Core's configuration. You
+  need to restart your mailman-core container for the changes in this file to
+  take effect.
+
+* `/opt/mailman/web/settings_local.py` : This is the Django configuration that
+  is imported by the [existing configuration](web/mailman-web/settings.py)
+  provided by the mailman-web container. To change or override any settings in
+  Django, you need to edit this file.
+
+
+Also, note that if you need any other files to be accesible from the host to
+inside the container, you can place them at certain directories which are
+mounted inside the containers.
+
+
+* `/opt/mailman/core` in host maps to `/opt/mailman/` in mailman-core container.
+* `/opt/mailman/web` in host maps to `/opt/mailman-web-data` in mailman-web
+   container.
 
 ### Mailman-web
 These are the settings that you MUST change before deploying:
@@ -121,12 +144,17 @@ These are the variables that you MUST change before deploying:
 For more details on how to configure this image, please look [Mailman-core's
 Readme](core/README.md)
 
-If you need more advanced configuration, you can have configuration files for
-Mailman Core and Django too. For Core, it needs to exist at
-`/opt/mailman/core/mailman-extra.cfg`, anything in the configuration file will
-override the default ones. For Django, you can add settings to
-`/opt/mailman/web/settings_local.py` where you can override the default
-settings.
+
+While the above configuration will allow you to run the images and possible view
+the Web Frontend, it won't be functional until it is fully configured to to send
+emails.
+
+To configure the mailman-web container to send emails, see these [configuration
+settings][15].
+
+
+To configure the mailman-core container to send emails, see the Setting you MTA
+section below.
 
 Running
 =======
@@ -141,6 +169,17 @@ $ cd docker-mailman
 # Change some configuration variables as mentioned above.
 $ docker-compose up -d
 ```
+
+Note that the web frontend in the mailman-web container is , by default, only
+configured to serve dymanic content. Anything static like stylesheets etc is
+expected to be served directly by the web server. The static content exists at
+`/opt/mailman/web/static` and should be _aliased_ to `/static/` in the web
+server configuration.
+
+See [the nginx configuration][17] as an example.
+
+
+
 
 This command will do several things, most importantly:
 
@@ -285,46 +324,55 @@ The configuration file `/etc/postfix-mailman.cfg` is generated automatically.
 Setting up your web server
 ==========================
 
-Although mailman-web runs uwsgi which can be used a full fledged web server, it
-is recomended to run it behind a webserver like apache or nginx. I have included
-setup instructions for nginx, but it is not difficult to find setup instructios
-for Apache and Django.
+It is advisable to run your Django (interfaced through WSGI server) through an
+_actual_ webserver in production for better performance.
 
-Add the following to your nging's `/etc/nginx/site-available/default`
+If you are using v0.1.0, the uwsgi server is configured to listen to requests at
+`172.19.199.3:8000` using `HTTP` protocol. Make sure that you preseve the `HOST`
+header when you proxy the requests from your Web Server. In Nginx, you can do
+that by adding the following to your configuration:
 
 ```
-server {
-
-        listen 443 ssl default_server;
-        listen [::]:443 ssl default_server;
-
-        server_name MY_SERVER_NAME;
-        location /static/ {
-             alias /opt/mailman/web/static/;
-        }
-        ssl_certificate /etc/letsencrypt/live/MY_DOMAIN_NAME/fullchain.pem;
-        ssl_certificate_key /etc/letsencrypt/live/MY_DOMAIN_NAME/privkey.pem;
+       # Nginx configuration.
 
         location / {
-                # First attempt to serve request as file, then
-                include uwsgi_params;
-                uwsgi_pass 172.19.199.3:8000;
-                uwsgi_read_timeout 300;
-        }
+		 # First attempt to serve request as file, then
 
-}
+		  proxy_pass http://172.19.199.3:8000;
+		  include uwsgi_params;
+		  uwsgi_read_timeout 300;
+		  proxy_set_header Host $host;
+		  proxy_set_header X-Forwarded-For $remote_addr;
+        }
 
 ```
 
-Please change MY_SERVER_NAME above to the domain name you will be serving the
-Web UI from. It doesn't have to be same as the one used for Exim(or any MTA).
+Make sure you are using `proxy_pass` for `HTTP` protocol.
 
-Also, change `ssl_certificate` and `ssl_certificate_key` options to point at
-your SSL certificate and ceritfiicate keys. If you don't happen to have one, you
-can get one for free from [Lets Encrypt][9]. They have a very nifty tool called
-[certbot][10] that can be used to obtain the SSL certificates (typically stored
-in the location mentioned above in the configuraiton if you replace
-MY_DOMAIN_NAME with your domain name).
+Starting from v0.1.1, the uwsgi server is configured to listen to requests at
+`172.19.199.3:8000` with the http protocol and `172.19.199.3:8080` for the uwsgi
+protocol.
+
+It is advised to use the uwsgi protocol as it has better performance. Both
+Apache and Nginx have native support for uwsgi protocol through plugins which
+are generally included in the distro packages.
+
+To move to uwsgi protocol in the above nginx configuration use this
+
+```
+       # Nginx configuration.
+
+        location / {
+		 # First attempt to serve request as file, then
+
+		  uwsgi_pass 172.19.199.3:8080;
+		  include uwsgi_params;
+		  uwsgi_read_timeout 300;
+        }
+```
+
+Please make sure that you are using v0.1.1 if you use this configuration.
+
 
 SSL Certificates from Lets Encrypt need to be renewed every 90 days. You can
 setup a cron job to do the job. I have this small shell script(certbot-renew.sh)
@@ -370,3 +418,6 @@ more details.
 [12]: http://www.postfix.org/
 [13]: http://semver.org/
 [14]: https://docs.docker.com/engine/security/trust/content_trust/
+[15]: http://docs.mailman3.org/en/latest/config-web.html#setting-up-email
+[16]:
+[17]: http://docs.mailman3.org/en/latest/prodsetup.html#nginx-configuration
