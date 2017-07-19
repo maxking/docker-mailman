@@ -419,5 +419,4 @@ more details.
 [13]: http://semver.org/
 [14]: https://docs.docker.com/engine/security/trust/content_trust/
 [15]: http://docs.mailman3.org/en/latest/config-web.html#setting-up-email
-[16]:
 [17]: http://docs.mailman3.org/en/latest/prodsetup.html#nginx-configuration
