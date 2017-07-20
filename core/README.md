@@ -109,10 +109,17 @@ api_key: $HYPERKITTY_API_KEY
 MTA
 ===
 
-[Exim4][2] is the recommended MTA for this image. The [recommended
-configuration][3] to run exim for this image can be found on github repository.
+You can use Postfix or [Exim][2] with this image to send emails. Mailman Core
+can interact with any modern MTA which can deliver emails over LMTP. The
+documentation for Mailman Core has configuration settigs for using them.
 
+Only Exim and Postfix has been tested with these images and are supported as of
+now. There _might_ be some limitations with using other MTAs in a containerized
+environments. Contributions are welcome for anything additional needed to
+support other MTAs.
+
+To setup Exim or Posfix, checkout the [documentation][3].
 
 [1]: https://github.com/maxking/docker-mailman
 [2]: http://www.exim.org
-[3]: https://github.com/maxking/docker-mailman#setting-up-your-mta
+[3]: https://asynchronous.in/docker-mailman#setting-up-your-mta
