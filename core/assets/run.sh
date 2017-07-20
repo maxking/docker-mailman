@@ -129,4 +129,7 @@ EOF
 # Now chown the places where mailman wants to write stuff.
 chown -R mailman /opt/mailman
 
+# Generate the LMTP files for postfix if needed.
+mailman aliases
+
 exec su-exec mailman "$@"
