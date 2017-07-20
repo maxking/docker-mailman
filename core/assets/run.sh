@@ -45,15 +45,17 @@ fi
 
 
 function setup_database () {
-	if [[ ! -v DATABASE_URL ]]; then
-		echo "Environemnt variable DATABASE_URL should be defined."
+	if [[ ! -v DATABASE_URL ]]
+	then
+		echo "Environemnt variable DATABASE_URL should be defined..."
+		exit 1
 	fi
 
 	cat >> /etc/mailman.cfg <<EOF
-	[database]
-	class: $DATABASE_CLASS
-	url: $DATABASE_URL
-	EOF
+[database]
+class: $DATABASE_CLASS
+url: $DATABASE_URL
+EOF
 }
 
 
