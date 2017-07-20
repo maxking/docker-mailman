@@ -126,10 +126,10 @@ base_url: $HYPERKITTY_URL
 api_key: $HYPERKITTY_API_KEY
 EOF
 
-# Now chown the places where mailman wants to write stuff.
-chown -R mailman /opt/mailman
-
 # Generate the LMTP files for postfix if needed.
 mailman aliases
+
+# Now chown the places where mailman wants to write stuff.
+chown -R mailman /opt/mailman
 
 exec su-exec mailman "$@"
