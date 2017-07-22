@@ -40,7 +40,7 @@ Releases will follow the following rules:
   change how Images work or how people interact with the containers, can also
   cause a bump in the minor version.
 
-* Major versions will change either when there are backwards imcompatible
+* Major versions will change either when there are backwards incompatible
   changes or when the releases reach a certain set milestone.
 
 
@@ -80,7 +80,7 @@ have downloaded and installed docker, install docker-compose from [here][6].
 Configuration
 =============
 
-Most of the common configuraiton is handled through environment variables in the
+Most of the common configuration is handled through environment variables in the
 `docker-compose.yaml`. However, there is need for some extra configuration that
 interacts directly with the application. There are two configuration files on
 the host that interact directly with Mailman's settings. These files exist on
@@ -97,7 +97,7 @@ the host running the containers and are imported at runtime in the containers.
   Django, you need to edit this file.
 
 
-Also, note that if you need any other files to be accesible from the host to
+Also, note that if you need any other files to be accessible from the host to
 inside the container, you can place them at certain directories which are
 mounted inside the containers.
 
@@ -115,7 +115,7 @@ These are the settings that you MUST change before deploying:
 - `HYPERKITTY_API_KEY`: Hyperkitty's API Key, should be set to the same value as
   set for the mailman-core.
 
-For more detauls on how to configure this image, please look at [Mailman-web's
+For more details on how to configure this image, please look at [Mailman-web's
 Readme](web/README.md)
 
 ### Mailman-Core
@@ -129,11 +129,11 @@ These are the variables that you MUST change before deploying:
   `driver://user:password@hostname:port/databasename` for the django to use. If
   not set, the default is set to
   `sqlite:///opt/mailman-web-data/mailmanweb.db`. The standard
-  docker-compose.yaml comes with it set to a postgres database. It is not must
-  to change this if you are happy with postgresql.
+  docker-compose.yaml comes with it set to a postgres database. There is no need
+  to change this if you are happy with PostgreSQL.
 
-- `DATABASE_TYPE`: It's value can be one of `sqlite`, `postgres` or `mysql` as
-  these are the only three database types that Mailman 3 supports. It's defualt
+- `DATABASE_TYPE`: Its value can be one of `sqlite`, `postgres` or `mysql` as
+  these are the only three database types that Mailman 3 supports. Its default
   value is set to `sqlite` along with the default database class and default
   database url above.
 
@@ -170,8 +170,8 @@ $ cd docker-mailman
 $ docker-compose up -d
 ```
 
-Note that the web frontend in the mailman-web container is , by default, only
-configured to serve dymanic content. Anything static like stylesheets etc is
+Note that the web frontend in the mailman-web container is, by default, only
+configured to serve dynamic content. Anything static like stylesheets etc is
 expected to be served directly by the web server. The static content exists at
 `/opt/mailman/web/static` and should be _aliased_ to `/static/` in the web
 server configuration.
@@ -189,7 +189,7 @@ This command will do several things, most importantly:
   `ALLOWED_HOSTS` in the settings before deploying the application in
   production.
 
-- Run a postgresql server with a default database, username and password as
+- Run a PostgreSQL server with a default database, username and password as
   mentioned in the `docker-compose.yaml`. You will have to change configuration
   files too if you change any of these.
 
@@ -197,7 +197,7 @@ This command will do several things, most importantly:
   messages from MTA. You will have to configure your MTA to send messages at
   this address.
 
-Some more details about what the above system achives is mentioned below. If you
+Some more details about what the above system achieves is mentioned below. If you
 are only going to deploy a simple configuration, you don't need to read
 this. However, these are very easy to understand if you know how docker works.
 
@@ -213,8 +213,8 @@ this. However, these are very easy to understand if you know how docker works.
   GNU Mailman 3 core running inside it. Mailman core's REST API is available at
   port 8001 and LMTP server listens at port 8024.
 
-- Spin off mailman-web container which has a django application running with
-  both Mailman's web frontend Portorius and Mailman's Web based Archiver
+- Spin off mailman-web container which has a Django application running with
+  both Mailman's web frontend Postorius and Mailman's web-based Archiver
   running. [Uwsgi][7] server is used to run a web server with the configuration
   provided in this repository [here](web/assets/settings.py). You may want to
   change the setting `ALLOWED_HOSTS` in the settings before deploying the
@@ -222,13 +222,13 @@ this. However, these are very easy to understand if you know how docker works.
   `/opt/mailman/web/settings_local.py` which is imported by the Django when
   running.
 
-- Spin off a postgresql database container which is used by both mailman-core
+- Spin off a PostgreSQL database container which is used by both mailman-core
   and mailman-web as their primary database.
 
 - mailman-core mounts `/opt/mailman/core` from host OS at `/opt/mailman` in the
-  container. Mailman's var directory is stored there so that it is accesible
+  container. Mailman's var directory is stored there so that it is accessible
   from the host operating system. Configuration for Mailman core is generated on
-  every run from the environement variables provided. Extra configuration can
+  every run from the environment variables provided. Extra configuration can
   also be provided at `/opt/mailman/core/mailman-extra.cfg` (on host), and will
   be added to generated configuration file. Mailman also needs another
   configuration file called
@@ -240,7 +240,7 @@ this. However, these are very easy to understand if you know how docker works.
   settings_local.py file for Django.
 
 - database mounts `/opt/mailman/database` at `/var/lib/postgresql/data` so that
-  postgresql can persists its data even if the database containers are
+  PostgreSQL can persist its data even if the database containers are
   updated/changed/removed.
 
 Setting up your MTA
@@ -255,19 +255,19 @@ To use [Exim4][8], it should be setup to relay emails from `172.19.199.3` and
 at `core/assets/exim`. There are three files
 
 - [25_mm_macros](core/assets/exim/25_mm3_macros) to be placed at
-  `/etc/exim4/conf.d/main/25_mm3_macros` in a typical debian instal of
+  `/etc/exim4/conf.d/main/25_mm3_macros` in a typical Debian install of
   exim4. Please change MY_DOMAIN_NAME to the domain name that will be used to
-  serve mailman. Multi-domains setups will be added later.
+  serve mailman. Multi-domain setups will be added later.
 
 - [455_mm3_router](core/assets/exim/455_mm3_router) to be placed at
-  `/etc/exim4/conf.d/main/455_mm3_router` in a typical debian instal of exim4.
+  `/etc/exim4/conf.d/main/455_mm3_router` in a typical Debian install of exim4.
 
 - [55_mm3_transport](core/assets/exim/55_mm3_transport) to be placed at
-  `/etc/exim4/conf.d/main/55_mm3_transport` in a typical debian instal of exim4.
+  `/etc/exim4/conf.d/main/55_mm3_transport` in a typical Debian install of exim4.
 
 
-Also, the default cofiguration inside the mailman-core image has MTA set to
-Exim, but just for the reference, it looks like this:
+Also, the default configuration inside the mailman-core image has the MTA set to
+Exim, but just for reference, it looks like this:
 ```
 # mailman.cfg
 [mta]
@@ -281,10 +281,10 @@ configuration: python:mailman.config.exim4
 ```
 
 
-To use [Postfix][12], you can it should be setup to relay emails from
+To use [Postfix][12], it should be set up to relay emails from
 `172.19.199.2` and `172.19.199.3`. The mailman specific configuration is
 mentioned below which you should add to you `main.cf` configuration file,
-which is typically at `/etc/postfix/main.cf` on debian based operating
+which is typically at `/etc/postfix/main.cf` on Debian based operating
 systems:
 
 ```
@@ -328,7 +328,7 @@ It is advisable to run your Django (interfaced through WSGI server) through an
 _actual_ webserver in production for better performance.
 
 If you are using v0.1.0, the uwsgi server is configured to listen to requests at
-`172.19.199.3:8000` using `HTTP` protocol. Make sure that you preseve the `HOST`
+`172.19.199.3:8000` using `HTTP` protocol. Make sure that you preserve the `HOST`
 header when you proxy the requests from your Web Server. In Nginx, you can do
 that by adding the following to your configuration:
 
