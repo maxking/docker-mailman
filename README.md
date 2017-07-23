@@ -273,10 +273,10 @@ Exim, but just for reference, it looks like this:
 [mta]
 incoming: mailman.mta.exim4.LMTP
 outgoing: mailman.mta.deliver.deliver
-lmtp_host: $MM_HOSTNAME                   # IP Address of mailman-core cotainer.
+lmtp_host: $MM_HOSTNAME
 lmtp_port: 8024
-smtp_host: $SMTP_HOST                     # IP Address of host where exim is.
-smtp_port: $SMTP_PORT                     # Port on which exim is listening.
+smtp_host: $SMTP_HOST
+smtp_port: $SMTP_PORT
 configuration: python:mailman.config.exim4
 ```
 
@@ -312,9 +312,9 @@ To configure Mailman to use Postfix, add the following to `mailman-extra.cfg` at
 [mta]
 incoming: mailman.mta.postfix.LMTP
 outgoing: mailman.mta.deliver.deliver
-lmtp_host: 172.19.199.2                   # IP Address of mailman-core container
+lmtp_host: 172.19.199.2
 lmtp_port: 8024
-smtp_host: 172.19.199.1                   # IP Address of host where postfix is.
+smtp_host: 172.19.199.1
 smtp_port: 25
 configuration: /etc/postfix-mailman.cfg
 ```
