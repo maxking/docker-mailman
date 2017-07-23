@@ -40,7 +40,8 @@ These are the variables that you MUST change before deploying:
 These are the variables that you don't need to change if you are using a
 standard version of docker-compose.yaml from this repository.
 
-- `MM_HOSTNAME`: Default value is `mailman-core`
+- `MM_HOSTNAME`: Which IP should Core bind to for REST API and LMTP. If not
+  defined output for `hostname -i` command is used.
 
 - `SMTP_HOST`: IP Address/hostname from which you will be sending
   emails. Default value is `172.19.199.1`, which is the address of the Host OS.
