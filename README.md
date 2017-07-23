@@ -288,7 +288,7 @@ which is typically at `/etc/postfix/main.cf` on Debian based operating
 systems:
 
 ```
-# master.cf
+# main.cf
 
 # Support the default VERP delimiter.
 recipient_delimiter = +
