@@ -89,20 +89,28 @@ python manage.py collectstatic --noinput
 # this command will upgrade the database.
 python manage.py migrate
 
-
-
 # If MAILMAN_ADMIN_USER and MAILMAN_ADMIN_EMAIL is defined create a new
 # superuser for Django. There is no password setup so it can't login yet unless
 # the password is reset.
 if [[ -v MAILMAN_ADMIN_USER ]] && [[ -v MAILMAN_ADMIN_EMAIL ]];
 then
-	echo "Creating admin user..."
-	python manage.py createsuperuser --noinput --username "$MAILMAN_ADMIN_USER" --email "$MAILMAN_ADMIN_EMAIL"
+	echo "Creating admin user $MAILMAN_ADMIN_USER ..."
+	python manage.py createsuperuser --noinput --username "$MAILMAN_ADMIN_USER"\
+		   --email "$MAILMAN_ADMIN_EMAIL" 2> /dev/null || \
+		echo "Superuser $MAILMAN_ADMIN_USER already exists"
+fi
+
+# If SERVE_FROM_DOMAIN is defined then rename the default `example.com`
+# domain to the defined domain.
+if [[ -v SERVE_FROM_DOMAIN ]];
+then
+	echo "Setting $MAILMAN_DEFAULT_DOMAIN as the default domain ..."
+	python manage.py shell -c \
+	"from django.contrib.sites.models import Site; Site.objects.filter(domain='example.com').update(domain='$SERVE_FROM_DOMAIN')"
 fi
 
 # Create a mailman user with the specific UID and GID and do not create home
 # directory for it. Also chown the logs directory to write the files.
 chown mailman:mailman /opt/mailman-web-data -R
-
 
 exec $@
