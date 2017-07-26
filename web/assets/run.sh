@@ -94,7 +94,7 @@ python manage.py migrate
 # If MAILMAN_ADMIN_USER and MAILMAN_ADMIN_EMAIL is defined create a new
 # superuser for Django. There is no password setup so it can't login yet unless
 # the password is reset.
-if [[ -v MAILMAN_ADMIN_USER -a -v MAILMAN_ADMIN_EMAIL ]];
+if [[ -v MAILMAN_ADMIN_USER ]] && [[ -v MAILMAN_ADMIN_EMAIL ]];
 then
 	echo "Creating admin user..."
 	python manage.py createsuperuser --noinput --username "$MAILMAN_ADMIN_USER" --email "$MAILMAN_ADMIN_EMAIL"
