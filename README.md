@@ -115,6 +115,10 @@ These are the settings that you MUST change before deploying:
 - `HYPERKITTY_API_KEY`: Hyperkitty's API Key, should be set to the same value as
   set for the mailman-core.
 
+- `MAILMAN_ADMIN_USER`: The username for the admin user to be created by default.
+
+- `MAILMAN_ADMIN_EMAIL`: The email for the admin user to be created by default.
+
 For more details on how to configure this image, please look at [Mailman-web's
 Readme](web/README.md)
 
