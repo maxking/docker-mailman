@@ -100,18 +100,17 @@ then
 		echo "Superuser $MAILMAN_ADMIN_USER already exists"
 fi
 
-# If MAILMAN_DEFAULT_DOMAIN is defined then rename the default `example.com`
+# If SERVE_FROM_DOMAIN is defined then rename the default `example.com`
 # domain to the defined domain.
-if [[ -v MAILMAN_DEFAULT_DOMAIN ]];
+if [[ -v SERVE_FROM_DOMAIN ]];
 then
 	echo "Setting $MAILMAN_DEFAULT_DOMAIN as the default domain ..."
 	python manage.py shell -c \
-	"from django.contrib.sites.models import Site; Site.objects.filter(domain='example.com').update(domain='$MAILMAN_DEFAULT_DOMAIN')"
+	"from django.contrib.sites.models import Site; Site.objects.filter(domain='example.com').update(domain='$SERVE_FROM_DOMAIN')"
 fi
 
 # Create a mailman user with the specific UID and GID and do not create home
 # directory for it. Also chown the logs directory to write the files.
 chown mailman:mailman /opt/mailman-web-data -R
-
 
 exec $@
