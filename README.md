@@ -121,6 +121,8 @@ These are the settings that you MUST change before deploying:
 
 - `MAILMAN_ADMIN_EMAIL`: The email for the admin user to be created by default.
 
+- `SECRET_KEY`: Django's secret key, mainly used for signing cookies and others.
+
 For more details on how to configure this image, please look at [Mailman-web's
 Readme](web/README.md)
 
