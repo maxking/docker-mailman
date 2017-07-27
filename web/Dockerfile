@@ -3,9 +3,9 @@ FROM python:2.7-alpine3.6
 MAINTAINER Abhilash Raj
 
 # Add needed files for uwsgi server + settings for django
-ADD mailman-web /opt/mailman-web
+COPY mailman-web /opt/mailman-web
 # Add startup script to container
-ADD assets/run.sh /opt/run.sh
+COPY docker-entrypoint.sh /usr/local/bin/
 
 # Install packages and dependencies for postorius and hyperkitty
 # Add user for executing apps, change ownership for uwsgi+django files and set execution rights for management script
@@ -25,7 +25,6 @@ RUN set -ex \
 	&& apk del --no-cache .build-deps \
 	&& addgroup -S mailman \
 	&& adduser -S -G mailman mailman \
-	&& chmod u+x /opt/run.sh \
 	&& chown -R mailman /opt/mailman-web/ \
 	&& chmod u+x /opt/mailman-web/manage.py
 
@@ -37,5 +36,5 @@ EXPOSE 8000 8080
 # Use stop signal for uwsgi server
 STOPSIGNAL SIGINT
 
-ENTRYPOINT ["/opt/run.sh"]
+ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["uwsgi", "--ini", "/opt/mailman-web/uwsgi.ini"]
