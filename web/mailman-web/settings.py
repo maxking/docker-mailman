@@ -281,8 +281,8 @@ SOCIALACCOUNT_PROVIDERS = {
 #
 COMPRESS_PRECOMPILERS = (
    ('text/less', 'lessc {infile} {outfile}'),
-   ('text/x-scss', 'sass -t compressed {infile} {outfile}'),
-   ('text/x-sass', 'sass -t compressed {infile} {outfile}'),
+   ('text/x-scss', 'sassc -t compressed {infile} {outfile}'),
+   ('text/x-sass', 'sassc -t compressed {infile} {outfile}'),
 )
 
 # On a production setup, setting COMPRESS_OFFLINE to True will bring a
