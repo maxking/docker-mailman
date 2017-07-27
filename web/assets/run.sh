@@ -34,6 +34,12 @@ function check_or_create () {
 # END
 # }
 
+# Check if $SECRET_KEY is defined, if not, bail out.
+if [[ ! -v SECRET_KEY ]]; then
+	echo "SECRET_KEY is not defined. Aborting."
+	exit 1
+fi
+
 # Check if $DATABASE_URL is defined, if not, use a standard sqlite database.
 #
 # If the $DATABASE_URL is defined and is postgres, check if it is available
