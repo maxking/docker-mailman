@@ -16,4 +16,6 @@ services:
 
   mailman-web:
     image: maxking/mailman-web:$TAG
+    environment:
+    - SECRET_KEY=abcdefghijklmnopqrstuv
 EOF
