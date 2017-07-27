@@ -1,34 +1,33 @@
-FROM python:2.7
+FROM python:2.7-alpine3.6
 
 MAINTAINER Abhilash Raj
 
-ENV DEBIAN_FRONTEND=noninteractive
-# Add needed files for uwsgi server + settings for django 
+# Add needed files for uwsgi server + settings for django
 ADD mailman-web /opt/mailman-web
 # Add startup script to container
 ADD assets/run.sh /opt/run.sh
 
 # Install packages and dependencies for postorius and hyperkitty
 # Add user for executing apps, change ownership for uwsgi+django files and set execution rights for management script
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends ruby-sass \
-                       wget \
-                       postgresql-client \
-    && rm -rf /var/lib/apt/lists/* \
-    && python -m pip install -U mailmanclient==3.1.0 \
-                             postorius==1.1.0 \
-                             hyperkitty==1.1.0 \
-                             django-mailman3==1.1.0 \
-                             whoosh \
-                             uwsgi \
-                             psycopg2 \
-                             dj-database-url \
-                             pymysql \
-	&& python -m pip install -U django==1.10 \
-    && useradd -M -U -u 1000 mailman \
-    && chmod u+x /opt/run.sh \
-    && chown mailman /opt/mailman-web/* \
-    && chmod u+x /opt/mailman-web/manage.py
+RUN set -ex \
+	&& apk add --no-cache --virtual .build-deps gcc libc-dev linux-headers postgresql-dev \
+	&& apk add --no-cache --virtual .mailman-rundeps bash sassc postgresql-client \
+	&& pip install -U mailmanclient==3.1.0 \
+		postorius==1.1.0 \
+		hyperkitty==1.1.0 \
+		django-mailman3==1.1.0 \
+		whoosh \
+		uwsgi \
+		psycopg2 \
+		dj-database-url \
+		pymysql \
+	&& pip install -U django==1.10 \
+	&& apk del --no-cache .build-deps \
+	&& addgroup -S mailman \
+	&& adduser -S -G mailman mailman \
+	&& chmod u+x /opt/run.sh \
+	&& chown -R mailman /opt/mailman-web/ \
+	&& chmod u+x /opt/mailman-web/manage.py
 
 WORKDIR /opt/mailman-web
 
