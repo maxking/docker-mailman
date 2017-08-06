@@ -14,7 +14,7 @@ RUN set -ex \
 	&& apk add --no-cache --virtual .mailman-rundeps bash sassc postgresql-client \
 	&& pip install -U mailmanclient==3.1.0 \
 		postorius==1.1.0 \
-		hyperkitty==1.1.0 \
+		hyperkitty==1.1.1 \
 		django-mailman3==1.1.0 \
 		whoosh \
 		uwsgi \
