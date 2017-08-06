@@ -33,3 +33,4 @@
 - Removed facebook as default social auth provider in the settings.py
 - Uwsgi now listens on port 8080 for uwsgi protocol and 8000 for http protocol.
 - Threads are enabled by default in the uwsgi configuration now.
+- Hyperkitty updated to v1.1.1
