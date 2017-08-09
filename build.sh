@@ -4,9 +4,15 @@ set -e
 
 # Use this script to build docker images.
 
-if [ "$TRAVIS_BRANCH" = "master" ]; then
-    CORE_TAG="latest"
-    WEB_TAG="latest"
+if [[ "$TRAVIS" ]]
+then
+	if [ "$TRAVIS_BRANCH" = "master" ]; then
+		CORE_TAG="latest"
+		WEB_TAG="latest"
+	else
+		CORE_TAG="$TRAVIS_BRANCH"
+		WEB_TAG="$TRAVIS_BRANCH"
+	fi
 else
     CORE_TAG=`cat core/VERSION`
     WEB_TAG=`cat web/VERSION`
