@@ -36,14 +36,15 @@ Releases will follow the following rules:
   frequently update your installation without having to change the version
   numbers, you can use this.
 
-* Any changes in the Mailman components of the Images will cause a bump in the
-  Minor version i.e. A.(B+1) will have one (and only one) updated Mailman
-  component from A.B. Also, significant change in functionality, that might
-  change how Images work or how people interact with the containers, can also
-  cause a bump in the minor version.
+* Any changes in the minor version of Mailman components of the images will
+  cause a bump in the minor version i.e. A.(B+1) will have one (and only one)
+  updated Mailman component from A.B. Also, significant change in functionality,
+  that might change how Images work or how people interact with the containers,
+  can also cause a bump in the minor version.
 
 * Major versions will change either when there are backwards incompatible
-  changes or when the releases reach a certain set milestone.
+  changes or when the releases reach a certain set milestone or when there are
+  bugfix releases for the internal components or both.
 
 
 Security
