@@ -2,7 +2,7 @@
 
 ## Mailman Core
 
-### v1.1.1
+### v1.1.1 (released Aug 9 2017)
 
 - The MM_HOSTNAME now defaults to `hostname -i` instead of `mailman-core`. This
   is the hostname Core binds to for Webservice.
@@ -14,7 +14,7 @@
 
 ## Mailman Web
 
-### v1.1.1
+### v1.1.1 (released Aug 9 2017)
 
 - The default search_index for whoosh now exists on persistent storage at
   `/opt/mailman-web-data`
