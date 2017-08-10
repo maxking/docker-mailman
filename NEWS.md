@@ -4,7 +4,7 @@
 
 ### v1.1.1 (released Aug 9 2017)
 
-- The MM_HOSTNAME now defaults to `hostname -i` instead of `mailman-core`. This
+- The MM_HOSTNAME now defaults to output of `hostname -i` instead of `mailman-core`. This
   is the hostname Core binds to for Webservice.
 - Added pymysql to the image to use MySQL as database.
 - The default settings for using SQLITE are now more sane.
