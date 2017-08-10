@@ -385,6 +385,19 @@ To move to uwsgi protocol in the above nginx configuration use this
 Please make sure that you are using v0.1.1 if you use this configuration.
 
 
+### Serving static files
+
+UWSGI by default doesn't serve static files by default, so when running
+`mailman-web` using the provided `docker-compose.yaml` file you won't see any
+CSS or JS files being served.
+
+You will have to add an alias rule in your web server to serve the static
+files. See [here][18] for instructions on how to configure you web server. The
+STATIC_ROOT for you would be `/opt/mailman/web/static`. This method is
+**highly** recommended for better performance reasons.
+
+### SSL certificates
+
 SSL Certificates from Lets Encrypt need to be renewed every 90 days. You can
 setup a cron job to do the job. I have this small shell script(certbot-renew.sh)
 that you can put up in `/etc/cron.monthly` to get the job done.
@@ -431,3 +444,4 @@ more details.
 [14]: https://docs.docker.com/engine/security/trust/content_trust/
 [15]: http://docs.mailman3.org/en/latest/config-web.html#setting-up-email
 [17]: http://docs.mailman3.org/en/latest/prodsetup.html#nginx-configuration
+[18]: http://docs.list.org/en/latest/pre-installation-guide.html#django-static-files
