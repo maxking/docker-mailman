@@ -6,7 +6,7 @@ services:
     container_name: mailman-core
     hostname: mailman-core
     volumes:
-      - /opt/mailman/core:/opt/mailman/
+      - $MAILMAN_CORE_DIR:/opt/mailman/
     links:
       - database:database
     depends_on:
@@ -31,7 +31,7 @@ services:
       - mailman-core:mailman-core
       - database:database
     volumes:
-      - /opt/mailman/web:/opt/mailman-web-data
+      - $MAILMAN_WEB_DIR:/opt/mailman-web-data
     env_file: .env
     environment:
       - DATABASE_TYPE=$DATABASE_TYPE
@@ -50,7 +50,7 @@ services:
     restart: always
     image: postgres:9.6-alpine
     volumes:
-      - /opt/mailman/database:/var/lib/postgresql/data
+      - $MAILMAN_DB_DIR:/var/lib/postgresql/data
     networks:
       mailman:
         ipv4_address: $MAILMAN_DB_IP
