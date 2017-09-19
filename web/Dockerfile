@@ -10,7 +10,7 @@ COPY docker-entrypoint.sh /usr/local/bin/
 # Install packages and dependencies for postorius and hyperkitty
 # Add user for executing apps, change ownership for uwsgi+django files and set execution rights for management script
 RUN set -ex \
-	&& apk add --no-cache --virtual .build-deps gcc libc-dev linux-headers postgresql-dev \
+	&& apk add --no-cache --virtual .build-deps gcc libc-dev linux-headers postgresql-dev mariadb-dev \
 	&& apk add --no-cache --virtual .mailman-rundeps bash sassc postgresql-client \
 	&& apk add --no-cache  py-mysqldb \
 	&& pip install -U mailmanclient==3.1.0 \
@@ -21,8 +21,8 @@ RUN set -ex \
 		uwsgi \
 		psycopg2 \
 		dj-database-url \
-		pymysql \
-	&& pip install -U django==1.10 \
+		mysqlclient \
+		django==1.10 \
 	&& apk del --no-cache .build-deps \
 	&& addgroup -S mailman \
 	&& adduser -S -G mailman mailman \
