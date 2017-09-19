@@ -6,57 +6,56 @@ services:
     container_name: mailman-core
     hostname: mailman-core
     volumes:
-    - /opt/mailman/core:/opt/mailman/
+      - /opt/mailman/core:/opt/mailman/
     links:
-    - database:database
+      - database:database
     depends_on:
-    - database
+      - database
     environment:
-    - DATABASE_URL=postgres://mailman:mailmanpass@database/mailmandb
-    - DATABASE_TYPE=postgres
-    - DATABASE_CLASS=mailman.database.postgresql.PostgreSQLDatabase
-    - HYPERKITTY_API_KEY=someapikey
+      - DATABASE_URL=$DATABASE_URL
+      - DATABASE_TYPE=$DATABASE_TYPE
+      - DATABASE_CLASS=$DATABASE_CLASS
+      - HYPERKITTY_API_KEY=$HYPERKITTY_API_KEY
     networks:
       mailman:
-        ipv4_address: 172.19.199.2
+        ipv4_address: $MAILMAN_IP
 
   mailman-web:
     image: maxking/mailman-web:0.1
     container_name: mailman-web
     hostname: mailman-web
     depends_on:
-    - database
+      - database
     links:
-    - mailman-core:mailman-core
-    - database:database
+      - mailman-core:mailman-core
+      - database:database
     volumes:
-    - /opt/mailman/web:/opt/mailman-web-data
+      - /opt/mailman/web:/opt/mailman-web-data
     environment:
-    - DATABASE_TYPE=postgres
-    - DATABASE_URL=postgres://mailman:mailmanpass@database/mailmandb
-    - HYPERKITTY_API_KEY=someapikey
+      - DATABASE_TYPE=$DATABASE_TYPE
+      - DATABASE_URL=$DATABASE_URL
+      - HYPERKITTY_API_KEY=$HYPERKITTY_API_KEY
     networks:
       mailman:
-        ipv4_address: 172.19.199.3
+        ipv4_address: $MAILMAN_WEB_IP
 
   database:
     environment:
-      POSTGRES_DB: mailmandb
-      POSTGRES_USER: mailman
-      POSTGRES_PASSWORD: mailmanpass
+      POSTGRES_DB: $DB_NAME
+      POSTGRES_USER: $DB_USER
+      POSTGRES_PASSWORD: $DB_PASSWORD
     restart: always
     image: postgres:9.6-alpine
     volumes:
-    - /opt/mailman/database:/var/lib/postgresql/data
+      - /opt/mailman/database:/var/lib/postgresql/data
     networks:
       mailman:
-        ipv4_address: 172.19.199.4
+        ipv4_address: $MAILMAN_DB_IP
 
 networks:
-   mailman:
-     driver: bridge
-     ipam:
-       driver: default
-       config:
-       -
-         subnet: 172.19.199.0/24
+  mailman:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        subnet: $MAILMAN_SUBNET
