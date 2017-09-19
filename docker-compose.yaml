@@ -19,7 +19,7 @@ services:
       - HYPERKITTY_API_KEY=$HYPERKITTY_API_KEY
     networks:
       mailman:
-        ipv4_address: $MAILMAN_IP
+        ipv4_address: $MAILMAN_CORE_IP
 
   mailman-web:
     image: maxking/mailman-web:0.1
