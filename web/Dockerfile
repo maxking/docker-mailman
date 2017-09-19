@@ -12,6 +12,7 @@ COPY docker-entrypoint.sh /usr/local/bin/
 RUN set -ex \
 	&& apk add --no-cache --virtual .build-deps gcc libc-dev linux-headers postgresql-dev \
 	&& apk add --no-cache --virtual .mailman-rundeps bash sassc postgresql-client \
+	&& apk add --no-cache  py-mysqldb \
 	&& pip install -U mailmanclient==3.1.0 \
 		postorius==1.1.0 \
 		hyperkitty==1.1.1 \
@@ -30,7 +31,7 @@ RUN set -ex \
 
 WORKDIR /opt/mailman-web
 
-# Expose port 8000 for uwsgi and port 8080 for http
+# Expose port 8080 for uwsgi and port 8000 for http
 EXPOSE 8000 8080
 
 # Use stop signal for uwsgi server
