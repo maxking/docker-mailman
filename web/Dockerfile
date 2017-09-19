@@ -11,8 +11,7 @@ COPY docker-entrypoint.sh /usr/local/bin/
 # Add user for executing apps, change ownership for uwsgi+django files and set execution rights for management script
 RUN set -ex \
 	&& apk add --no-cache --virtual .build-deps gcc libc-dev linux-headers postgresql-dev mariadb-dev \
-	&& apk add --no-cache --virtual .mailman-rundeps bash sassc postgresql-client \
-	&& apk add --no-cache  py-mysqldb \
+	&& apk add --no-cache --virtual .mailman-rundeps bash sassc postgresql-client mysql-client \
 	&& pip install -U mailmanclient==3.1.0 \
 		postorius==1.1.0 \
 		hyperkitty==1.1.1 \
