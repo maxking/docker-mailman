@@ -11,8 +11,9 @@ services:
       - database:database
     depends_on:
       - database
+    env_file: .env
     environment:
-      - DATABASE_URL=$DATABASE_URL
+      - DATABASE_URL=$DATABASE_TYPE://$DB_USER:$DB_PASSWORD@database/$DB_NAME
       - DATABASE_TYPE=$DATABASE_TYPE
       - DATABASE_CLASS=$DATABASE_CLASS
       - HYPERKITTY_API_KEY=$HYPERKITTY_API_KEY
@@ -31,15 +32,17 @@ services:
       - database:database
     volumes:
       - /opt/mailman/web:/opt/mailman-web-data
+    env_file: .env
     environment:
       - DATABASE_TYPE=$DATABASE_TYPE
-      - DATABASE_URL=$DATABASE_URL
+      - DATABASE_URL=$DATABASE_TYPE://$DB_USER:$DB_PASSWORD@database/$DB_NAME
       - HYPERKITTY_API_KEY=$HYPERKITTY_API_KEY
     networks:
       mailman:
         ipv4_address: $MAILMAN_WEB_IP
 
   database:
+    env_file: .env
     environment:
       POSTGRES_DB: $DB_NAME
       POSTGRES_USER: $DB_USER
@@ -58,4 +61,4 @@ networks:
     ipam:
       driver: default
       config:
-        subnet: $MAILMAN_SUBNET
+        - subnet: $MAILMAN_SUBNET
