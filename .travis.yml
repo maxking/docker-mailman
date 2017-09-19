@@ -13,6 +13,7 @@ install:
 
 before_script:
   - sh tests/generate_tests.sh
+  - cp .env.dist .env
   - docker-compose -f docker-compose.yaml -f docker-test.yaml up -d
   - docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' mailman-core
   - docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' mailman-web
@@ -29,4 +30,4 @@ after_success:
   - sh .travis/deploy_dockerhub.sh
 
 after_script:
-   - docker-compose down
+  - docker-compose down
