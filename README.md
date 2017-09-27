@@ -126,6 +126,11 @@ These are the settings that you MUST change before deploying:
 
 - `SECRET_KEY`: Django's secret key, mainly used for signing cookies and others.
 
+Please note here that if you choose to create the admin user using the environment
+variables mentioned above (`MAILMAN_ADMIN_USER` & `MAILMAN_ADMIN_EMAIL`), no password
+is set for your admin account. To set a password, plese follow the "Forgot Password"
+link on the "Sign In" page.
+
 For more details on how to configure this image, please look at [Mailman-web's
 Readme](web/README.md)
 
