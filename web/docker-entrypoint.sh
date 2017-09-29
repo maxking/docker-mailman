@@ -1,27 +1,6 @@
 #! /bin/bash
 set -e
 
-
-function wait_for_postgres () {
-	# Check if the postgres database is up and accepting connections before
-	# moving forward.
-	# TODO: Use python's psycopg2 module to do this in python instead of
-	# installing postgres-client in the image.
-	until psql $DATABASE_URL -c '\l'; do
-		>&2 echo "Postgres is unavailable - sleeping"
-		sleep 1
-	done
-	>&2 echo "Postgres is up - continuing"
-}
-
-function check_or_create () {
-	# Check if the path exists, if not, create the directory.
-	if [[ ! -e dir ]]; then
-		echo "$1 does not exist, creating ..."
-		mkdir "$1"
-	fi
-}
-
 # function postgres_ready(){
 # python << END
 # import sys
@@ -58,7 +37,25 @@ if [[ ! -v DATABASE_URL ]]; then
 fi
 
 if [[ "$DATABASE_TYPE" = 'postgres' ]]; then
-	wait_for_postgres
+	# Check if the postgres database is up and accepting connections before
+	# moving forward.
+	# TODO: Use python's psycopg2 module to do this in python instead of
+	# installing postgres-client in the image.
+	until psql $DATABASE_URL -c '\l'; do
+		>&2 echo "Postgres is unavailable - sleeping"
+		sleep 2
+	done
+	>&2 echo "Postgres is up - continuing"
+fi
+
+if [[ "$DATABASE_TYPE" = 'mysql' ]]; then
+	# Check if the mysql database is up and accepting connections before
+	# moving forward.
+	while ! mysqladmin ping --host "$DATABASE_HOST" --silent; do
+		>&2 echo "MySQL is unavailable - sleeping"
+		sleep 2
+	done
+	>&2 echo "MySQL is up - continuing"
 fi
 
 # Check if we are in the correct directory before running commands.
