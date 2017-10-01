@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-if [["$DB" = 'postgres' ]]
+if [[ "$DB" = 'postgres' ]]
 then
 	docker-compose -f docker-compose.yaml -f docker-test.yaml up -d
 elif [[ "$DB" = 'mysql' ]]
