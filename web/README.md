@@ -54,6 +54,10 @@ change them unless you know what you want.
 - `DJANGO_LOG_URL`: Path to the django's log file. Defaults to
   `/opt/mailman-web-data/logs/mailmanweb.log`.
 
+- `DJANGO_ALLOWED_HOSTS`: Entry to add to ALLOWED_HOSTS in Django
+  configuration. This is a separate configuration from`SERVE_FROM_DOMAIN` as
+  latter is used for other purposes too.
+
 Running
 =======
 
