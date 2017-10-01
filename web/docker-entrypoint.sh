@@ -125,7 +125,7 @@ fi
 # domain to the defined domain.
 if [[ -v SERVE_FROM_DOMAIN ]];
 then
-	echo "Setting $MAILMAN_DEFAULT_DOMAIN as the default domain ..."
+	echo "Setting $SERVE_FROM_DOMAIN as the default domain ..."
 	python manage.py shell -c \
 	"from django.contrib.sites.models import Site; Site.objects.filter(domain='example.com').update(domain='$SERVE_FROM_DOMAIN')"
 fi
