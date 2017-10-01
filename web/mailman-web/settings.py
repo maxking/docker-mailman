@@ -52,6 +52,7 @@ ALLOWED_HOSTS = [
     "mailman-web",
     "172.19.199.3",
     os.environ.get('SERVE_FROM_DOMAIN'),
+    os.environ.get('DJANGO_ALLOWED_HOSTS'),
 ]
 
 # Mailman API credentials
@@ -212,10 +213,11 @@ LOGIN_URL = 'account_login'
 LOGIN_REDIRECT_URL = 'list_index'
 LOGOUT_URL = 'account_logout'
 
-DEFAULT_FROM_EMAIL = 'postorius@localhost.local'
 
-
-SERVER_EMAIL = 'root@localhost.local'
+# Use SERVE_FROM_DOMAIN as the default domain in the email.
+hostname = os.environ.get('SERVE_FROM_DOMAIN', 'localhost.local')
+DEFAULT_FROM_EMAIL = 'postorius@{}'.format(hostname)
+SERVER_EMAIL = 'root@{}'.format(hostname)
 
 # Change this when you have a real email backend
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -307,6 +309,7 @@ HAYSTACK_CONNECTIONS = {
     },
 }
 
+import sys
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
 # the site admins on every HTTP 500 error when DEBUG=False.
@@ -336,6 +339,8 @@ LOGGING = {
         'console': {
             'class': 'logging.StreamHandler',
             'formatter': 'simple',
+            'level': 'INFO',
+            'stream': sys.stdout,
         },
         # TODO: use an environment variable $DJ_LOG_URL to configure the logging
         # using an environment variable.
@@ -357,8 +362,9 @@ LOGGING = {
             'propagate': True,
         },
         'postorius': {
-            'handlers': ['console', 'file'],
+            'handlers': ['file'],
             'level': 'INFO',
+            'propagate': True
         },
     },
     'formatters': {
@@ -376,6 +382,9 @@ LOGGING = {
 }
 
 
+if os.environ.get('LOG_TO_CONSOLE') == 'yes':
+    LOGGING['loggers']['django']['handlers'].append('console')
+    LOGGING['loggers']['django.request']['handlers'].append('console')
 # HyperKitty-specific
 #
 # Only display mailing-lists from the same virtual host as the webserver
