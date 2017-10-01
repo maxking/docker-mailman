@@ -1,7 +1,31 @@
 #!/bin/bash
 set -e
 
-# Check to see if the core is up.
+if [ "$DB" = "postgres" ]
+then
+	docker-compose -f docker-compose.yaml -f docker-test.yaml up -d
+elif [ "$DB" = "mysql" ]
+then
+	docker-compose -f docker-compose-mysql.yaml -f docker-test.yaml up -d
+fi
+
+# Print the IP Addresses of the Containers.
+docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' mailman-core
+docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' mailman-web
+
+# Make sure all the containers are running.
+docker-compose ps
+
+# Sleep for a while and check again if the containers are up.
+sleep 30
+docker ps
+
+# Check if there is anything interesting in the logs.
+docker logs mailman-web
+docker logs mailman-core
+
+
+# Check to see if the core is working as expected.
 curl -u restadmin:restpass http://172.19.199.2:8001/3.1/system
 
 # Check to see if postorius is working.

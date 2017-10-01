@@ -14,6 +14,17 @@ function wait_for_postgres () {
 	>&2 echo "Postgres is up - continuing"
 }
 
+function wait_for_mysql () {
+	# Check if MySQL is up and accepting connections.
+	HOSTNAME=$(python -c "from urlparse import urlparse; o = urlparse('$DATABASE_URL'); print(o.hostname);")
+	until mysqladmin ping --host "$HOSTNAME" --silent; do
+		>&2 echo "MySQL is unavailable - sleeping"
+		sleep 1
+	done
+	>&2 echo "MySQL is up - continuing"
+}
+
+
 function check_or_create () {
 	# Check if the path exists, if not, create the directory.
 	if [[ ! -e dir ]]; then
@@ -57,8 +68,12 @@ if [[ ! -v DATABASE_URL ]]; then
 	export DATABASE_TYPE='sqlite'
 fi
 
-if [[ "$DATABASE_TYPE" = 'postgres' ]]; then
+if [[ "$DATABASE_TYPE" = 'postgres' ]]
+then
 	wait_for_postgres
+elif [[ "$DATABASE_TYPE" = 'mysql' ]]
+then
+	wait_for_mysql
 fi
 
 # Check if we are in the correct directory before running commands.
