@@ -25,7 +25,7 @@ RUN set -ex \
 		dj-database-url \
 		mysqlclient \
 	&& pip install -U django==1.10 \
-	&& apk del --no-cache .build-deps \
+	&& apk del .build-deps \
 	&& addgroup -S mailman \
 	&& adduser -S -G mailman mailman \
 	&& chown -R mailman /opt/mailman-web/ \
