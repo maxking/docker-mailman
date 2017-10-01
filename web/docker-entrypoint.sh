@@ -127,7 +127,7 @@ if [[ -v SERVE_FROM_DOMAIN ]];
 then
 	echo "Setting $SERVE_FROM_DOMAIN as the default domain ..."
 	python manage.py shell -c \
-	"from django.contrib.sites.models import Site; Site.objects.filter(domain='example.com').update(domain='$SERVE_FROM_DOMAIN')"
+	"from django.contrib.sites.models import Site; Site.objects.filter(domain='example.com').update(domain='$SERVE_FROM_DOMAIN', name='$SERVE_FROM_DOMAIN')"
 fi
 
 # Create a mailman user with the specific UID and GID and do not create home
