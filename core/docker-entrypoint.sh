@@ -58,6 +58,12 @@ function setup_database () {
 		exit 1
 	fi
 
+	# Translate mysql:// urls to mysql+mysql:// backend:
+	if [[ "$DATABASE_URL" == mysql://* ]]; then
+		DATABASE_URL="mysql+pymysql://${DATABASE_URL:8}"
+		echo "Database URL was automatically rewritten to: $DATABASE_URL"
+	fi
+
 	cat >> /etc/mailman.cfg <<EOF
 [database]
 class: $DATABASE_CLASS
