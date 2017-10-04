@@ -212,10 +212,10 @@ LOGIN_URL = 'account_login'
 LOGIN_REDIRECT_URL = 'list_index'
 LOGOUT_URL = 'account_logout'
 
-DEFAULT_FROM_EMAIL = 'postorius@localhost.local'
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'postorious@localhost.local')
 
 
-SERVER_EMAIL = 'root@localhost.local'
+SERVER_EMAIL = os.environ.get('SERVER_EMAIL','root@localhost.local')
 
 # Change this when you have a real email backend
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
