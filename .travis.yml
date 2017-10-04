@@ -18,6 +18,7 @@ install:
 before_script:
   - sh tests/generate_tests.sh
 
+
 script:
   - sh tests/test.sh
 
