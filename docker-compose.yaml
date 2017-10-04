@@ -6,59 +6,57 @@ services:
     container_name: mailman-core
     hostname: mailman-core
     volumes:
-      - $MAILMAN_CORE_DIR:/opt/mailman/
+    - /opt/mailman/core:/opt/mailman/
     links:
-      - database:database
+    - database:database
     depends_on:
-      - database
-    env_file: .env
+    - database
     environment:
-      - DATABASE_URL=$DATABASE_TYPE://$DB_USER:$DB_PASSWORD@database/$DB_NAME
-      - DATABASE_TYPE=$DATABASE_TYPE
-      - DATABASE_CLASS=$DATABASE_CLASS
-      - HYPERKITTY_API_KEY=$HYPERKITTY_API_KEY
+    - DATABASE_URL=postgres://mailman:mailmanpass@database/mailmandb
+    - DATABASE_TYPE=postgres
+    - DATABASE_CLASS=mailman.database.postgresql.PostgreSQLDatabase
+    - HYPERKITTY_API_KEY=someapikey
     networks:
       mailman:
-        ipv4_address: $MAILMAN_CORE_IP
+        ipv4_address: 172.19.199.2
 
   mailman-web:
     image: maxking/mailman-web:0.1
     container_name: mailman-web
     hostname: mailman-web
     depends_on:
-      - database
+    - database
     links:
-      - mailman-core:mailman-core
-      - database:database
+    - mailman-core:mailman-core
+    - database:database
     volumes:
-      - $MAILMAN_WEB_DIR:/opt/mailman-web-data
-    env_file: .env
+    - /opt/mailman/web:/opt/mailman-web-data
     environment:
-      - DATABASE_TYPE=$DATABASE_TYPE
-      - DATABASE_URL=$DATABASE_TYPE://$DB_USER:$DB_PASSWORD@database/$DB_NAME
-      - HYPERKITTY_API_KEY=$HYPERKITTY_API_KEY
+    - DATABASE_TYPE=postgres
+    - DATABASE_URL=postgres://mailman:mailmanpass@database/mailmandb
+    - HYPERKITTY_API_KEY=someapikey
     networks:
       mailman:
-        ipv4_address: $MAILMAN_WEB_IP
+        ipv4_address: 172.19.199.3
 
   database:
-    env_file: .env
     environment:
-      POSTGRES_DB: $DB_NAME
-      POSTGRES_USER: $DB_USER
-      POSTGRES_PASSWORD: $DB_PASSWORD
+      POSTGRES_DB: mailmandb
+      POSTGRES_USER: mailman
+      POSTGRES_PASSWORD: mailmanpass
     restart: always
     image: postgres:9.6-alpine
     volumes:
-      - $MAILMAN_DB_DIR:/var/lib/postgresql/data
+    - /opt/mailman/database:/var/lib/postgresql/data
     networks:
       mailman:
-        ipv4_address: $MAILMAN_DB_IP
+        ipv4_address: 172.19.199.4
 
 networks:
-  mailman:
-    driver: bridge
-    ipam:
-      driver: default
-      config:
-        - subnet: $MAILMAN_SUBNET
+   mailman:
+     driver: bridge
+     ipam:
+       driver: default
+       config:
+       -
+         subnet: 172.19.199.0/24
