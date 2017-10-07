@@ -11,9 +11,9 @@ RUN apk update \
     && apk add --virtual build-deps gcc python3-dev musl-dev postgresql-dev git \
     && apk add bash su-exec postgresql-client mysql-client \
     && pip install -U psycopg2 \
-	   	   		      git+https://gitlab.com/mailman/mailman.git \
-				      git+https://gitlab.com/mailman/mailman-hyperkitty.git \
-				      pymysql \
+                      git+https://gitlab.com/mailman/mailman.git?ref=master \
+                      git+https://gitlab.com/mailman/mailman-hyperkitty.git?ref=master \
+                      pymysql \
     && apk del build-deps \
     && adduser -S mailman
 
