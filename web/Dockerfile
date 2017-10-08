@@ -15,7 +15,7 @@ RUN set -ex \
 	   	postgresql-dev mariadb-dev \
 	&& apk add --no-cache --virtual .mailman-rundeps bash sassc \
 	   postgresql-client mysql-client py-mysqldb \
-	&& pip install -U mailmanclient==3.1.0 \
+	&& pip install -U mailmanclient==3.1.1 \
 		postorius==1.1.0 \
 		hyperkitty==1.1.1 \
 		django-mailman3==1.1.0 \
