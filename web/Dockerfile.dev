@@ -11,7 +11,7 @@ COPY docker-entrypoint.sh /usr/local/bin/
 # executing apps, change ownership for uwsgi+django files and set execution
 # rights for management script
 RUN set -ex \
-	&& apk add --no-cache --virtual .build-deps gcc libc-dev linux-headers \
+	&& apk add --no-cache --virtual .build-deps gcc libc-dev linux-headers git \
 	   	postgresql-dev mariadb-dev \
 	&& apk add --no-cache --virtual .mailman-rundeps bash sassc \
 	   postgresql-client mysql-client py-mysqldb \
