@@ -17,7 +17,7 @@ RUN set -ex \
 	   postgresql-client mysql-client py-mysqldb \
 	&& pip install -U mailmanclient==3.1.1 \
 		postorius==1.1.0 \
-		hyperkitty==1.1.1 \
+		hyperkitty==1.1.4 \
 		django-mailman3==1.1.0 \
 		whoosh \
 		uwsgi \
