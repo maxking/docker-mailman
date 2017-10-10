@@ -15,10 +15,10 @@ RUN set -ex \
 	   	postgresql-dev mariadb-dev \
 	&& apk add --no-cache --virtual .mailman-rundeps bash sassc \
 	   postgresql-client mysql-client py-mysqldb \
-	&& pip install -U git+https://gitlab.com/mailman/mailmanclient?ref=master \
-		git+https://gitlab.com/mailman/postorius?ref=master \
-		git+https://gitlab.com/mailman/hyperkitty?ref=master \
-		git+https://gitlab.com/mailman/django-mailman3?ref=master \
+	&& pip install -U git+https://gitlab.com/mailman/mailmanclient \
+		git+https://gitlab.com/mailman/postorius \
+		git+https://gitlab.com/mailman/hyperkitty \
+		git+https://gitlab.com/mailman/django-mailman3 \
 		whoosh \
 		uwsgi \
 		psycopg2 \
