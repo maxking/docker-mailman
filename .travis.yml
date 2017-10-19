@@ -25,4 +25,4 @@ after_success:
   - sh .travis/deploy_dockerhub.sh
 
 after_script:
-   - docker-compose down
+  - docker-compose down
