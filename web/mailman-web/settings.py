@@ -221,7 +221,6 @@ hostname = os.environ.get('SERVE_FROM_DOMAIN', 'localhost.local')
 DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL','postorius@{}'.format(hostname))
 SERVER_EMAIL = os.environ.get('SERVER_EMAIL','root@{}'.format(hostname))
 
-
 # Change this when you have a real email backend
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = os.environ.get('SMTP_HOST', '172.19.199.1')
