@@ -396,10 +396,17 @@ UWSGI by default doesn't serve static files by default, so when running
 `mailman-web` using the provided `docker-compose.yaml` file you won't see any
 CSS or JS files being served.
 
-You will have to add an alias rule in your web server to serve the static
-files. See [here][18] for instructions on how to configure you web server. The
-STATIC_ROOT for you would be `/opt/mailman/web/static`. This method is
-**highly** recommended for better performance reasons.
+To enable serving of static files using UWSGI, add the following environment
+variable to your `docker-compose.yaml` file under `mailman-web`:
+
+```
+UWSGI_STATIC_MAP=/static=/opt/mailman-web-data/static
+```
+
+It is recommended to use web-server to serve static files instead of UWSGI for
+better performance. You will have to add an alias rule in your web server to
+serve the static files. See [here][18] for instructions on how to configure you
+web server. The STATIC_ROOT for you would be `/opt/mailman/web/static`.
 
 ### SSL certificates
 
