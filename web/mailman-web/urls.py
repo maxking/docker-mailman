@@ -26,8 +26,8 @@ urlpatterns = [
     url(r'^$', RedirectView.as_view(
         url=reverse_lazy('list_index'),
         permanent=True)),
-    url(r'^postorius/', include('postorius.urls')),
-    url(r'^hyperkitty/', include('hyperkitty.urls')),
+    url(r'^mailman3/', include('postorius.urls')),
+    url(r'^archives/', include('hyperkitty.urls')),
     url(r'', include('django_mailman3.urls')),
     url(r'^accounts/', include('allauth.urls')),
     # Django admin
