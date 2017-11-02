@@ -27,6 +27,4 @@ jobs:
               if [ "${CIRCLE_BRANCH}" == "master" ];
                 then sh. travis/deploy_dockerhub.sh
               fi
-        - store_artifacts:
-            path: docker-test.yaml
-            
+
