@@ -1,14 +1,23 @@
 #!/bin/sh
 
-if [ "$TRAVIS_BRANCH" = "master" ]; then
-    TAG="latest"
-else
-    TAG="$TRAVIS_BRANCH"
+if [ "$TRAVIS" ]; then
+    if [ "$TRAVIS_BRANCH" = "master" ]; then
+        TAG="latest"
+    else
+        TAG="$TRAVIS_BRANCH"
+    fi
+elif [ "$CIRCLECI" ]; then
+    if [ "$CIRCLE_BRANCH" = "master" ]; then
+        TAG="latest"
+    else
+        TAG="$CIRCLE_BRANCH"
+    fi
 fi
 
 
+
 cat > docker-test.yaml <<EOF
-version: '2'
+version: '2.1'
 
 services:
   mailman-core:

@@ -13,6 +13,15 @@ then
 		CORE_TAG="$TRAVIS_BRANCH"
 		WEB_TAG="$TRAVIS_BRANCH"
 	fi
+elif [[ "$CIRCLECI" ]]
+then
+		if [ "$CIRCLE_BRANCH" = "master" ]; then
+				CORE_TAG="latest"
+				WEB_TAG="latest"
+		else
+				CORE_TAG="$CIRCLE_BRANCH"
+				WEB_TAG="$CIRCLE_BRANCH"
+			fi
 else
     CORE_TAG=`cat core/VERSION`
     WEB_TAG=`cat web/VERSION`
