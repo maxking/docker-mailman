@@ -27,9 +27,9 @@ jobs:
             name: Postgres Tests
             command: sh tests/tesh.sh
 
-        deploy:
-          name: Build and push Images
-          command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ];
-              then sh. travis/deploy_dockerhub.sh
-            fi
+        - deploy:
+            name: Build and push Images
+            command: |
+              if [ "${CIRCLE_BRANCH}" == "master" ];
+                 then sh. travis/deploy_dockerhub.sh
+              fi
