@@ -2,8 +2,7 @@ version: '2'
 
 jobs:
   build:
-    docker:
-      steps:
+    steps:
         - checkout
         - setup_remote_docker
         - run:
