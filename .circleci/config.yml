@@ -1,0 +1,35 @@
+version: '2'
+
+jobs:
+  build:
+    docker:
+      steps:
+        - checkout
+        - setup_remote_docker
+        - run:
+            name: Install Docker Compose
+            command: |
+              set -x
+              curl -L https://github.com/docker/compose/releases/download/1.11.2/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+              chmod +x /usr/local/bin/docker-compose
+        - run:
+            name: Building Container Images
+            command: ./build.sh
+
+
+        - run:
+            name: Generate Tests
+            command: sh tests/generate_tests.sh
+
+        - run:
+            environment:
+              DB=mysql
+            name: Postgres Tests
+            command: sh tests/tesh.sh
+
+        deploy:
+          name: Build and push Images
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ];
+              then sh. travis/deploy_dockerhub.sh
+            fi
