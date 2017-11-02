@@ -20,7 +20,7 @@ jobs:
             environment:
               DB: mysql
             name: Postgres Tests
-            command: sh tests/tesh.sh
+            command: sh tests/test.sh
         - deploy:
             name: Build and push Images
             command: |
