@@ -22,12 +22,6 @@ version: '2.1'
 services:
   mailman-core:
     image: maxking/mailman-core:$TAG
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8001/3.1/system"]
-      interval: 30s
-      timeout: 5s
-      retries: 3
-      start_period: 30s
 
   mailman-web:
     image: maxking/mailman-web:$TAG

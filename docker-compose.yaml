@@ -1,4 +1,4 @@
-version: '2'
+version: '2.1'
 
 services:
   mailman-core:
@@ -9,6 +9,12 @@ services:
     - /opt/mailman/core:/opt/mailman/
     links:
     - database:database
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/3.1/system"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
     depends_on:
     - database
     environment:
