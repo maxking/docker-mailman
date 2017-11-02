@@ -23,7 +23,7 @@ jobs:
 
         - run:
             environment:
-              DB=mysql
+              DB: mysql
             name: Postgres Tests
             command: sh tests/tesh.sh
 
