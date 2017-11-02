@@ -10,7 +10,7 @@ services:
     links:
     - database:database
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8001/3.1/system"]
+      test: ["CMD-SHELL", "curl -u restadmin:restpass http://mailman-core:8001/3.1/system  || exit 1"]
       interval: 30s
       timeout: 5s
       retries: 3
