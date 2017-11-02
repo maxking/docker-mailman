@@ -1,0 +1,25 @@
+version: '2.1'
+
+services:
+  mailman-core:
+    environment:
+    - DATABASE_URL=mysql+pymysql://mailman:mailmanpass@database/mailmandb
+    - DATABASE_TYPE=mysql
+    - DATABASE_CLASS=mailman.database.mysql.MySQLDatabase
+
+  mailman-web:
+    environment:
+    - DATABASE_URL=mysql://mailman:mailmanpass@database/mailmandb
+    - DATABASE_TYPE=mysql
+    - DYLD_LIBRARY_PATH=/usr/local/mysql/lib/
+
+  database:
+    environment:
+      MYSQL_DATABASE: mailmandb
+      MYSQL_USER: mailman
+      MYSQL_PASSWORD: mailmanpass
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+    restart: always
+    image: mariadb:10.3
+    volumes:
+    - /opt/mailman/database:/var/lib/mysql

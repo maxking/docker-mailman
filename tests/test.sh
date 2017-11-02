@@ -6,7 +6,7 @@ then
 	docker-compose -f docker-compose.yaml -f docker-test.yaml up -d
 elif [ "$DB" = "mysql" ]
 then
-	docker-compose -f docker-compose-mysql.yaml -f docker-test.yaml up -d
+	docker-compose -f docker-compose.yaml -f docker-compose-mysql.override.yaml -f docker-test.yaml up -d
 fi
 
 # Print the IP Addresses of the Containers.
