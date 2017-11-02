@@ -1,12 +1,12 @@
 #!/bin/sh
 
-if [[ "$TRAVIS" ]]; then
+if [ "$TRAVIS" ]; then
 		if [ "$TRAVIS_BRANCH" = "master" ]; then
 				TAG="latest"
 		else
 				TAG="$TRAVIS_BRANCH"
 		fi
-elif [[ "$CIRCLECI" ]]; then
+elif [ "$CIRCLECI" ]; then
 		if [ "$CIRCLE_BRANCH" = "master" ]; then
 				TAG="latest"
 		else
