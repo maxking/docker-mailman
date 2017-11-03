@@ -19,7 +19,7 @@ RUN set -ex \
 	&& apk add --no-cache --virtual .build-deps gcc libc-dev linux-headers git \
 	   	postgresql-dev mariadb-dev \
 	&& apk add --no-cache --virtual .mailman-rundeps bash sassc \
-	   postgresql-client mysql-client py-mysqldb \
+	   postgresql-client mysql-client py-mysqldb curl \
 	&& pip install -U git+https://gitlab.com/mailman/mailmanclient@${CLIENT_REF} \
 		                git+https://gitlab.com/mailman/postorius@${POSTORIUS_REF} \
 		                git+https://gitlab.com/mailman/hyperkitty@${HYPERKITTY_REF} \

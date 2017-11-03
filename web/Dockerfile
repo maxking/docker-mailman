@@ -14,7 +14,7 @@ RUN set -ex \
 	&& apk add --no-cache --virtual .build-deps gcc libc-dev linux-headers \
 	   	postgresql-dev mariadb-dev \
 	&& apk add --no-cache --virtual .mailman-rundeps bash sassc \
-	   postgresql-client mysql-client py-mysqldb \
+	   postgresql-client mysql-client py-mysqldb curl \
 	&& pip install -U mailmanclient==3.1.1 \
 		postorius==1.1.0 \
 		hyperkitty==1.1.4 \
