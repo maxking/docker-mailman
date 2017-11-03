@@ -1,9 +1,14 @@
 #!/bin/sh
 
-if [ "$TRAVIS_BRANCH" = "master" ]; then
-    TAG="latest"
+
+if [ "$TRAVIS_EVENT_TYPE" = "cron" ]; then
+		TAG="rolling"
 else
-    TAG="$TRAVIS_BRANCH"
+		if [ "$TRAVIS_BRANCH" = "master" ]; then
+				TAG="latest"
+		else
+				TAG="$TRAVIS_BRANCH"
+		fi
 fi
 
 
