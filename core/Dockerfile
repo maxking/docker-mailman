@@ -26,4 +26,4 @@ EXPOSE 8001 8024
 ENV MAILMAN_CONFIG_FILE /etc/mailman.cfg
 
 ENTRYPOINT ["docker-entrypoint.sh"]
-CMD ["master"]
+CMD ["master", "--force"]
