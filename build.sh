@@ -4,8 +4,15 @@ set -ex
 
 DOCKER=docker
 
+# Set the env variable to later test this release before it is deployed.
+if [ "$1" = "dev" ]; then
+		export DEV=true
+else
+		export DEV=false
+fi
 
-if [ "$TRAVIS_EVENT_TYPE" = "cron" ]; then
+
+if [ "$TRAVIS_EVENT_TYPE" = "cron" ]  || $DEV ; then
 
 		# Get the latest commit for repositories and set their reference values to be
 		# used in the development builds.

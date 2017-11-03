@@ -1,7 +1,7 @@
 #!/bin/sh
 
 
-if [ "$TRAVIS_EVENT_TYPE" = "cron" ]; then
+if [ "$TRAVIS_EVENT_TYPE" = "cron" ] || $DEV ; then
 		TAG="rolling"
 else
 		if [ "$TRAVIS_BRANCH" = "master" ]; then
