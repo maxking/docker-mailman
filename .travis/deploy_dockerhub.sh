@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function deploy {
+deploy () {
 		docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
 		docker push maxking/mailman-web:$1
 		docker push maxking/mailman-core:$1
