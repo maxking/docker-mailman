@@ -8,7 +8,7 @@ COPY docker-entrypoint.sh /usr/local/bin/
 #Install all required packages, add user for executing mailman and set execution rights for startup script
 RUN apk update \
     && apk add --virtual build-deps gcc python3-dev musl-dev postgresql-dev \
-    && apk add bash su-exec postgresql-client mysql-client \
+    && apk add bash su-exec postgresql-client mysql-client curl \
     && pip install psycopg2 \
                    mailman==3.1.0 \
                    mailman-hyperkitty==1.1.0 \
@@ -26,4 +26,4 @@ EXPOSE 8001 8024
 ENV MAILMAN_CONFIG_FILE /etc/mailman.cfg
 
 ENTRYPOINT ["docker-entrypoint.sh"]
-CMD ["master"]
+CMD ["master", "--force"]

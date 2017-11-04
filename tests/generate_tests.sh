@@ -1,9 +1,16 @@
 #!/bin/sh
 
-if [ "$TRAVIS_BRANCH" = "master" ]; then
-    TAG="latest"
+
+if [ "$TRAVIS_EVENT_TYPE" = "cron" ] || [ ! -z $DEV ] ; then
+		echo "Travis event type is: $TRAVIS_EVENT_TYPE"
+		echo "This is a development version build: $DEV"
+		TAG="rolling"
 else
-    TAG="$TRAVIS_BRANCH"
+		if [ "$TRAVIS_BRANCH" = "master" ]; then
+				TAG="latest"
+		else
+				TAG="$TRAVIS_BRANCH"
+		fi
 fi
 
 
