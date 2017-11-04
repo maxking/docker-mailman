@@ -14,12 +14,12 @@ if [ "$TRAVIS_EVENT_TYPE" = "cron" ]  || [ "$DEV" = "true" ] ; then
 
 		# Get the latest commit for repositories and set their reference values to be
 		# used in the development builds.
-		CORE_REF=$(./get_latest_ref.py mailman/mailman)
-		CLIENT_REF=$(./get_latest_ref.py mailman/mailmanclient)
-		POSTORIUS_REF=$(./get_latest_ref.py mailman/postorius)
-		HYPERKITTY_REF=$(./get_latest_ref.py mailman/hyperkitty)
-		DJ_MM3_REF=$(./get_latest_ref.py mailman/django-mailman3)
-		MM3_HK_REF=$(./get_latest_ref.py mailman/mailman-hyperkitty)
+		CORE_REF=$(python get_latest_ref.py mailman/mailman)
+		CLIENT_REF=$(python get_latest_ref.py mailman/mailmanclient)
+		POSTORIUS_REF=$(python get_latest_ref.py mailman/postorius)
+		HYPERKITTY_REF=$(python get_latest_ref.py mailman/hyperkitty)
+		DJ_MM3_REF=$(python get_latest_ref.py mailman/django-mailman3)
+		MM3_HK_REF=$(python get_latest_ref.py mailman/mailman-hyperkitty)
 
 		# Build the mailman-core image.
 		$DOCKER build -f core/Dockerfile.dev \
