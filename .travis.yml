@@ -8,7 +8,7 @@ language: python
 env:
   - DB=postgres
   - DB=mysql
-	- DEV=true
+  - DEV=true
 
 install:
   - docker --version
