@@ -13,7 +13,7 @@ env:
 install:
   - docker --version
   - ./build.sh
-  - sudo pip install docker-compose
+  - sudo pip install docker-compose python-gitlab
   - docker-compose --version
 
 before_script:
