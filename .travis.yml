@@ -4,8 +4,6 @@ services:
   - docker
 
 language: python
-python:
-  - "3.5"
 
 env:
   - DB=postgres
@@ -14,8 +12,8 @@ env:
 
 install:
   - docker --version && python --version
-  - sudo pip install docker-compose
-  - sudo pip install python-gitlab
+  - sudo pip3 install docker-compose
+  - sudo pip3 install python-gitlab
   - ./build.sh
   - docker-compose --version
 
