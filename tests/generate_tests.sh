@@ -2,7 +2,7 @@
 
 
 if [ "$TRAVIS_EVENT_TYPE" = "cron" ] || [ ! -z $DEV ] ; then
-		echo " travis event type is: $TRAVIS_EVENT_TYPE"
+		echo "Travis event type is: $TRAVIS_EVENT_TYPE"
 		echo "This is a development version build: $DEV"
 		TAG="rolling"
 else

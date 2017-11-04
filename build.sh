@@ -11,10 +11,7 @@ fi
 
 
 if [ "$TRAVIS_EVENT_TYPE" = "cron" ]  || [ "$DEV" = "true" ] ; then
-
-		which python
 		python -m pip install python-gitlab
-		python -c "import gitlab"
 		# Get the latest commit for repositories and set their reference values to be
 		# used in the development builds.
 		CORE_REF=$(python get_latest_ref.py mailman/mailman)
