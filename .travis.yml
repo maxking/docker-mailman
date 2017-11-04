@@ -12,7 +12,7 @@ env:
 
 install:
   - docker --version && python --version
-  - sudo pip install docker-compose python-gitlab
+  - sudo pip install docker-compose python-gitlab && which python
   - ./build.sh
   - docker-compose --version
 
