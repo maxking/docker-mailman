@@ -23,7 +23,7 @@ script:
   - sh tests/test.sh
 
 after_success:
-  - sh .travis/deploy_dockerhub.sh
+  - REGISTRY=DOCKER bash .travis/deploy_dockerhub.sh
 
 after_script:
    - docker-compose down
