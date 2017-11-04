@@ -34,6 +34,7 @@ RUN set -ex \
 WORKDIR /opt/mailman-web
 
 # Expose port 8000 for http and port 8080 for uwsgi
+# (see web/mailman-web/uwsgi.ini#L2-L4)
 EXPOSE 8000 8080
 
 # Use stop signal for uwsgi server
