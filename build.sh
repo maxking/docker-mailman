@@ -10,6 +10,11 @@ if [ "$1" = "dev" ]; then
 fi
 
 
+if [ "$TRAVIS_EVENT_TYPE" = "pull_request"] && [ "$DEV" = "true"]; then
+	echo "Do not run this for pull requests."
+	exit 0
+fi
+
 if [ "$TRAVIS_EVENT_TYPE" = "cron" ]  || [ "$DEV" = "true" ] ; then
 		python -m pip install python-gitlab
 		# Get the latest commit for repositories and set their reference values to be
