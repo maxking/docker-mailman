@@ -10,7 +10,7 @@ if [ "$1" = "dev" ]; then
 fi
 
 
-if [ "$TRAVIS_EVENT_TYPE" = "pull_request"] && [ "$DEV" = "true"]; then
+if [ "$TRAVIS_EVENT_TYPE" = "pull_request" ] && [ "$DEV" = "true" ]; then
 	echo "TRAVIS_EVENT_TYPE = $TRAVIS_EVENT_TYPE, DEV=$DEV"
 	echo "Do not run this for pull requests."
 	exit 0
