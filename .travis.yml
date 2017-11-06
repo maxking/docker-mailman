@@ -13,6 +13,7 @@ env:
 install:
   - docker --version && python --version
   - sudo pip install docker-compose
+  - source setup_env.sh
   - ./build.sh
   - docker-compose --version
 
@@ -21,9 +22,6 @@ before_script:
 
 script:
   - sh tests/test.sh
-
-after_success:
-  - REGISTRY=DOCKER bash .travis/deploy_dockerhub.sh
 
 after_script:
    - docker-compose down
