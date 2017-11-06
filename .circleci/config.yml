@@ -1,9 +1,7 @@
 version: '2'
 
-
-jobs:
-  build:
-    docker:
+defaults: &defaults
+  docker:
       - image: circleci/python:3
     steps:
         - checkout
@@ -42,3 +40,28 @@ jobs:
                     if [ "${CIRCLE_BRANCH}" == "master" ]; then
                       bash .travis/deploy.sh
                     fi
+jobs:
+  build:
+    <<: *defaults
+
+  dev:
+    environment:
+      DEV: true
+    <<: *defaults
+
+workflows:
+  version: 2
+  commit-workflow:
+    jobs:
+      - build
+
+  scheduled-workflow:
+    triggers:
+      - schedule:
+          cron: "@weekly"
+          filters:
+            branches:
+              only: master
+
+      jobs:
+        - dev
