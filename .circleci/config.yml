@@ -54,5 +54,5 @@ workflows:
             branches:
               only: master
     jobs:
-      - build
-        context: org-global
+      - build:
+          context: org-global
