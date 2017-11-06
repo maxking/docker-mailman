@@ -5,8 +5,8 @@ deploy() {
 	REG_USER=${REGISTRY}_USER
 	REG_PASS=${REGISTRY}_PASS
 	docker login -u ${!REG_USER} -p ${!REG_PASS} ${!REG_URL}
-	docker push ${!REG_URL}/maxking/mailman-web:$1
-	docker push ${!REG_URL}/maxking/mailman-core:$1
+	docker push ${!REG_URL}/maxking/mailman-web:$TAG
+	docker push ${!REG_URL}/maxking/mailman-core:$TAG
 }
 
 if [ ! "$BRANCH" = "master" ] && [ "$PULL_REQUEST" ]; then
