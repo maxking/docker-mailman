@@ -4,6 +4,8 @@ jobs:
   build:
     docker:
       - image: circleci/python:3
+    environment:
+      REGISTRY: QUAY
     steps:
       - checkout
       - setup_remote_docker
