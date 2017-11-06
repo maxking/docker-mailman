@@ -1,50 +1,44 @@
 version: '2'
 
 defaults: &defaults
-  docker:
-    - image: circleci/python:3
-  steps:
-    - checkout
-    - setup_remote_docker
-    - run:
-        name: Setup Environment
-        command: source setup_env.sh
-    - run:
-        name: Install Docker Compose
-        command: sudo pip install docker-compose
-    - run:
-        name: Building Container Images
-        command: ./build.sh
-    - run:
-        name: Generate Tests
-        command: bash tests/generate_tests.sh
-    - run:
-        environment:
-          DB: postgres
-        name: Postgres Tests
-        command: bash tests/test.sh
-
-    - run:
-        environment:
-          DB: mysql
-        name: MySQL Test
-        command: bash tests/test.sh
-    - deploy:
-        environment:
-          REGISTRY: QUAY
-        command: |
-          if [ "${CIRCLE_BRANCH}" == "master" ]; then
-            bash .travis/deploy.sh
-          fi
+  
 
 jobs:
   build:
-    <<: *defaults
-
-  dev:
-    environment:
-      DEV: true
-    <<: *defaults
+    docker:
+      - image: circleci/python:3
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Setup Environment
+          command: source setup_env.sh
+      - run:
+          name: Install Docker Compose
+          command: sudo pip install docker-compose
+      - run:
+          name: Building Container Images
+          command: ./build.sh
+      - run:
+          name: Generate Tests
+          command: bash tests/generate_tests.sh
+      - run:
+          environment:
+            DB: postgres
+          name: Postgres Tests
+          command: bash tests/test.sh
+      - run:
+          environment:
+            DB: mysql
+          name: MySQL Test
+          command: bash tests/test.sh
+      - deploy:
+          environment:
+            REGISTRY: QUAY
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              bash .travis/deploy.sh
+            fi
 
 workflows:
   version: 2
@@ -60,4 +54,5 @@ workflows:
             branches:
               only: master
     jobs:
-      - dev
+      - build
+        context: org-global
