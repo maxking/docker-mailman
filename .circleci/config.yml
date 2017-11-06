@@ -57,10 +57,10 @@ workflows:
       - build:
           context: org-global
 
-    push-dev:
-      jobs:
-        - build:
-            context: org-global
-            filters:
-              branches:
-                only: master
+  push-dev:
+    jobs:
+      - build:
+          context: org-global
+          filters:
+            branches:
+              only: master
