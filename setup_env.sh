@@ -32,7 +32,7 @@ fi
 if [ "$BRANCH" = "master" ]; then
 	set_var TAG "latest"
 else
-	set_var TAG "$BRANCH"
+	set_var TAG "$COMMIT_ID"
 fi
 
 set_var REG_URL ${REGISTRY}_URL
