@@ -51,7 +51,7 @@ Rolling Releases
 ================
 
 Rolling releases are made up of Mailman Components installed from [git
-source][https://gitlab.com/mailman]. Note that these releases are made up of
+source](https://gitlab.com/mailman). Note that these releases are made up of
 un-released software and should be assumed to be beta quality. 
 
 Every commit is tested with Mailman's CI infrastructure and is included in
@@ -85,7 +85,7 @@ $ docker inspect mailman-web --format '{{json .Config.Labels }}' | python -m jso
 ```
 
 - `version.git_commit` : This is the commit hash of the Dockerfile in the
-  [Github repo][https://github.com/maxking/docker-mailman].
+  [Github repo](https://github.com/maxking/docker-mailman)
 - `version.core`: The commit hash of Mailman Core
 - `version.mm3-hk`: The commit hash of Mailman3-hyperkitty plugin.
 - `version.client`: The commit hash of Mailman Client.
