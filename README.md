@@ -47,6 +47,52 @@ Releases will follow the following rules:
   bugfix releases for the internal components or both.
 
 
+Rolling Releases
+================
+
+Rolling releases are made up of Mailman Components installed from [git
+source][https://gitlab.com/mailman]. Note that these releases are made up of
+un-released software and should be assumed to be beta quality. 
+
+Every commit is tested with Mailman's CI infrastructure and is included in
+rolling releases only if they have passed the complete test suite.
+
+```
+$ docker pull quay.io/mailman/mailman-web:rolling
+$ docker pull quay.io/mailman/mailman-core:rolling
+```
+
+Rolling releases are built with every commit and also re-generated weekly. You
+can inspect the images to get which commit it was built using:
+
+```bash
+$ docker inspect mailman-core --format '{{json .Config.Labels }}' | python -m json.tool
+{
+    "version.core": "31f434d0",
+    "version.git_commit": "45a4d7805b2b3d0e7c51679f59682d64ba02f05f",
+    "version.mm3-hk": "c625bfd2"
+}
+
+$ docker inspect mailman-web --format '{{json .Config.Labels }}' | python -m json.tool
+{
+    "version.client": "d9e9cb73",
+    "version.dj-mm3": "72a7d6c4",
+    "version.git_commit": "45a4d7805b2b3d0e7c51679f59682d64ba02f05f",
+    "version.hyperkitty": "b67ca8a8",
+    "version.postorius": "73328ad4"
+}
+
+```
+
+- `version.git_commit` : This is the commit hash of the Dockerfile in the
+  [Github repo][https://github.com/maxking/docker-mailman].
+- `version.core`: The commit hash of Mailman Core
+- `version.mm3-hk`: The commit hash of Mailman3-hyperkitty plugin.
+- `version.client`: The commit hash of Mailman Client.
+- `version.hyperkitty`: The commit hash of Hyperkitty.
+- `version.postorius`: The commit hash of Postorius.
+- `version.dj-mm3`: The commit hash of Django-Mailman3 project.
+
 Security
 --------
 
