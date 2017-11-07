@@ -6,6 +6,7 @@ jobs:
       - image: circleci/python:3
     environment:
       REGISTRY: QUAY
+      QUAY_URL: quay.io
     steps:
       - checkout
       - setup_remote_docker
