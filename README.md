@@ -51,8 +51,8 @@ Rolling Releases
 ================
 
 Rolling releases are made up of Mailman Components installed from [git
-source](https://gitlab.com/mailman). Note that these releases are made up of
-un-released software and should be assumed to be beta quality. 
+source](https://gitlab.com/mailman). **Note that these releases are made up of
+un-released software and should be assumed to be beta quality.**
 
 Every commit is tested with Mailman's CI infrastructure and is included in
 rolling releases only if they have passed the complete test suite.
