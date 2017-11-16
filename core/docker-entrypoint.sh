@@ -55,7 +55,7 @@ function setup_database () {
 		echo "Database URL was automatically rewritten to: $DATABASE_URL"
 	fi
 
-    # If DATABASE_CLASS is not set, guess it for common databases:
+	# If DATABASE_CLASS is not set, guess it for common databases:
 	if [ -z "$DATABASE_CLASS" ]; then
 		if [[ ("$DATABASE_URL" == mysql:*) ||
 				("$DATABASE_URL" == mysql+*) ]]; then
