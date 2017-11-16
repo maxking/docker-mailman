@@ -55,6 +55,18 @@ function setup_database () {
 		echo "Database URL was automatically rewritten to: $DATABASE_URL"
 	fi
 
+	# If DATABASE_CLASS is not set, guess it for common databases:
+	if [ -z "$DATABASE_CLASS" ]; then
+		if [[ ("$DATABASE_URL" == mysql:*) ||
+				("$DATABASE_URL" == mysql+*) ]]; then
+			DATABASE_CLASS=mailman.database.mysql.MySQLDatabase
+		fi
+		if [[ ("$DATABASE_URL" == postgres:*) ||
+				("$DATABASE_URL" == postgres+*) ]]; then
+			DATABASE_CLASS=mailman.database.postgresql.PostgreSQLDatabase
+		fi
+	fi
+
 	cat >> /etc/mailman.cfg <<EOF
 [database]
 class: $DATABASE_CLASS
