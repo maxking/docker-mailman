@@ -10,10 +10,9 @@ RUN apk update \
     && apk add --virtual build-deps gcc python3-dev musl-dev postgresql-dev \
     && apk add bash su-exec postgresql-client mysql-client curl \
     && pip install psycopg2 \
-                   mailman==3.1.0 \
+                   mailman==3.1.1 \
                    mailman-hyperkitty==1.1.0 \
                    pymysql \
-                   alembic==0.9.5 \
     && apk del build-deps \
     && adduser -S mailman
 
