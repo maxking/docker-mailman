@@ -16,7 +16,7 @@ RUN set -ex \
 	&& apk add --no-cache --virtual .mailman-rundeps bash sassc \
 	   postgresql-client mysql-client py-mysqldb curl \
 	&& pip install -U mailmanclient==3.1.1 \
-		postorius==1.1.0 \
+		postorius==1.1.1 \
 		hyperkitty==1.1.4 \
 		django-mailman3==1.1.0 \
 		whoosh \
