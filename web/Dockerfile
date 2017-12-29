@@ -15,8 +15,9 @@ RUN set -ex \
 	   	postgresql-dev mariadb-dev \
 	&& apk add --no-cache --virtual .mailman-rundeps bash sassc \
 	   postgresql-client mysql-client py-mysqldb curl \
-	&& pip install -U mailmanclient==3.1.1 \
-		postorius==1.1.1 \
+	&& pip install -U django==1.11 \
+	&& pip install mailmanclient==3.1.1 \
+		postorius==1.1.2 \
 		hyperkitty==1.1.4 \
 		django-mailman3==1.1.0 \
 		whoosh \
@@ -24,7 +25,6 @@ RUN set -ex \
 		psycopg2 \
 		dj-database-url \
 		mysqlclient \
-	&& pip install -U django==1.10 \
 	&& apk del .build-deps \
 	&& addgroup -S mailman \
 	&& adduser -S -G mailman mailman \
