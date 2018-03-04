@@ -14,7 +14,7 @@ RUN set -ex \
 	&& apk add --no-cache --virtual .build-deps gcc libc-dev linux-headers \
 	   	postgresql-dev mariadb-dev \
 	&& apk add --no-cache --virtual .mailman-rundeps bash sassc \
-	   postgresql-client mysql-client py-mysqldb curl \
+	   postgresql-client mysql-client py-mysqldb curl mailcap \
 	&& pip install -U django==1.11 \
 	&& pip install mailmanclient==3.1.1 \
 		postorius==1.1.2 \
