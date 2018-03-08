@@ -1,4 +1,4 @@
-FROM python:2.7-alpine3.6
+FROM python:alpine3.6
 
 MAINTAINER Abhilash Raj
 
