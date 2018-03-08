@@ -43,6 +43,15 @@ standard version of docker-compose.yaml from this repository.
 - `MM_HOSTNAME`: Which IP should Core bind to for REST API and LMTP. If not
   defined output for `hostname -i` command is used.
 
+- `MAILMAN_REST_PORT`: Which port should Core use for the REST API. If not defined
+  the default is `8001`.
+
+- `MAILMAN_REST_USER`: Which username should Core use for the REST API. If not
+  defined the default is `restadmin`.
+
+- `MAILMAN_REST_PASSWORD`: Which password should Core use for the REST API. If
+  not defined the default is `restpass`.
+
 - `SMTP_HOST`: IP Address/hostname from which you will be sending
   emails. Default value is `172.19.199.1`, which is the address of the Host OS.
 
@@ -89,6 +98,9 @@ sleep_time: 10s
 
 [webservice]
 hostname: $MM_HOSTNAME
+port: $MAILMAN_REST_PORT
+admin_user: $MAILMAN_REST_USER
+admin_pass: $MAILMAN_REST_PASSWORD
 
 [archiver.hyperkitty]
 class: mailman_hyperkitty.Archiver
