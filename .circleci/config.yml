@@ -49,7 +49,7 @@ workflows:
   scheduled-workflow:
     triggers:
       - schedule:
-          cron: "@weekly"
+          cron: "0 0 * * *"
           filters:
             branches:
               only: master
