@@ -41,6 +41,19 @@ if [[ ! -v SMTP_PORT ]]; then
 	export SMTP_PORT=25
 fi
 
+# Check if REST port, username, and password are set, if not, set them
+# to default values.
+if [[ ! -v MAILMAN_REST_PORT ]]; then
+	export MAILMAN_REST_PORT='8001'
+fi
+
+if [[ ! -v MAILMAN_REST_USER ]]; then
+	export MAILMAN_REST_USER='restadmin'
+fi
+
+if [[ ! -v MAILMAN_REST_PASSWORD ]]; then
+	export MAILMAN_REST_PASSWORD='restpass'
+fi
 
 function setup_database () {
 	if [[ ! -v DATABASE_URL ]]
@@ -116,6 +129,9 @@ sleep_time: 10s
 
 [webservice]
 hostname: $MM_HOSTNAME
+port: $MAILMAN_REST_PORT
+admin_user: $MAILMAN_REST_USER
+admin_pass: $MAILMAN_REST_PASSWORD
 
 [archiver.hyperkitty]
 class: mailman_hyperkitty.Archiver
