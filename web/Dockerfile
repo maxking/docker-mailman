@@ -14,9 +14,10 @@ RUN set -ex \
 	&& apk add --no-cache --virtual .build-deps gcc libc-dev linux-headers \
 	   	postgresql-dev mariadb-dev \
 	&& apk add --no-cache --virtual .mailman-rundeps bash sassc \
-	   postgresql-client mysql-client py-mysqldb \
-	&& pip install -U mailmanclient==3.1.1 \
-		postorius==1.1.0 \
+	   postgresql-client mysql-client py-mysqldb curl mailcap \
+	&& pip install -U django==1.11 pip \
+	&& pip install mailmanclient==3.1.1 \
+		postorius==1.1.2 \
 		hyperkitty==1.1.4 \
 		django-mailman3==1.1.0 \
 		whoosh \
@@ -24,7 +25,7 @@ RUN set -ex \
 		psycopg2 \
 		dj-database-url \
 		mysqlclient \
-	&& pip install -U django==1.10 \
+		typing \
 	&& apk del .build-deps \
 	&& addgroup -S mailman \
 	&& adduser -S -G mailman mailman \
@@ -33,7 +34,8 @@ RUN set -ex \
 
 WORKDIR /opt/mailman-web
 
-# Expose port 8000 for uwsgi and port 8080 for http
+# Expose port 8000 for http and port 8080 for uwsgi
+# (see web/mailman-web/uwsgi.ini#L2-L4)
 EXPOSE 8000 8080
 
 # Use stop signal for uwsgi server

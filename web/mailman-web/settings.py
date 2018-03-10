@@ -29,6 +29,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 import os
 import socket
 import dj_database_url
+import sys
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -99,8 +100,7 @@ INSTALLED_APPS = (
     'allauth.socialaccount.providers.google',
 )
 
-
-MIDDLEWARE_CLASSES = (
+_MIDDLEWARE = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -113,6 +113,14 @@ MIDDLEWARE_CLASSES = (
     'django_mailman3.middleware.TimezoneMiddleware',
     'postorius.middleware.PostoriusMiddleware',
 )
+
+# Use old-style Middleware class in Python 2 and released versions of
+# Django-mailman3 don't support new style middlewares.
+
+if sys.version_info < (3, 0):
+    MIDDLEWARE_CLASSES = _MIDDLEWARE
+else:
+    MIDDLEWARE = _MIDDLEWARE
 
 ROOT_URLCONF = 'urls'
 
