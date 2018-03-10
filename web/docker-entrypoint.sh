@@ -24,6 +24,7 @@ except ImportError:
 o = urlparse('$DATABASE_URL')
 print(o.hostname)
 EOF
+)
 	until mysqladmin ping --host "$HOSTNAME" --silent; do
 		>&2 echo "MySQL is unavailable - sleeping"
 		sleep 1
