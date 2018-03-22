@@ -1,15 +1,6 @@
 #! /bin/bash
 set -e
 
-# Check if the master lock exists for the mailman.
-# It means that that either some other mailman process is running or
-# the last time mailman did not exit clean.
-if [[ -e /opt/mailman/var/locks/master.lck ]]; then
-	echo "The mailman's master lock file still exists at /opt/mailman/core/var/locks/master.lck"
-	echo "Please remove the lock file before trying to run this container again."
-	exit 1
-fi
-
 function wait_for_postgres () {
 	# Check if the postgres database is up and accepting connections before
 	# moving forward.
@@ -50,6 +41,19 @@ if [[ ! -v SMTP_PORT ]]; then
 	export SMTP_PORT=25
 fi
 
+# Check if REST port, username, and password are set, if not, set them
+# to default values.
+if [[ ! -v MAILMAN_REST_PORT ]]; then
+	export MAILMAN_REST_PORT='8001'
+fi
+
+if [[ ! -v MAILMAN_REST_USER ]]; then
+	export MAILMAN_REST_USER='restadmin'
+fi
+
+if [[ ! -v MAILMAN_REST_PASSWORD ]]; then
+	export MAILMAN_REST_PASSWORD='restpass'
+fi
 
 function setup_database () {
 	if [[ ! -v DATABASE_URL ]]
@@ -62,6 +66,18 @@ function setup_database () {
 	if [[ "$DATABASE_URL" == mysql://* ]]; then
 		DATABASE_URL="mysql+pymysql://${DATABASE_URL:8}"
 		echo "Database URL was automatically rewritten to: $DATABASE_URL"
+	fi
+
+	# If DATABASE_CLASS is not set, guess it for common databases:
+	if [ -z "$DATABASE_CLASS" ]; then
+		if [[ ("$DATABASE_URL" == mysql:*) ||
+				("$DATABASE_URL" == mysql+*) ]]; then
+			DATABASE_CLASS=mailman.database.mysql.MySQLDatabase
+		fi
+		if [[ ("$DATABASE_URL" == postgres:*) ||
+				("$DATABASE_URL" == postgres+*) ]]; then
+			DATABASE_CLASS=mailman.database.postgresql.PostgreSQLDatabase
+		fi
 	fi
 
 	cat >> /etc/mailman.cfg <<EOF
@@ -113,6 +129,9 @@ sleep_time: 10s
 
 [webservice]
 hostname: $MM_HOSTNAME
+port: $MAILMAN_REST_PORT
+admin_user: $MAILMAN_REST_USER
+admin_pass: $MAILMAN_REST_PASSWORD
 
 [archiver.hyperkitty]
 class: mailman_hyperkitty.Archiver

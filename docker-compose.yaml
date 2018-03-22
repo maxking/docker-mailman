@@ -7,6 +7,7 @@ services:
     hostname: mailman-core
     volumes:
     - /opt/mailman/core:/opt/mailman/
+    stop_grace_period: 30s
     links:
     - database:database
     depends_on:
