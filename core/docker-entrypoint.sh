@@ -114,16 +114,7 @@ then
 fi
 
 # Generate a basic mailman.cfg.
-cat >> /etc/mailman.cfg <<EOF
-[mta]
-incoming: mailman.mta.exim4.LMTP
-outgoing: mailman.mta.deliver.deliver
-lmtp_host: $MM_HOSTNAME
-lmtp_port: 8024
-smtp_host: $SMTP_HOST
-smtp_port: $SMTP_PORT
-configuration: python:mailman.config.exim4
-
+cat > /etc/mailman.cfg << EOF
 [runner.retry]
 sleep_time: 10s
 
@@ -137,17 +128,47 @@ admin_pass: $MAILMAN_REST_PASSWORD
 class: mailman_hyperkitty.Archiver
 enable: yes
 configuration: /etc/mailman-hyperkitty.cfg
+
+EOF
+
+# Generate a basic configuration to use exim
+cat > /etc/exim-mailman.cfg <<EOF
+[mta]
+incoming: mailman.mta.exim4.LMTP
+outgoing: mailman.mta.deliver.deliver
+lmtp_host: $MM_HOSTNAME
+lmtp_port: 8024
+smtp_host: $SMTP_HOST
+smtp_port: $SMTP_PORT
+configuration: python:mailman.config.exim4
+
 EOF
 
 # Generate a basic configuration to use postfix.
 cat > /etc/postfix-mailman.cfg <<EOF
-[postfix]
-transport_file_type: regex
-# While in regex mode, postmap_command is never used, a placeholder
-# is added here so that it doesn't break anything.
-postmap_command: true
+[mta]
+incoming: mailman.mta.postfix.LMTP
+outgoing: mailman.mta.deliver.deliver
+lmtp_host: $MM_HOSTNAME
+lmtp_port: 8024
+smtp_host: $SMTP_HOST
+smtp_port: $SMTP_PORT
+configuration: python:mailman.config.postfix
+
 EOF
 
+if [ "$MTA" == "exim" ]
+then
+	echo "Using Exim configuration"
+	cat /etc/exim-mailman.cfg >> /etc/mailman.cfg
+elif [ "$MTA" == "postfix" ]
+then
+	echo "Using Postfix configuration"
+	cat /etc/postfix-maiman.cfg >> /etc/mailman.cfg
+else
+	echo "No MTA environment variable found, defaulting to Exim"
+	cat /etc/exim-mailman.cfg >> /etc/mailman.cfg
+fi
 
 if [[ -e /opt/mailman/mailman-extra.cfg ]]
 then
