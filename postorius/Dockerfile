@@ -15,9 +15,9 @@ RUN set -ex \
 	   	postgresql-dev mariadb-dev \
 	&& apk add --no-cache --virtual .mailman-rundeps bash \
 	   postgresql-client mysql-client py-mysqldb curl mailcap \
-	&& pip install -U django>=2.0 pip \
-	&& pip install \
-		postorius>=1.2.0a1 \
+	&& pip install -U Django>=1.11 pip \
+	&& pip install postorius>=1.2.0a1 \
+		django-mailman3>=1.2.0a2 \
 		uwsgi \
 		psycopg2 \
 		dj-database-url \
