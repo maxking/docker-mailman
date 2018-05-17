@@ -58,13 +58,12 @@ ALLOWED_HOSTS = [
 ]
 
 # Try to get the address of Mailman Core automatically.
-MAILMAN_HOST_IP_AUTO = socket.gethostbyname('mailman-core')
 
 # Mailman API credentials
 MAILMAN_REST_API_URL = os.environ.get('MAILMAN_REST_URL', 'http://mailman-core:8001')
 MAILMAN_REST_API_USER = os.environ.get('MAILMAN_REST_USER', 'restadmin')
 MAILMAN_REST_API_PASS = os.environ.get('MAILMAN_REST_PASSWORD', 'restpass')
-MAILMAN_ARCHIVER_FROM = (MAILMAN_HOST_IP_AUTO, os.environ.get('MAILMAN_HOST_IP', '172.19.199.2'))
+MAILMAN_ARCHIVER_FROM = os.environ.get('MAILMAN_HOST_IP', '172.19.199.2')
 
 # Application definition
 
@@ -92,7 +91,7 @@ INSTALLED_APPS = (
     'allauth.socialaccount.providers.google',
 )
 
-_MIDDLEWARE = (
+MIDDLEWARE = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -106,16 +105,7 @@ _MIDDLEWARE = (
     'postorius.middleware.PostoriusMiddleware',
 )
 
-# Use old-style Middleware class in Python 2 and released versions of
-# Django-mailman3 don't support new style middlewares.
-
-if sys.version_info < (3, 0):
-    MIDDLEWARE_CLASSES = _MIDDLEWARE
-else:
-    MIDDLEWARE = _MIDDLEWARE
-
 ROOT_URLCONF = 'urls'
-
 
 TEMPLATES = [
     {
