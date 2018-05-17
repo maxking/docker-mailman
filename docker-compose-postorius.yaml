@@ -22,7 +22,7 @@ services:
         ipv4_address: 172.19.199.2
 
   mailman-web:
-    image: quay.io/maxking/postorius:rolling
+    image: quay.io/maxking/postorius:latest
     container_name: mailman-web
     hostname: mailman-web
     depends_on:
