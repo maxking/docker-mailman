@@ -29,7 +29,7 @@ RUN set -ex \
 		                psycopg2 \
 		                dj-database-url \
 		                mysqlclient \
-	&& pip install -U django==1.10 \
+	&& pip install -U django>=1.11\
 	&& apk del .build-deps \
 	&& addgroup -S mailman \
 	&& adduser -S -G mailman mailman \
