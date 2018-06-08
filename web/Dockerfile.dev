@@ -23,13 +23,13 @@ RUN set -ex \
 	&& pip install -U git+https://gitlab.com/mailman/mailmanclient@${CLIENT_REF} \
 		                git+https://gitlab.com/mailman/postorius@${POSTORIUS_REF} \
 		                git+https://gitlab.com/mailman/hyperkitty@${HYPERKITTY_REF} \
-		                git+https://gitlab.com/mailman/django-mailman3@${DJ_MM3_REF} \
 		                whoosh \
 		                uwsgi \
 		                psycopg2 \
 		                dj-database-url \
 		                mysqlclient \
 	&& pip install -U django>=1.11\
+	&& pip install -U git+https://gitlab.com/mailman/django-mailman3@${DJ_MM3_REF} \
 	&& apk del .build-deps \
 	&& addgroup -S mailman \
 	&& adduser -S -G mailman mailman \
