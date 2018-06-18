@@ -144,6 +144,14 @@ configuration: python:mailman.config.exim4
 
 EOF
 
+cat > /etc/postfix-mailman-configuration.cfg << EOF
+[postfix]
+transport_file_type: regex
+# While in regex mode, postmap_command is never used, a placeholder
+# is added here so that it doesn't break anything.
+postmap_command: true
+EOF
+
 # Generate a basic configuration to use postfix.
 cat > /etc/postfix-mailman.cfg <<EOF
 [mta]
@@ -153,7 +161,7 @@ lmtp_host: $MM_HOSTNAME
 lmtp_port: 8024
 smtp_host: $SMTP_HOST
 smtp_port: $SMTP_PORT
-configuration: python:mailman.config.postfix
+configuration: /etc/postfix-mailman-configuration.cfg
 
 EOF
 
