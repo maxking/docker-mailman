@@ -164,7 +164,7 @@ then
 elif [ "$MTA" == "postfix" ]
 then
 	echo "Using Postfix configuration"
-	cat /etc/postfix-maiman.cfg >> /etc/mailman.cfg
+	cat /etc/postfix-mailman.cfg >> /etc/mailman.cfg
 else
 	echo "No MTA environment variable found, defaulting to Exim"
 	cat /etc/exim-mailman.cfg >> /etc/mailman.cfg
