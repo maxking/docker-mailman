@@ -185,7 +185,7 @@ Readme](web/README.md)
 These are the variables that you MUST change before deploying:
 
 - `HYPERKITTY_API_KEY`: Hyperkitty's API Key, should be set to the same value as
-  set for the mailman-core.
+  set for the mailman-web.
 
 - `DATABASE_URL`: URL of the type
   `driver://user:password@hostname:port/databasename` for the django to use. If
@@ -322,10 +322,10 @@ at `core/assets/exim`. There are three files
   serve mailman. Multi-domain setups will be added later.
 
 - [455_mm3_router](core/assets/exim/455_mm3_router) to be placed at
-  `/etc/exim4/conf.d/main/455_mm3_router` in a typical Debian install of exim4.
+  `/etc/exim4/conf.d/router/455_mm3_router` in a typical Debian install of exim4.
 
 - [55_mm3_transport](core/assets/exim/55_mm3_transport) to be placed at
-  `/etc/exim4/conf.d/main/55_mm3_transport` in a typical Debian install of exim4.
+  `/etc/exim4/conf.d/transport/55_mm3_transport` in a typical Debian install of exim4.
 
 
 Also, the default configuration inside the mailman-core image has the MTA set to

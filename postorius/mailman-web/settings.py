@@ -27,6 +27,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import socket
 import dj_database_url
 import sys
 
@@ -56,17 +57,17 @@ ALLOWED_HOSTS = [
     os.environ.get('DJANGO_ALLOWED_HOSTS'),
 ]
 
+# Try to get the address of Mailman Core automatically.
+
 # Mailman API credentials
 MAILMAN_REST_API_URL = os.environ.get('MAILMAN_REST_URL', 'http://mailman-core:8001')
 MAILMAN_REST_API_USER = os.environ.get('MAILMAN_REST_USER', 'restadmin')
 MAILMAN_REST_API_PASS = os.environ.get('MAILMAN_REST_PASSWORD', 'restpass')
-MAILMAN_ARCHIVER_KEY = os.environ.get('HYPERKITTY_API_KEY')
 MAILMAN_ARCHIVER_FROM = os.environ.get('MAILMAN_HOST_IP', '172.19.199.2')
 
 # Application definition
 
 INSTALLED_APPS = (
-    'hyperkitty',
     'postorius',
     'django_mailman3',
     # Uncomment the next line to enable the admin:
@@ -79,13 +80,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',
     'django_gravatar',
-    'paintstore',
-    'compressor',
-    'haystack',
-    'django_extensions',
-    'django_q',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -96,12 +91,13 @@ INSTALLED_APPS = (
     'allauth.socialaccount.providers.google',
 )
 
-_MIDDLEWARE = (
+MIDDLEWARE = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
@@ -109,16 +105,7 @@ _MIDDLEWARE = (
     'postorius.middleware.PostoriusMiddleware',
 )
 
-# Use old-style Middleware class in Python 2 and released versions of
-# Django-mailman3 don't support new style middlewares.
-
-if sys.version_info < (3, 0):
-    MIDDLEWARE_CLASSES = _MIDDLEWARE
-else:
-    MIDDLEWARE = _MIDDLEWARE
-
 ROOT_URLCONF = 'urls'
-
 
 TEMPLATES = [
     {
@@ -137,7 +124,6 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django_mailman3.context_processors.common',
-                'hyperkitty.context_processors.common',
                 'postorius.context_processors.postorius',
             ],
         },
@@ -284,37 +270,6 @@ SOCIALACCOUNT_PROVIDERS = {
 }
 
 
-# django-compressor
-# https://pypi.python.org/pypi/django_compressor
-#
-COMPRESS_PRECOMPILERS = (
-   ('text/less', 'lessc {infile} {outfile}'),
-   ('text/x-scss', 'sassc -t compressed {infile} {outfile}'),
-   ('text/x-sass', 'sassc -t compressed {infile} {outfile}'),
-)
-
-# On a production setup, setting COMPRESS_OFFLINE to True will bring a
-# significant performance improvement, as CSS files will not need to be
-# recompiled on each requests. It means running an additional "compress"
-# management command after each code upgrade.
-# http://django-compressor.readthedocs.io/en/latest/usage/#offline-compression
-# COMPRESS_OFFLINE = True
-
-#
-# Full-text search engine
-#
-HAYSTACK_CONNECTIONS = {
-    'default': {
-        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
-        'PATH': "/opt/mailman-web-data/fulltext_index",
-        # You can also use the Xapian engine, it's faster and more accurate,
-        # but requires another library.
-        # http://django-haystack.readthedocs.io/en/v2.4.1/installing_search_engines.html#xapian
-        # Example configuration for Xapian:
-        #'ENGINE': 'xapian_backend.XapianEngine'
-    },
-}
-
 import sys
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
@@ -362,11 +317,6 @@ LOGGING = {
             'level': 'INFO',
             'propagate': True,
         },
-        'hyperkitty': {
-            'handlers': ['file'],
-            'level': 'INFO',
-            'propagate': True,
-        },
         'postorius': {
             'handlers': ['file'],
             'level': 'INFO',
@@ -391,17 +341,6 @@ LOGGING = {
 if os.environ.get('LOG_TO_CONSOLE') == 'yes':
     LOGGING['loggers']['django']['handlers'].append('console')
     LOGGING['loggers']['django.request']['handlers'].append('console')
-# HyperKitty-specific
-#
-# Only display mailing-lists from the same virtual host as the webserver
-FILTER_VHOST = False
-
-
-Q_CLUSTER = {
-    'timeout': 300,
-    'save_limit': 100,
-    'orm': 'default',
-}
 
 try:
     from settings_local import *
