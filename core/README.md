@@ -52,6 +52,8 @@ standard version of docker-compose.yaml from this repository.
 - `MAILMAN_REST_PASSWORD`: Which password should Core use for the REST API. If
   not defined the default is `restpass`.
 
+- `MTA`: Mail Transfer Agent to use. Either `exim` or `postfix`. Default value is `exim`.
+
 - `SMTP_HOST`: IP Address/hostname from which you will be sending
   emails. Default value is `172.19.199.1`, which is the address of the Host OS.
 
