@@ -54,10 +54,10 @@ if [ "$EVENT_TYPE" = "cron" ]  || [ "$DEV" = "true" ]; then
             --build-arg POSTORIUS_REF=$POSTORIUS_REF \
             --build-arg CLIENT_REF=$CLIENT_REF \
             --build-arg DJ_MM3_REF=$DJ_MM3_REF \
-			-t $(!REG_URL)/maxking/postorius:rolling postorius/
+			-t ${!REG_URL}/maxking/postorius:rolling postorius/
 else
     # Do the normal building process.
     $DOCKER build -t ${!REG_URL}/maxking/mailman-core:$TAG core/
     $DOCKER build -t ${!REG_URL}/maxking/mailman-web:$TAG web/
-    $DOCKER build -t $(!REG_URL)/maxking/postorius:$TAG postorius/
+    $DOCKER build -t ${!REG_URL}/maxking/postorius:$TAG postorius/
 fi
