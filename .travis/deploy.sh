@@ -4,9 +4,9 @@ USER=maxking
 
 
 deploy() {
-	URL=$1
-	TAG=$2
-	PASSWORD=$3
+	URL="$1"
+	TAG="$2"
+	PASSWORD="$3"
 	# Tag the containers correctly.
 	docker tag maxking/mailman-core "$URL/maxking/mailman-core:$TAG"
 	docker tag maxking/mailman-web  "$URL/maxking/mailman-web:$TAG"
@@ -23,5 +23,5 @@ if [ ! "$BRANCH" = "master" ] && [ "$PULL_REQUEST" ]; then
 	exit 0
 fi
 
-deploy "quay.io" "rolling" $DOCKER_PASSWORD
-deploy "docker.io" "rolling" $QUAY_PASSWORD
+deploy "quay.io" "rolling" "$DOCKER_PASSWORD"
+deploy "docker.io" "rolling" "$QUAY_PASSWORD"
