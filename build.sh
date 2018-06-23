@@ -10,6 +10,7 @@ if [ "$1" = "dev" ]; then
 fi
 
 REG_URL=${REGISTRY}_URL
+TAG=0.1
 
 if [ "$EVENT_TYPE" = "cron" ]  || [ "$DEV" = "true" ]; then
     python3 -m venv venv
@@ -31,7 +32,7 @@ if [ "$EVENT_TYPE" = "cron" ]  || [ "$DEV" = "true" ]; then
             --label version.core="$CORE_REF" \
             --label version.mm3-hk="$MM3_HK_REF" \
             --label version.git_commit="$COMMIT_ID" \
-            -t ${!REG_URL}/maxking/mailman-core:rolling core/
+            -t maxking/mailman-core:rolling core/
 
     # Build the mailman-web image.
     $DOCKER build -f web/Dockerfile.dev \
@@ -44,7 +45,7 @@ if [ "$EVENT_TYPE" = "cron" ]  || [ "$DEV" = "true" ]; then
             --build-arg CLIENT_REF=$CLIENT_REF \
             --build-arg HYPERKITTY_REF=$HYPERKITTY_REF \
             --build-arg DJ_MM3_REF=$DJ_MM3_REF \
-            -t ${!REG_URL}/maxking/mailman-web:rolling web/
+            -t maxking/mailman-web:rolling web/
 
     $DOCKER build -f postorius/Dockerfile.dev\
 			--label version.git_commit="$COMMIT_ID"\
@@ -54,10 +55,10 @@ if [ "$EVENT_TYPE" = "cron" ]  || [ "$DEV" = "true" ]; then
             --build-arg POSTORIUS_REF=$POSTORIUS_REF \
             --build-arg CLIENT_REF=$CLIENT_REF \
             --build-arg DJ_MM3_REF=$DJ_MM3_REF \
-			-t ${!REG_URL}/maxking/postorius:rolling postorius/
+			-t maxking/postorius:rolling postorius/
 else
     # Do the normal building process.
-    $DOCKER build -t ${!REG_URL}/maxking/mailman-core:$TAG core/
-    $DOCKER build -t ${!REG_URL}/maxking/mailman-web:$TAG web/
-    $DOCKER build -t ${!REG_URL}/maxking/postorius:$TAG postorius/
+    $DOCKER build -t maxking/mailman-core:$TAG core/
+    $DOCKER build -t maxking/mailman-web:$TAG web/
+    $DOCKER build -t maxking/postorius:$TAG postorius/
 fi
