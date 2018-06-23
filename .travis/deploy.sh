@@ -3,7 +3,10 @@
 USER=maxking
 
 
-deploy(URL, TAG, PASSWORD) {
+deploy() {
+	URL=$1
+	TAG=$2
+	PASSWORD=$3
 	# Tag the containers correctly.
 	docker tag maxking/mailman-core "$URL/maxking/mailman-core:$TAG"
 	docker tag maxking/mailman-web  "$URL/maxking/mailman-web:$TAG"
