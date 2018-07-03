@@ -114,7 +114,7 @@ then
 fi
 
 # Generate a basic mailman.cfg.
-cat > /etc/mailman.cfg << EOF
+cat >> /etc/mailman.cfg << EOF
 [runner.retry]
 sleep_time: 10s
 
