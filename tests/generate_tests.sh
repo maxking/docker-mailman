@@ -13,10 +13,10 @@ version: '2'
 
 services:
   mailman-core:
-    image: ${!REG_URL}/maxking/mailman-core:$TAG
+    image: maxking/mailman-core:$TAG
 
   mailman-web:
-    image: ${!REG_URL}/maxking/mailman-web:$TAG
+    image: maxking/mailman-web:$TAG
     environment:
     - SECRET_KEY=abcdefghijklmnopqrstuv
 EOF
