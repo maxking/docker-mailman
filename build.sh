@@ -10,7 +10,7 @@ if [ "$1" = "dev" ]; then
 fi
 
 REG_URL=${REGISTRY}_URL
-TAG=0.1
+: "${TAG:=0.1}"
 
 if [ "$EVENT_TYPE" = "cron" ]  || [ "$DEV" = "true" ]; then
     python3 -m venv venv
