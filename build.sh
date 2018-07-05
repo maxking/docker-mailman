@@ -10,7 +10,6 @@ if [ "$1" = "dev" ]; then
 fi
 
 REG_URL=${REGISTRY}_URL
-: "${TAG:=0.1}"
 
 if [ "$EVENT_TYPE" = "cron" ]  || [ "$DEV" = "true" ]; then
     python3 -m venv venv
@@ -58,7 +57,7 @@ if [ "$EVENT_TYPE" = "cron" ]  || [ "$DEV" = "true" ]; then
 			-t maxking/postorius:rolling postorius/
 else
     # Do the normal building process.
-    $DOCKER build -t maxking/mailman-core:$TAG core/
-    $DOCKER build -t maxking/mailman-web:$TAG web/
-    $DOCKER build -t maxking/postorius:$TAG postorius/
+    $DOCKER build -t maxking/mailman-core core/
+    $DOCKER build -t maxking/mailman-web web/
+    $DOCKER build -t maxking/postorius postorius/
 fi
