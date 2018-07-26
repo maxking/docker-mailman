@@ -58,6 +58,11 @@ change them unless you know what you want.
   configuration. This is a separate configuration from`SERVE_FROM_DOMAIN` as
   latter is used for other purposes too.
 
+- `POSTORIUS_TEMPLATE_BASE_URL`: The base url at which the `mailman-web`
+  container can be reached from `mailman-core` container. This is set to
+  `http://mailman-web:8000` by default so that Core can fetch templates from
+  Core.
+
 Running
 =======
 
