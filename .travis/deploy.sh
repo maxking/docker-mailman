@@ -1,7 +1,8 @@
 #! /bin/bash
 
-USER=maxking
+set -ex
 
+USER=maxking
 
 deploy() {
 	URL="$1"
@@ -12,7 +13,7 @@ deploy() {
 	docker tag maxking/mailman-web  "$URL/maxking/mailman-web:$TAG"
 	docker tag maxking/postorius "$URL/maxking/postorius:$TAG"
 	# Login to the registry and push.
-	docker login -u "$USER" -p "${PASSWORD}" "$URL"
+	docker login -u $USER -p $PASSWORD $URL
 	docker push "$URL/maxking/mailman-web:$TAG"
 	docker push "$URL/maxking/mailman-core:$TAG"
 	docker push "$URL/maxking/postorius:$TAG"
