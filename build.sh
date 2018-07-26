@@ -57,7 +57,7 @@ if [ "$EVENT_TYPE" = "cron" ]  || [ "$DEV" = "true" ]; then
 			-t maxking/postorius:rolling postorius/
 else
     # Do the normal building process.
-    $DOCKER build -t maxking/mailman-core core/
-    $DOCKER build -t maxking/mailman-web web/
-    $DOCKER build -t maxking/postorius postorius/
+    $DOCKER build -t maxking/mailman-core:rolling core/
+    $DOCKER build -t maxking/mailman-web:rolling web/
+    $DOCKER build -t maxking/postorius:rolling postorius/
 fi
