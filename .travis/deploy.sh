@@ -9,9 +9,9 @@ deploy() {
 	TAG="$2"
 	PASSWORD="$3"
 	# Tag the containers correctly.
-	docker tag maxking/mailman-core "$URL/maxking/mailman-core:$TAG"
-	docker tag maxking/mailman-web  "$URL/maxking/mailman-web:$TAG"
-	docker tag maxking/postorius "$URL/maxking/postorius:$TAG"
+	docker tag maxking/mailman-core:rolling "$URL/maxking/mailman-core:$TAG"
+	docker tag maxking/mailman-web:rolling  "$URL/maxking/mailman-web:$TAG"
+	docker tag maxking/postorius:rolling "$URL/maxking/postorius:$TAG"
 	# Login to the registry and push.
 	docker login -u $USER -p $PASSWORD $URL
 	docker push "$URL/maxking/mailman-web:$TAG"
