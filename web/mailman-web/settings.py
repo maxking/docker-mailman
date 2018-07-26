@@ -403,6 +403,8 @@ Q_CLUSTER = {
     'orm': 'default',
 }
 
+POSTORIUS_TEMPLATE_BASE_URL =  os.environ.get('POSTORIUS_TEMPLATE_BASE_URL', 'http://mailman-web:8000')
+
 try:
     from settings_local import *
 except ImportError:
