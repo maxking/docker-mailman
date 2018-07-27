@@ -9,8 +9,9 @@ COPY docker-entrypoint.sh /usr/local/bin/
 RUN apk update \
     && apk add --virtual build-deps gcc python3-dev musl-dev postgresql-dev libffi-dev \
     && apk add bash su-exec postgresql-client mysql-client curl \
+	&& pip install -U pip \
     && pip install psycopg2 \
-                   mailman==3.1.1 \
+                   mailman==3.2 \
                    mailman-hyperkitty==1.1.0 \
                    pymysql \
     && apk del build-deps \

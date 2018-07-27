@@ -1,4 +1,4 @@
-FROM python:2.7-alpine3.6
+FROM python:3.6-alpine3.7
 
 MAINTAINER Abhilash Raj
 
@@ -15,11 +15,11 @@ RUN set -ex \
 	   	postgresql-dev mariadb-dev \
 	&& apk add --no-cache --virtual .mailman-rundeps bash sassc \
 	   postgresql-client mysql-client py-mysqldb curl mailcap \
-	&& pip install -U django==1.11 pip \
-	&& pip install mailmanclient==3.1.1 \
-		postorius==1.1.2 \
-		hyperkitty==1.1.4 \
-		django-mailman3==1.1.0 \
+	&& pip install -U django==2.0.5 pip \
+	&& pip install mailmanclient==3.2.0 \
+		postorius==1.2.1 \
+		hyperkitty==1.2.0 \
+		django-mailman3==1.2.0 \
 		whoosh \
 		uwsgi \
 		psycopg2 \
