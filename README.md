@@ -2,8 +2,28 @@
 permalink: /
 ---
 
+
 GNU Mailman 3 Deployment with Docker
 ====================================
+
+Table of Contents
+-----------------
+
+   * [GNU Mailman 3 Deployment with Docker](#gnu-mailman-3-deployment-with-docker)
+   * [Release](#release)
+   * [Rolling Releases](#rolling-releases)
+      * [Security](#security)
+   * [Dependencies](#dependencies)
+   * [Configuration](#configuration)
+      * [Mailman-web](#mailman-web)
+      * [Mailman-Core](#mailman-core)
+   * [Running](#running)
+   * [Setting up your MTA](#setting-up-your-mta)
+   * [Setting up your web server](#setting-up-your-web-server)
+       * [Serving static files](#serving-static-files)
+       * [SSL certificates](#ssl-certificates)
+   * [LICENSE](#license)
+
 
 [![CircleCI](https://circleci.com/gh/maxking/docker-mailman/tree/master.svg?style=svg)](https://circleci.com/gh/maxking/docker-mailman/tree/master)
 
