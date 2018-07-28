@@ -21,7 +21,7 @@ Release
 =======
 
 The tags for the images are assumed to be release versions for images. This is
-going to be somewhat common philosophy of distributing Container images where
+going to be a somewhat common philosophy of distributing Container images where
 the images with same tags are usually updated with the new functionality.
 
 Releases will follow the following rules:
@@ -30,16 +30,16 @@ Releases will follow the following rules:
   of Images, use these tags.
 
 * Images tagged with A.B will correspond to the latest A.B.C version
-  released. Releases in A.B series are supposed to be backwards compatible
-  i.e. any existing installation should not break when upgrading between
+  released. Releases in A.B series are supposed to be backwards compatible,
+  i.e., any existing installation should not break when upgrading between
   subversions of A.B.C. So, if you want the latest updates and want to
   frequently update your installation without having to change the version
   numbers, you can use this.
 
 * Any changes in the minor version of Mailman components of the images will
-  cause a bump in the minor version i.e. A.(B+1) will have one (and only one)
+  cause a bump in the minor version, e.g., A.(B+1) will have one (and only one)
   updated Mailman component from A.B. Also, significant change in functionality,
-  that might change how Images work or how people interact with the containers,
+  that might change how Images work or how people interact with the containers
   can also cause a bump in the minor version.
 
 * Major versions will change either when there are backwards incompatible
@@ -76,7 +76,7 @@ Dependencies
 
 To run this you first need to download docker for whichever operating system you
 are using. You can find documentation about [how to install][5]. It is
-recomended to use these instead of the one from your package managers. After you
+recommended to use these instead of the one from your package managers. After you
 have downloaded and installed docker, install docker-compose from [here][6].
 
 
@@ -156,7 +156,7 @@ For more details on how to configure this image, please look [Mailman-core's
 Readme](core/README.md)
 
 
-While the above configuration will allow you to run the images and possible view
+While the above configuration will allow you to run the images and possibly view
 the Web Frontend, it won't be functional until it is fully configured to to send
 emails.
 
@@ -164,7 +164,7 @@ To configure the mailman-web container to send emails, see these [configuration
 settings][15].
 
 
-To configure the mailman-core container to send emails, see the Setting you MTA
+To configure the mailman-core container to send emails, see the Setting your MTA
 section below.
 
 Running
@@ -182,7 +182,7 @@ $ docker-compose up -d
 ```
 
 Note that the web frontend in the mailman-web container is, by default, only
-configured to serve dynamic content. Anything static like stylesheets etc is
+configured to serve dynamic content. Anything static like stylesheets, etc., is
 expected to be served directly by the web server. The static content exists at
 `/opt/mailman/web/static` and should be _aliased_ to `/static/` in the web
 server configuration.
@@ -194,18 +194,18 @@ See [the nginx configuration][17] as an example.
 
 This command will do several things, most importantly:
 
-- Run a wsgi server using [`uwsgi`][7] for the Mailman's Django based web
+- Run a wsgi server using [`uwsgi`][7] for the Mailman's Django-based web
   frontend listening on http://172.19.199.3:8000/. It will run 2 worker
   processes with 4 threads each. You may want to change the setting
   `ALLOWED_HOSTS` in the settings before deploying the application in
   production.
 
-- Run a PostgreSQL server with a default database, username and password as
+- Run a PostgreSQL server with a default database, username, and password as
   mentioned in the `docker-compose.yaml`. You will have to change configuration
   files too if you change any of these.
 
 - Run mailman-core listening an LMTP server at http://172.19.199.2:8024/ for
-  messages from MTA. You will have to configure your MTA to send messages at
+  messages from your MTA. You will have to configure your MTA to send messages at
   this address.
 
 Some more details about what the above system achieves is mentioned below. If you
@@ -219,12 +219,12 @@ this. However, these are very easy to understand if you know how docker works.
   assigned static IPs. The host operating system is available at `172.19.199.1`
   from within these containers.
 
-- Spin off mailman-core container which has a static IP address of
+- Spin off a mailman-core container which has a static IP address of
   `172.19.199.2` in the mailman bridge network created above. It has
   GNU Mailman 3 core running inside it. Mailman core's REST API is available at
   port 8001 and LMTP server listens at port 8024.
 
-- Spin off mailman-web container which has a Django application running with
+- Spin off a mailman-web container which has a Django application running with
   both Mailman's web frontend Postorius and Mailman's web-based Archiver
   running. [Uwsgi][7] server is used to run a web server with the configuration
   provided in this repository [here](web/assets/settings.py). You may want to
@@ -294,8 +294,8 @@ configuration: python:mailman.config.exim4
 
 To use [Postfix][12], it should be set up to relay emails from
 `172.19.199.2` and `172.19.199.3`. The mailman specific configuration is
-mentioned below which you should add to you `main.cf` configuration file,
-which is typically at `/etc/postfix/main.cf` on Debian based operating
+mentioned below which you should add to your `main.cf` configuration file,
+which is typically at `/etc/postfix/main.cf` on Debian-based operating
 systems:
 
 ```
@@ -339,8 +339,8 @@ It is advisable to run your Django (interfaced through WSGI server) through an
 _actual_ webserver in production for better performance.
 
 If you are using v0.1.0, the uwsgi server is configured to listen to requests at
-`172.19.199.3:8000` using `HTTP` protocol. Make sure that you preserve the `HOST`
-header when you proxy the requests from your Web Server. In Nginx, you can do
+`172.19.199.3:8000` using the `HTTP` protocol. Make sure that you preserve the `HOST`
+header when you proxy the requests from your Web Server. In Nginx you can do
 that by adding the following to your configuration:
 
 ```
@@ -358,14 +358,14 @@ that by adding the following to your configuration:
 
 ```
 
-Make sure you are using `proxy_pass` for `HTTP` protocol.
+Make sure you are using `proxy_pass` for the `HTTP` protocol.
 
 Starting from v0.1.1, the uwsgi server is configured to listen to requests at
 `172.19.199.3:8000` with the http protocol and `172.19.199.3:8080` for the uwsgi
 protocol.
 
 It is advised to use the uwsgi protocol as it has better performance. Both
-Apache and Nginx have native support for uwsgi protocol through plugins which
+Apache and Nginx have native support for the uwsgi protocol through plugins which
 are generally included in the distro packages.
 
 To move to uwsgi protocol in the above nginx configuration use this
@@ -382,24 +382,24 @@ To move to uwsgi protocol in the above nginx configuration use this
         }
 ```
 
-Please make sure that you are using v0.1.1 if you use this configuration.
+Please make sure that you are using v0.1.1 or greater if you use this configuration.
 
 
 ### Serving static files
 
-UWSGI by default doesn't serve static files by default, so when running
-`mailman-web` using the provided `docker-compose.yaml` file you won't see any
+UWSGI by default doesn't serve static files so, when running
+`mailman-web` using the provided `docker-compose.yaml` file, you won't see any
 CSS or JS files being served.
 
 You will have to add an alias rule in your web server to serve the static
-files. See [here][18] for instructions on how to configure you web server. The
+files. See [here][18] for instructions on how to configure your web server. The
 STATIC_ROOT for you would be `/opt/mailman/web/static`. This method is
 **highly** recommended for better performance reasons.
 
 ### SSL certificates
 
 SSL Certificates from Lets Encrypt need to be renewed every 90 days. You can
-setup a cron job to do the job. I have this small shell script(certbot-renew.sh)
+setup a cron job to do the job. I have this small shell script (certbot-renew.sh)
 that you can put up in `/etc/cron.monthly` to get the job done.
 
 ```
@@ -425,7 +425,7 @@ Please do not forget to make the script executable (chmod +x certbot-renew.sh).
 LICENSE
 =======
 
-This repository is licensed under MIT License. Please see the LICENSE file for
+This repository is licensed under the MIT License. Please see the LICENSE file for
 more details.
 
 [1]: http://list.org
