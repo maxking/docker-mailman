@@ -37,7 +37,7 @@ jobs:
             REGISTRY: QUAY
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              bash .travis/deploy.sh
+              python .travis/deploy.py
             fi
 
 workflows:
