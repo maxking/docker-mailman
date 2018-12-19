@@ -19,6 +19,7 @@ Table of Contents
       * [Mailman-Core](#mailman-core)
    * [Running](#running)
    * [Setting up your MTA](#setting-up-your-mta)
+       * [uwsgi](#uwsgi)
    * [Setting up your web server](#setting-up-your-web-server)
        * [Serving static files](#serving-static-files)
        * [SSL certificates](#ssl-certificates)
@@ -433,9 +434,14 @@ that by adding the following to your configuration:
 
 Make sure you are using `proxy_pass` for the `HTTP` protocol.
 
+uwsgi
+-----
+
 Starting from v0.1.1, the uwsgi server is configured to listen to requests at
 `172.19.199.3:8000` with the http protocol and `172.19.199.3:8080` for the uwsgi
 protocol.
+
+**Please make sure that you are using port 8080 for uwsgi protocol.**
 
 It is advised to use the uwsgi protocol as it has better performance. Both
 Apache and Nginx have native support for the uwsgi protocol through plugins which
