@@ -201,6 +201,15 @@ variables mentioned above (`MAILMAN_ADMIN_USER` & `MAILMAN_ADMIN_EMAIL`), no pas
 is set for your admin account. To set a password, plese follow the "Forgot Password"
 link on the "Sign In" page.
 
+To configure the mailman-web container to send emails, add this to your `settings_local.py`.:
+```
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = '172.19.199.1'
+EMAIL_PORT = 25
+```
+This is required in addition to the [Setup your MTA](#setting-up-your-mta) section below,
+which covers email setup for Mailman Core.
+
 For more details on how to configure this image, please look at [Mailman-web's
 Readme](web/README.md)
 
@@ -235,12 +244,8 @@ While the above configuration will allow you to run the images and possibly view
 the Web Frontend, it won't be functional until it is fully configured to to send
 emails.
 
-To configure the mailman-web container to send emails, see these [configuration
-settings][15].
-
-
-To configure the mailman-core container to send emails, see the Setting your MTA
-section below.
+To configure the mailman-core container to send emails, see the [Setting your MTA
+section below](#setting-up-your-mta).
 
 Running
 =======
