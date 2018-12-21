@@ -165,8 +165,9 @@ the host running the containers and are imported at runtime in the containers.
 
 * `/opt/mailman/web/settings_local.py` : This is the Django configuration that
   is imported by the [existing configuration](web/mailman-web/settings.py)
-  provided by the mailman-web container. To change or override any settings in
-  Django, you need to edit this file.
+  provided by the mailman-web container. **This file is referred to as 
+  `settings.py` in most of the Postorius and Django documentation.** To change
+  or override any settings in Django/Postorius, you need to create/edit this file. 
 
 
 Also, note that if you need any other files to be accessible from the host to
