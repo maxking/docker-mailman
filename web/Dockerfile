@@ -15,7 +15,7 @@ RUN set -ex \
 		postgresql-dev mariadb-dev python3-dev \
 	&& apk add --no-cache --virtual .mailman-rundeps bash sassc \
 	   postgresql-client mysql-client py-mysqldb curl mailcap \
-	   python3 py3-setuptools \
+	   python3 py3-setuptools xapian-core xapian-bindings-python3 \
 	&& python3 -m pip install -U django==2.1.5 pip \
 	&& python3 -m pip install mailmanclient==3.2.1 \
 		postorius==1.2.2 \
@@ -27,6 +27,7 @@ RUN set -ex \
 		dj-database-url \
 		mysqlclient \
 		typing \
+		xapian-haystack \
 	&& apk del .build-deps \
 	&& addgroup -S mailman \
 	&& adduser -S -G mailman mailman \
