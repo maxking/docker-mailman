@@ -16,7 +16,7 @@ function wait_for_postgres () {
 
 function wait_for_mysql () {
 	# Check if MySQL is up and accepting connections.
-	HOSTNAME=$(python <<EOF
+	HOSTNAME=$(python3 <<EOF
 try:
     from urllib.parse import urlparse
 except ImportError:
@@ -112,11 +112,11 @@ else
 fi
 
 # Collect static for the django installation.
-python manage.py collectstatic --noinput
+python3 manage.py collectstatic --noinput
 
 # Migrate all the data to the database if this is a new installation, otherwise
 # this command will upgrade the database.
-python manage.py migrate
+python3 manage.py migrate
 
 # If MAILMAN_ADMIN_USER and MAILMAN_ADMIN_EMAIL is defined create a new
 # superuser for Django. There is no password setup so it can't login yet unless
@@ -124,7 +124,7 @@ python manage.py migrate
 if [[ -v MAILMAN_ADMIN_USER ]] && [[ -v MAILMAN_ADMIN_EMAIL ]];
 then
 	echo "Creating admin user $MAILMAN_ADMIN_USER ..."
-	python manage.py createsuperuser --noinput --username "$MAILMAN_ADMIN_USER"\
+	python3 manage.py createsuperuser --noinput --username "$MAILMAN_ADMIN_USER"\
 		   --email "$MAILMAN_ADMIN_EMAIL" 2> /dev/null || \
 		echo "Superuser $MAILMAN_ADMIN_USER already exists"
 fi
@@ -134,7 +134,7 @@ fi
 if [[ -v SERVE_FROM_DOMAIN ]];
 then
 	echo "Setting $SERVE_FROM_DOMAIN as the default domain ..."
-	python manage.py shell -c \
+	python3 manage.py shell -c \
 	"from django.contrib.sites.models import Site; Site.objects.filter(domain='example.com').update(domain='$SERVE_FROM_DOMAIN', name='$SERVE_FROM_DOMAIN')"
 fi
 

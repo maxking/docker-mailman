@@ -1,4 +1,4 @@
-FROM python:3.6-alpine3.7
+FROM alpine:3.8
 
 MAINTAINER Abhilash Raj
 
@@ -12,11 +12,12 @@ COPY docker-entrypoint.sh /usr/local/bin/
 # rights for management script
 RUN set -ex \
 	&& apk add --no-cache --virtual .build-deps gcc libc-dev linux-headers \
-	   	postgresql-dev mariadb-dev \
+		postgresql-dev mariadb-dev python3-dev \
 	&& apk add --no-cache --virtual .mailman-rundeps bash sassc \
 	   postgresql-client mysql-client py-mysqldb curl mailcap \
-	&& pip install -U django==2.1.5 pip \
-	&& pip install mailmanclient==3.2.1 \
+	   python3 py3-setuptools xapian-core xapian-bindings-python3 \
+	&& python3 -m pip install -U django==2.1.5 pip \
+	&& python3 -m pip install mailmanclient==3.2.1 \
 		postorius==1.2.2 \
 		hyperkitty==1.2.1 \
 		django-mailman3==1.2.0 \
@@ -26,6 +27,7 @@ RUN set -ex \
 		dj-database-url \
 		mysqlclient \
 		typing \
+		xapian-haystack \
 	&& apk del .build-deps \
 	&& addgroup -S mailman \
 	&& adduser -S -G mailman mailman \
@@ -43,3 +45,5 @@ STOPSIGNAL SIGINT
 
 ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["uwsgi", "--ini", "/opt/mailman-web/uwsgi.ini"]
+
+ENV PYTHONPATH=/usr/lib/python3.6/site-packages
