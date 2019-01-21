@@ -4,11 +4,8 @@ services:
   mailman-core:
     image: maxking/mailman-core:latest
     container_name: mailman-core
-    hostname: mailman-core
     volumes:
     - /opt/mailman/core:/opt/mailman/
-    links:
-    - database:database
     depends_on:
     - database
     environment:
@@ -16,19 +13,14 @@ services:
     - DATABASE_TYPE=mysql
     - DATABASE_CLASS=mailman.database.mysql.MySQLDatabase
     - HYPERKITTY_API_KEY=someapikey
-    networks:
-      mailman:
-        ipv4_address: 172.19.199.2
+    network_mode: "host"
+
 
   mailman-web:
     image: maxking/mailman-web:latest
     container_name: mailman-web
-    hostname: mailman-web
     depends_on:
     - database
-    links:
-    - mailman-core:mailman-core
-    - database:database
     volumes:
     - /opt/mailman/web:/opt/mailman-web-data
     environment:
@@ -37,9 +29,8 @@ services:
     - HYPERKITTY_API_KEY=someapikey
     - SECRET_KEY=thisisaverysecretkey
     - DYLD_LIBRARY_PATH=/usr/local/mysql/lib/
-    networks:
-      mailman:
-        ipv4_address: 172.19.199.3
+    network_mode: "host"
+
 
   database:
     environment:
@@ -51,15 +42,4 @@ services:
     image: mariadb:10.3
     volumes:
     - /opt/mailman/database:/var/lib/mysql
-    networks:
-      mailman:
-        ipv4_address: 172.19.199.4
-
-networks:
-   mailman:
-     driver: bridge
-     ipam:
-       driver: default
-       config:
-       -
-         subnet: 172.19.199.0/24
+    network_mode: "host"
