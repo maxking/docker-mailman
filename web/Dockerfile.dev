@@ -21,7 +21,7 @@ RUN set -ex \
     && apk add --no-cache --virtual .mailman-rundeps bash sassc \
 	    python3 py3-setuptools postgresql-client mysql-client py-mysqldb\
         curl mailcap xapian-core xapian-bindings-python3 \
-    && pip install -U \
+    && python3 -m pip install -U \
         git+https://gitlab.com/mailman/mailmanclient@${CLIENT_REF} \
         git+https://gitlab.com/mailman/postorius@${POSTORIUS_REF} \
         git+https://gitlab.com/mailman/hyperkitty@${HYPERKITTY_REF} \
@@ -31,8 +31,9 @@ RUN set -ex \
         dj-database-url \
 	    mysqlclient \
 	    xapian-haystack \
-    && pip install -U django>=1.11\
-    && pip install -U git+https://gitlab.com/mailman/django-mailman3@${DJ_MM3_REF} \
+    && python3 -m pip install -U django>=1.11\
+	&& python3 -m pip install -U \
+    	git+https://gitlab.com/mailman/django-mailman3@${DJ_MM3_REF} \
     && apk del .build-deps \
     && addgroup -S mailman \
     && adduser -S -G mailman mailman \
