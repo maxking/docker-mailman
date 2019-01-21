@@ -4,7 +4,7 @@ set -e
 function wait_for_postgres () {
 	# Check if the postgres database is up and accepting connections before
 	# moving forward.
-	# TODO: Use python's psycopg2 module to do this in python instead of
+	# TODO: Use python3's psycopg2 module to do this in python3 instead of
 	# installing postgres-client in the image.
 	until psql $DATABASE_URL -c '\l'; do
 		>&2 echo "Postgres is unavailable - sleeping"

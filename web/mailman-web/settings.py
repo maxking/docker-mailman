@@ -65,7 +65,7 @@ MAILMAN_ARCHIVER_FROM = os.environ.get('MAILMAN_HOST_IP', '172.19.199.2')
 
 # Application definition
 
-INSTALLED_APPS = (
+INSTALLED_APPS = [
     'hyperkitty',
     'postorius',
     'django_mailman3',
@@ -81,7 +81,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'rest_framework',
     'django_gravatar',
-    'paintstore',
     'compressor',
     'haystack',
     'django_extensions',
@@ -94,7 +93,17 @@ INSTALLED_APPS = (
     'allauth.socialaccount.providers.github',
     'allauth.socialaccount.providers.gitlab',
     'allauth.socialaccount.providers.google',
-)
+]
+
+# Optionally include paintstore, if it was installed with Hyperkitty.
+# TODO: Remove this after a new version of Hyperkitty is released and
+# neither the stable nor the rolling version needs it.
+try:
+    import paintstore
+    INSTALLED_APPS.append('paintstore')
+except ImportError:
+    pass
+
 
 _MIDDLEWARE = (
     'django.contrib.sessions.middleware.SessionMiddleware',
