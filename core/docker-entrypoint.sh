@@ -34,7 +34,7 @@ if [[ ! -v MM_HOSTNAME ]]; then
 fi
 
 if [[ ! -v SMTP_HOST ]]; then
-	export SMTP_HOST='172.19.199.1'
+	export SMTP_HOST='localhost'
 fi
 
 if [[ ! -v SMTP_PORT ]]; then

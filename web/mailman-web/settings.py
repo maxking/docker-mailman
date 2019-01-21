@@ -48,20 +48,17 @@ SITE_ID = 1
 # See https://docs.djangoproject.com/en/1.8/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = [
     "localhost",  # Archiving API from Mailman, keep it.
-    # "lists.your-domain.org",
     # Add here all production URLs you may have.
-    "mailman-web",
-    "172.19.199.3",
     os.environ.get('SERVE_FROM_DOMAIN'),
     os.environ.get('DJANGO_ALLOWED_HOSTS'),
 ]
 
 # Mailman API credentials
-MAILMAN_REST_API_URL = os.environ.get('MAILMAN_REST_URL', 'http://mailman-core:8001')
+MAILMAN_REST_API_URL = os.environ.get('MAILMAN_REST_URL', 'http://localhost:8001')
 MAILMAN_REST_API_USER = os.environ.get('MAILMAN_REST_USER', 'restadmin')
 MAILMAN_REST_API_PASS = os.environ.get('MAILMAN_REST_PASSWORD', 'restpass')
 MAILMAN_ARCHIVER_KEY = os.environ.get('HYPERKITTY_API_KEY')
-MAILMAN_ARCHIVER_FROM = os.environ.get('MAILMAN_HOST_IP', '172.19.199.2')
+MAILMAN_ARCHIVER_FROM = os.environ.get('MAILMAN_HOST_IP', '127.0.0.1')
 
 # Application definition
 
@@ -236,11 +233,12 @@ SERVER_EMAIL = 'root@{}'.format(hostname)
 
 # Change this when you have a real email backend
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = os.environ.get('SMTP_HOST', '172.19.199.1')
+EMAIL_HOST = os.environ.get('SMTP_HOST', 'localhost')
 EMAIL_PORT = os.environ.get('SMTP_PORT', 25)
 EMAIL_HOST_USER = ''
 EMAIL_HOST_PASSWORD = ''
 EMAIL_USE_TLS = False
+
 
 # Compatibility with Bootstrap 3
 from django.contrib.messages import constants as messages  # flake8: noqa
@@ -412,7 +410,7 @@ Q_CLUSTER = {
     'orm': 'default',
 }
 
-POSTORIUS_TEMPLATE_BASE_URL =  os.environ.get('POSTORIUS_TEMPLATE_BASE_URL', 'http://mailman-web:8000')
+POSTORIUS_TEMPLATE_BASE_URL =  os.environ.get('POSTORIUS_TEMPLATE_BASE_URL', 'http://localhost:8000')
 
 try:
     from settings_local import *
