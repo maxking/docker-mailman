@@ -17,7 +17,7 @@ services:
     - HYPERKITTY_API_KEY=someapikey
     - MM_HOSTNAME=localhost
     - SMTP_HOST=localhost
-    - HYPERKITTY_API_URL=http://localhost:8000/hyerpkitty
+    - HYPERKITTY_URL=http://localhost:8000/hyerpkitty
     network_mode: "host"
 
 
