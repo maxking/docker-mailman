@@ -44,6 +44,5 @@ EXPOSE 8000 8080
 STOPSIGNAL SIGINT
 
 ENTRYPOINT ["docker-entrypoint.sh"]
-CMD ["uwsgi", "--ini", "/opt/mailman-web/uwsgi.ini"]
 
-ENV PYTHONPATH=/usr/lib/python3.6/site-packages
+CMD ["uwsgi", "--ini", "/opt/mailman-web/uwsgi.ini"]
