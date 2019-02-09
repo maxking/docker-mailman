@@ -17,7 +17,7 @@ Configuration
 
 These are the variables that you MUST change before deploying:
 
-- `HYPERKITT_API_KEY`: Hyperkitty's API Key, should be set to the same value as
+- `HYPERKITTY_API_KEY`: Hyperkitty's API Key, should be set to the same value as
   set for the mailman-core.
 
 - `DATABASE_URL`: URL of the type
