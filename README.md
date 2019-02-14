@@ -371,10 +371,10 @@ smtp_port: $SMTP_PORT
 configuration: python:mailman.config.exim4
 ```
 
-
-To use [Postfix][12], edit the `main.cf` configuration file,
-which is typically at `/etc/postfix/main.cf` on Debian-based operating
-systems.  Add `172.19.199.2` and `172.19.199.3` to `mynetworks` so it will relay emails from the containers and add the following configuration lines:
+To use [Postfix][12], edit the `main.cf` configuration file, which is typically
+at `/etc/postfix/main.cf` on Debian-based operating systems.  Add `172.19.199.2`
+and `172.19.199.3` to `mynetworks` so it will relay emails from the containers
+and add the following configuration lines:
 
 ```
 # main.cf
