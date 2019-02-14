@@ -372,11 +372,9 @@ configuration: python:mailman.config.exim4
 ```
 
 
-To use [Postfix][12], it should be set up to relay emails from
-`172.19.199.2` and `172.19.199.3`. The mailman specific configuration is
-mentioned below which you should add to your `main.cf` configuration file,
+To use [Postfix][12], edit the `main.cf` configuration file,
 which is typically at `/etc/postfix/main.cf` on Debian-based operating
-systems:
+systems.  Add `172.19.199.2` and `172.19.199.3` to `mynetworks` so it will relay emails from the containers and add the following configuration lines:
 
 ```
 # main.cf
