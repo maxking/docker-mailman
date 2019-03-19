@@ -17,9 +17,9 @@ RUN set -ex \
 	   postgresql-client mysql-client py-mysqldb curl mailcap \
 	   python3 py3-setuptools xapian-core xapian-bindings-python3 \
 	&& python3 -m pip install -U django==2.1.5 pip \
-	&& python3 -m pip install mailmanclient==3.2.1 \
-		postorius==1.2.3 \
-		hyperkitty==1.2.1 \
+	&& python3 -m pip install mailmanclient==3.2.2 \
+		postorius==1.2.4 \
+		hyperkitty==1.2.2 \
 		django-mailman3==1.2.0 \
 		whoosh \
 		uwsgi \
