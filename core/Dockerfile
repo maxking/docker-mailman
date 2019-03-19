@@ -15,7 +15,7 @@ RUN apk update \
                    mailman==3.2.1 \
                    mailman-hyperkitty==1.1.0 \
                    pymysql \
-    && pip install -U falcon<=2.0.0 \
+    && pip install -U falcon==2.0.0 \
     && apk del build-deps \
     && adduser -S mailman
 
