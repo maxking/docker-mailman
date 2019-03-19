@@ -29,10 +29,10 @@ RUN set -ex \
         uwsgi \
         psycopg2 \
         dj-database-url \
-	    mysqlclient \
-	    xapian-haystack \
-    && python3 -m pip install -U django>=1.11\
-	&& python3 -m pip install -U \
+	mysqlclient \
+	xapian-haystack \
+    && python3 -m pip install -U django>=1.11 uwsgi==2.0.17.1 \
+    && python3 -m pip install -U \
     	git+https://gitlab.com/mailman/django-mailman3@${DJ_MM3_REF} \
     && apk del .build-deps \
     && addgroup -S mailman \
