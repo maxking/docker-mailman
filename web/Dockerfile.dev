@@ -26,7 +26,7 @@ RUN set -ex \
         git+https://gitlab.com/mailman/postorius@${POSTORIUS_REF} \
         git+https://gitlab.com/mailman/hyperkitty@${HYPERKITTY_REF} \
         whoosh \
-        uwsgi==2.0.17.1 \
+        uwsgi==2.0.17 \
         psycopg2 \
         dj-database-url \
 	mysqlclient \
