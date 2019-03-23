@@ -9,9 +9,6 @@ trigger:
 pool:
   vmImage: 'Ubuntu-16.04'
 
-variables:
-  imageName: 'your-container-image-name:$(build.buildId)'
-
 steps:
  - docker --version && python --version
  - sudo pip install docker-compose
