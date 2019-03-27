@@ -12,7 +12,7 @@ RUN apk update \
 	&& apk add --no-cache bash su-exec postgresql-client mysql-client curl python py3-setuptools \
 	&& python3 -m pip install -U pip \
     && python3 -m pip install psycopg2 \
-                   mailman==3.2.1 \
+                   mailman==3.2.2 \
                    mailman-hyperkitty==1.1.0 \
                    pymysql \
     && pip install -U falcon==1.4.1 \
