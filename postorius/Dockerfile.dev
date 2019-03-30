@@ -16,8 +16,8 @@ ARG CLIENT_REF
 # rights for management script
 RUN set -ex \
 	&& apk add --no-cache --virtual .build-deps gcc libc-dev linux-headers git \
-	   	postgresql-dev mariadb-dev \
-	&& apk add --no-cache --virtual .mailman-rundeps bash \
+	   	postgresql-dev mariadb-dev libffi-dev \
+	&& apk add --no-cache --virtual .mailman-rundeps bash libffi \
 	   postgresql-client mysql-client py-mysqldb curl mailcap \
 	&& pip install -U git+https://gitlab.com/mailman/mailmanclient@${CLIENT_REF} \
 		                git+https://gitlab.com/mailman/postorius@${POSTORIUS_REF} \
