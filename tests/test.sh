@@ -18,7 +18,7 @@ docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' mai
 docker-compose ps
 
 # Sleep for a while and check again if the containers are up.
-sleep 30
+sleep 60
 docker ps
 
 # Check if there is anything interesting in the logs.

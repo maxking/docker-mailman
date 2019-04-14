@@ -17,10 +17,10 @@ ARG CLIENT_REF
 # rights for management script
 RUN set -ex \
     && apk add --no-cache --virtual .build-deps gcc libc-dev linux-headers git \
-        postgresql-dev mariadb-dev python3-dev \
+        postgresql-dev mariadb-dev python3-dev libffi-dev \
     && apk add --no-cache --virtual .mailman-rundeps bash sassc \
-	    python3 py3-setuptools postgresql-client mysql-client py-mysqldb\
-        curl mailcap xapian-core xapian-bindings-python3 \
+      python3 py3-setuptools postgresql-client mysql-client py-mysqldb\
+        curl mailcap xapian-core xapian-bindings-python3 libffi \
     && python3 -m pip install -U \
         git+https://gitlab.com/mailman/mailmanclient@${CLIENT_REF} \
         git+https://gitlab.com/mailman/postorius@${POSTORIUS_REF} \
@@ -29,11 +29,11 @@ RUN set -ex \
         uwsgi \
         psycopg2 \
         dj-database-url \
-	    mysqlclient \
-	    xapian-haystack \
-    && python3 -m pip install -U django>=1.11\
-	&& python3 -m pip install -U \
-    	git+https://gitlab.com/mailman/django-mailman3@${DJ_MM3_REF} \
+        mysqlclient \
+        xapian-haystack \
+    && python3 -m pip install -U 'Django<2.2' \
+    && python3 -m pip install -U \
+       git+https://gitlab.com/mailman/django-mailman3@${DJ_MM3_REF} \
     && apk del .build-deps \
     && addgroup -S mailman \
     && adduser -S -G mailman mailman \
