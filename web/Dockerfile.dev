@@ -31,7 +31,7 @@ RUN set -ex \
         dj-database-url \
         mysqlclient \
         xapian-haystack \
-    && python3 -m pip install -U django<2.2\
+    && python3 -m pip install -U 'Django<2.2' \
     && python3 -m pip install -U \
        git+https://gitlab.com/mailman/django-mailman3@${DJ_MM3_REF} \
     && apk del .build-deps \
