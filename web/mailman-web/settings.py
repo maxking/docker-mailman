@@ -238,9 +238,10 @@ SERVER_EMAIL = 'root@{}'.format(hostname)
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = os.environ.get('SMTP_HOST', '172.19.199.1')
 EMAIL_PORT = os.environ.get('SMTP_PORT', 25)
-EMAIL_HOST_USER = ''
-EMAIL_HOST_PASSWORD = ''
-EMAIL_USE_TLS = False
+EMAIL_HOST_USER = os.environ.get('SMTP_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.environ.get('SMTP_HOST_PASSWORD', '')
+EMAIL_USE_TLS = os.environ.get('SMTP_USE_TLS', False)
+
 
 # Compatibility with Bootstrap 3
 from django.contrib.messages import constants as messages  # flake8: noqa
