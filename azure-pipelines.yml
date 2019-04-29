@@ -9,4 +9,11 @@ trigger:
 pool:
   vmImage: 'Ubuntu-16.04'
 
-steps: docker build -t mailman-core core/ .
+steps: 
+ - script: |
+     docker --version 
+     docker build -t mailman-core core/ .
+     sudo pip install docker-compose
+     source setup_env.sh
+     ./build.sh
+     docker-compose --version
