@@ -106,6 +106,7 @@ fi
 if [[ -e /opt/mailman-web-data/settings_local.py ]]; then
 	echo "Copying settings_local.py ..."
 	cp /opt/mailman-web-data/settings_local.py /opt/mailman-web/settings_local.py
+	chown mailman:mailman /opt/mailman-web/settings_local.py
 else
 	echo "settings_local.py not found, it is highly recommended that you provide one"
 	echo "Using default configuration to run."
