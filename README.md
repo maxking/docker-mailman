@@ -196,10 +196,7 @@ These are the settings that you MUST change before deploying:
 
 - `SECRET_KEY`: Django's secret key, mainly used for signing cookies and others.
 
-Please note here that if you choose to create the admin user using the environment
-variables mentioned above (`MAILMAN_ADMIN_USER` & `MAILMAN_ADMIN_EMAIL`), no password
-is set for your admin account. To set a password, plese follow the "Forgot Password"
-link on the "Sign In" page.
+Please note here that if you choose to create the admin user using the environment variables mentioned above (`MAILMAN_ADMIN_USER` & `MAILMAN_ADMIN_EMAIL`), no password is set for your admin account. To set a password, plese follow the "Forgot Password" link on the "Sign In" page.
 
 To configure the mailman-web container to send emails, add this to your `settings_local.py`.:
 ```
@@ -207,6 +204,9 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = '172.19.199.1'
 EMAIL_PORT = 25
 ```
+
+Alternatively, you can use the environment variables `SMTP_HOST` (defaults to `172.19.199.1`), `SMTP_PORT` (defaults to `25`), `SMTP_HOST_USER` (defaults to an empty string), `SMTP_HOST_PASSWORD` (defaults to an empty string) and `SMTP_USE_TLS` (defaults to `False`).
+
 This is required in addition to the [Setup your MTA](#setting-up-your-mta) section below,
 which covers email setup for Mailman Core.
 
@@ -357,8 +357,8 @@ at `core/assets/exim`. There are three files
   `/etc/exim4/conf.d/transport/55_mm3_transport` in a typical Debian install of exim4.
 
 
-Also, the default configuration inside the mailman-core image has the MTA set to
-Exim, but just for reference, it looks like this:
+Also, the default configuration inside the mailman-core image has the MTA set to Exim, but just for reference, it looks like this:
+
 ```
 # mailman.cfg
 [mta]
