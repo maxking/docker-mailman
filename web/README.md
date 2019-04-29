@@ -51,6 +51,13 @@ change them unless you know what you want.
 
 - `SMTP_PORT`: Port used for SMTP. Default is `25`.
 
+- `SMTP_HOST_USER`: Used for SMTP authentication. Default is an empty string.
+
+- `SMTP_HOST_PASSWORD`: Default is an empty string.
+
+- `SMTP_USE_TLS`: Specifies wheather the SMTP connection is encrypted
+  via TLS. Default is `False`.
+
 - `DJANGO_LOG_URL`: Path to the django's log file. Defaults to
   `/opt/mailman-web-data/logs/mailmanweb.log`.
 
