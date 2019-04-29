@@ -187,8 +187,8 @@ These are the settings that you MUST change before deploying:
   also replaces Django's default `example.com` SITE and becomes the default SITE
   (with SITE_ID=1).
 
-- `HYPERKITTY_API_KEY`: Hyperkitty's API Key, should be set to the same value as
-  set for the mailman-core.
+- `HYPERKITTY_API_KEY`: Hyperkitty's API Key, should be set to the same value
+  as set for the mailman-core.
 
 - `MAILMAN_ADMIN_USER`: The username for the admin user to be created by default.
 
@@ -196,22 +196,29 @@ These are the settings that you MUST change before deploying:
 
 - `SECRET_KEY`: Django's secret key, mainly used for signing cookies and others.
 
-Please note here that if you choose to create the admin user using the environment variables mentioned above (`MAILMAN_ADMIN_USER` & `MAILMAN_ADMIN_EMAIL`), no password is set for your admin account. To set a password, plese follow the "Forgot Password" link on the "Sign In" page.
+Please note here that if you choose to create the admin user using the
+environment variables mentioned above (`MAILMAN_ADMIN_USER` &
+`MAILMAN_ADMIN_EMAIL`), no password is set for your admin account. To set a
+password, plese follow the "Forgot Password" link on the "Sign In" page.
 
-To configure the mailman-web container to send emails, add this to your `settings_local.py`.:
+To configure the mailman-web container to send emails, add this to your
+`settings_local.py`.:
 ```
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = '172.19.199.1'
 EMAIL_PORT = 25
 ```
 
-Alternatively, you can use the environment variables `SMTP_HOST` (defaults to `172.19.199.1`), `SMTP_PORT` (defaults to `25`), `SMTP_HOST_USER` (defaults to an empty string), `SMTP_HOST_PASSWORD` (defaults to an empty string) and `SMTP_USE_TLS` (defaults to `False`).
+Alternatively, you can use the environment variables `SMTP_HOST` (defaults to
+`172.19.199.1`), `SMTP_PORT` (defaults to `25`), `SMTP_HOST_USER` (defaults to
+an empty string), `SMTP_HOST_PASSWORD` (defaults to an empty string) and
+`SMTP_USE_TLS` (defaults to `False`).
 
-This is required in addition to the [Setup your MTA](#setting-up-your-mta) section below,
-which covers email setup for Mailman Core.
+This is required in addition to the [Setup your MTA](#setting-up-your-mta)
+section below, which covers email setup for Mailman Core.
 
-For more details on how to configure this image, please look at [Mailman-web's
-Readme](web/README.md)
+For more details on how to configure this image, please look at
+[Mailman-web's Readme](web/README.md)
 
 ### Mailman-Core
 
@@ -342,8 +349,8 @@ your own MTA inside a container and have them relay emails to the mailman-core
 container or just install an MTA on the host and have them relay emails.
 
 To use [Exim4][8], it should be setup to relay emails from `172.19.199.3` and
-`172.19.199.2`. The mailman specific configuration is provided in the repository
-at `core/assets/exim`. There are three files
+`172.19.199.2`. The mailman specific configuration is provided in the
+repository at `core/assets/exim`. There are three files
 
 - [25_mm_macros](core/assets/exim/25_mm3_macros) to be placed at
   `/etc/exim4/conf.d/main/25_mm3_macros` in a typical Debian install of
@@ -357,7 +364,8 @@ at `core/assets/exim`. There are three files
   `/etc/exim4/conf.d/transport/55_mm3_transport` in a typical Debian install of exim4.
 
 
-Also, the default configuration inside the mailman-core image has the MTA set to Exim, but just for reference, it looks like this:
+Also, the default configuration inside the mailman-core image has the MTA set
+to Exim, but just for reference, it looks like this:
 
 ```
 # mailman.cfg
@@ -372,9 +380,9 @@ configuration: python:mailman.config.exim4
 ```
 
 To use [Postfix][12], edit the `main.cf` configuration file, which is typically
-at `/etc/postfix/main.cf` on Debian-based operating systems.  Add `172.19.199.2`
-and `172.19.199.3` to `mynetworks` so it will relay emails from the containers
-and add the following configuration lines:
+at `/etc/postfix/main.cf` on Debian-based operating systems.  Add
+`172.19.199.2` and `172.19.199.3` to `mynetworks` so it will relay emails from
+the containers and add the following configuration lines:
 
 ```
 # main.cf
@@ -392,8 +400,8 @@ relay_domains =
     regexp:/opt/mailman/core/var/data/postfix_domains
 ```
 
-To configure Mailman to use Postfix, add the following to `mailman-extra.cfg` at
-`/opt/mailman/core/mailman-extra.cfg`.
+To configure Mailman to use Postfix, add the following to `mailman-extra.cfg`
+at `/opt/mailman/core/mailman-extra.cfg`.
 
 ```
 # mailman-extra.cfg
