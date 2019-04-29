@@ -12,6 +12,7 @@ pool:
 steps: 
  - script: |
      docker --version 
-     source setup_env.sh
-     ./build.sh
      docker-compose --version
+     docker build -t maxking/mailman-core:latest core/ .
+     docker build -t maxking/mailman-web:latest web/ .
+     docker build -t maxking/postorius postorius/ .
