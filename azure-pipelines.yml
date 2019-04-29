@@ -13,6 +13,6 @@ steps:
  - script: |
      docker --version 
      docker-compose --version
-     docker build -t maxking/mailman-core:latest core/ .
-     docker build -t maxking/mailman-web:latest web/ .
-     docker build -t maxking/postorius postorius/ .
+     docker build -t maxking/mailman-core:latest core/
+     docker build -t maxking/mailman-web:latest web/
+     docker build -t maxking/postorius postorius/
