@@ -418,6 +418,17 @@ configuration: /etc/postfix-mailman.cfg
 
 The configuration file `/etc/postfix-mailman.cfg` is generated automatically.
 
+Setup site owner address. By default, mailman is setup with the site_owner set to 'changeme@example.com'. This should be pointing to a valid mailbox. Add the following to the '/opt/mailman/core/mailman-extra.cfg'.
+
+```
+[mailman]
+# This address is the "site owner" address.  Certain messages which must be
+# delivered to a human, but which can't be delivered to a list owner (e.g. a
+# bounce from a list owner), will be sent to this address.  It should point to
+# a human.
+site_owner: changeme@example.com
+```
+
 Setting up your web server
 ==========================
 
