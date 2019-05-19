@@ -76,4 +76,4 @@ if __name__ == '__main__':
         sys.exit(1)
 
     for name, path in VARIANTS[variant].items():
-        docker_build(dockerfile=path, tag=name)
+        docker_build(dockerfile=path, tag=variant)

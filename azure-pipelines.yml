@@ -5,12 +5,12 @@ pool:
   vmImage: 'Ubuntu-16.04'
 
 strategy:
+  maxParallel: 2
   matrix:
     Stable:
       variant: stable
     Rolling:
       variant: rolling
-
 
 steps:
   - task: UsePythonVersion@0
@@ -21,12 +21,12 @@ steps:
     inputs:
       scriptSource: 'filepath'
       scriptPath: 'build.py'
-      arguments: $[ variables['variant'] ]
+      arguments: $(variant)
   - task: PythonScript@0
     inputs:
       scriptSource: 'filepath'
       scriptPath: 'test.py'
-      arguments: $[ variables['variant'] ]
+      arguments: $(variant)
   - task: Bash@3
     inputs:
       filePath: 'tests/test.sh'
