@@ -18,7 +18,7 @@ environment:
 
 
 def test_setup(variant):
-    Path('tests/docker-test.yaml').write_text(
+    Path('docker-test.yaml').write_text(
         DOCKER_TEST.format(variant=variant))
 
 

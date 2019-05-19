@@ -4,6 +4,14 @@ trigger:
 pool:
   vmImage: 'Ubuntu-16.04'
 
+strategy:
+  matrix:
+    Stable:
+      variant: stable
+    Rolling:
+      variant: rolling
+
+
 steps:
   - task: UsePythonVersion@0
     inputs:
@@ -13,12 +21,12 @@ steps:
     inputs:
       scriptSource: 'filepath'
       scriptPath: 'build.py'
-      arguments: 'stable'
+      arguments: $[ variables['variant'] ]
   - task: PythonScript@0
     inputs:
       scriptSource: 'filepath'
       scriptPath: 'test.py'
-      arguments: 'stable'
+      arguments: $[ variables['variant'] ]
   - task: Bash@3
     inputs:
       filePath: 'tests/test.sh'
@@ -26,3 +34,5 @@ steps:
     inputs:
       scriptSource: 'filePath'
       scriptPath: '.travis/deploy.py'
+    condition: and(eq(variables['Build.SourceBranch'], 'refs/heads/master'),
+                   eq(variables['variant'], 'rolling'))
