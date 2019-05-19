@@ -10,9 +10,22 @@ pool:
   vmImage: 'Ubuntu-16.04'
 
 steps: 
- - script: |
-     docker --version 
-     docker-compose --version
-     docker build -t maxking/mailman-core:latest core/
-     docker build -t maxking/mailman-web:latest web/
-     docker build -t maxking/postorius postorius/
+  - task: Bash@3
+    inputs:
+      filePath: 'setup_env.sh'
+  - task: Bash@3
+    inputs:
+      filePath: 'build.sh'
+  - task: Bash@3
+    inputs:
+      filePath: 'tests/generate_tests.sh'
+  - task: Bash@3
+    inputs:
+      filePath: 'tests/test.sh'
+  - task: Bash@3
+    inputs:
+      filePath: 'tests/test.sh'
+  - task: PythonScript@0
+    inputs:
+      scriptSource: 'filePath'
+      scriptPath: '.travis/deploy.py'
