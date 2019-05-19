@@ -4,7 +4,11 @@ trigger:
 pool:
   vmImage: 'Ubuntu-16.04'
 
-steps: 
+steps:
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '3.7'
+      architecture: 'x64'
   - task: PythonScript@0
     inputs:
       scriptSource: 'filepath'
