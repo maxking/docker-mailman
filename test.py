@@ -8,10 +8,10 @@ DOCKER_TEST="""version: '2'
 
 services:
     mailman-core:
-        image: maxking/mailman-core:{variant}
+        image: core-{variant}
 
     mailman-web:
-        image: maxking/mailman-web:{variant}
+        image: web-{variant}
         environment:
           - SECRET_KEY=abcdefghijklmnopqrstuv
 """

@@ -13,9 +13,9 @@ STABLE_DOCKERFILES = {
 }
 
 ROLLING_DOCKERFILES = {
-    'core-dev': Path('core/Dockerfile.dev'),
-    'web-dev': Path('web/Dockerfile.dev'),
-    'postorius-dev': Path('postorius/Dockerfile.dev'),
+    'core-rolling': Path('core/Dockerfile.dev'),
+    'web-rolling': Path('web/Dockerfile.dev'),
+    'postorius-rolling': Path('postorius/Dockerfile.dev'),
 }
 
 VARIANTS = {
@@ -76,4 +76,4 @@ if __name__ == '__main__':
         sys.exit(1)
 
     for name, path in VARIANTS[variant].items():
-        docker_build(dockerfile=path, tag=variant)
+        docker_build(dockerfile=path, tag=name)
