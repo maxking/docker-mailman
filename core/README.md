@@ -59,7 +59,7 @@ standard version of docker-compose.yaml from this repository.
 
 - `SMTP_PORT`: Port used for SMTP. Default is `25`.
 
-- `HYPERKITTY_API_URL`: Default value is `http://mailman-web:8000/hyperkitty`
+- `HYPERKITTY_URL`: Default value is `http://mailman-web:8000/hyperkitty`
 
 Running Mailman-Core
 ====================
