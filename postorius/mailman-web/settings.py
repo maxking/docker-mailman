@@ -63,7 +63,7 @@ ALLOWED_HOSTS = [
 MAILMAN_REST_API_URL = os.environ.get('MAILMAN_REST_URL', 'http://mailman-core:8001')
 MAILMAN_REST_API_USER = os.environ.get('MAILMAN_REST_USER', 'restadmin')
 MAILMAN_REST_API_PASS = os.environ.get('MAILMAN_REST_PASSWORD', 'restpass')
-MAILMAN_ARCHIVER_FROM = os.environ.get('MAILMAN_HOST_IP', '172.19.199.2')
+MAILMAN_ARCHIVER_FROM = (os.environ.get('MAILMAN_HOST_IP', '172.19.199.2'),)
 
 # Application definition
 
