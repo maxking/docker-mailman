@@ -58,7 +58,7 @@ fi
 function setup_database () {
 	if [[ ! -v DATABASE_URL ]]
 	then
-		echo "Environemnt variable DATABASE_URL should be defined..."
+		echo "Environment variable DATABASE_URL should be defined..."
 		exit 1
 	fi
 
