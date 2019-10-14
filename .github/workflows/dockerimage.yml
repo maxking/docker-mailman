@@ -3,16 +3,25 @@ name: Docker Image CI
 on: [push]
 
 jobs:
-
   build:
- 
     runs-on: ubuntu-latest
- 
     steps:
     - uses: actions/checkout@v1
-    - name: Build the Mailman Core image
-      run: docker build core/ --file core/Dockerfile --tag maxking/mailman-core:latest
-    - name: Build the Mailman Web image
-      run: docker build web/ -f web/Dockerfile -t maxking/mailman-web:latest
-    - name: Build the Postorius image
-      run: docker build postorius/ -f postorius/Dockerfile -t maxking/postorius:latest
+    - name: Setup Environment
+      run: source setup_env.sh
+    - name: Build the Container image
+      run: ./build.sh
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Docker-compose
+        run: sudo pip install docker-compose
+      - name: Generate Tests
+        run: bash tests/generate_tests.sh
+      - name: Postgres Tests
+        run: bash tests/test.sh
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy
+        run: echo "Skipping deploy for now"
