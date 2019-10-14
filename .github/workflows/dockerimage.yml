@@ -5,6 +5,9 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      REGISTRY: QUAY
+      QUAY_URL: quay.io
     steps:
     - uses: actions/checkout@v1
     - name: Setup Environment
