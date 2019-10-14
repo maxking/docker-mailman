@@ -15,8 +15,8 @@ RUN set -ex \
 	   	postgresql-dev mariadb-dev libffi-dev \
 	&& apk add --no-cache --virtual .mailman-rundeps bash libffi \
 	   postgresql-client mysql-client py-mysqldb curl mailcap \
-	&& pip install -U Django==2.1.5 pip \
-	&& pip install postorius==1.2.4 \
+	&& pip install -U Django==2.2 pip \
+	&& pip install postorius==1.3.0 \
 		uwsgi \
 		psycopg2 \
 		dj-database-url \
