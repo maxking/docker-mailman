@@ -11,7 +11,7 @@ setup_env () {
 	CI_NAME=$1
 	# Set the current branch name.
 	BRANCH_NAME=${CI_NAME}_BRANCH
-    set_var BRANCH ${!BRANCH_NAME}
+        set_var BRANCH ${!BRANCH_NAME}
 }
 
 
@@ -27,6 +27,12 @@ elif [ "$CIRCLECI" ]; then
 	set_var COMMIT_ID $CIRCLE_SHA1
 	# Setup some generic environment vars.
 	setup_env CIRCLE
+elif [ "$GITHUB_REF"]; then
+       # Set the environment picked up from Github Actions.
+       set_var EVENT_TYPE $GITHUB_EVENT_NAME
+       set_var COMMIT_ID $GITHUB_SHA
+       set_var BRANCH $GITHUB_REF
+       # Setup some generic environment vars.
 fi
 
 if [ "$BRANCH" = "master" ]; then
@@ -36,3 +42,4 @@ else
 fi
 
 set_var REG_URL ${REGISTRY}_URL
+env
