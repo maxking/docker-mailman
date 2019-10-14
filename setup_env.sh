@@ -27,7 +27,7 @@ elif [ "$CIRCLECI" ]; then
 	set_var COMMIT_ID $CIRCLE_SHA1
 	# Setup some generic environment vars.
 	setup_env CIRCLE
-elif [ "$GITHUB_REF"]; then
+elif [ "$GITHUB_REF" ]; then
        # Set the environment picked up from Github Actions.
        set_var EVENT_TYPE $GITHUB_EVENT_NAME
        set_var COMMIT_ID $GITHUB_SHA
