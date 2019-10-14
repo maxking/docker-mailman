@@ -16,11 +16,11 @@ RUN set -ex \
 	&& apk add --no-cache --virtual .mailman-rundeps bash sassc \
 	   postgresql-client mysql-client py-mysqldb curl mailcap \
 	   python3 py3-setuptools xapian-core xapian-bindings-python3 libffi \
-	&& python3 -m pip install -U django==2.1.5 pip \
-	&& python3 -m pip install mailmanclient==3.2.2 \
-		postorius==1.2.4 \
-		hyperkitty==1.2.2 \
-		django-mailman3==1.2.0 \
+	&& python3 -m pip install -U django==2.2 pip \
+	&& python3 -m pip install mailmanclient==3.3.0 \
+		postorius==1.3.0 \
+		hyperkitty==1.3.0 \
+		django-mailman3==1.3.0 \
 		whoosh \
 		uwsgi \
 		psycopg2 \
