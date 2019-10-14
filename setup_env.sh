@@ -3,7 +3,7 @@
 set -ex
 
 set_var () {
-	echo $1=$2 >> $BASH_ENV
+	echo $1=$2
 	export $1=$2
 }
 
