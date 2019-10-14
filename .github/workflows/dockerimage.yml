@@ -11,17 +11,10 @@ jobs:
       run: source setup_env.sh
     - name: Build the Container image
       run: ./build.sh
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Install Docker-compose
-        run: sudo pip install docker-compose
-      - name: Generate Tests
-        run: bash tests/generate_tests.sh
-      - name: Postgres Tests
-        run: bash tests/test.sh
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy
-        run: echo "Skipping deploy for now"
+    - name: Install Docker-compose
+      run: sudo pip install docker-compose
+    - name: Generate Tests
+      run: bash tests/generate_tests.sh
+    - name: Postgres Tests
+      run: bash tests/test.sh
+
