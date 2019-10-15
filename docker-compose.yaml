@@ -46,7 +46,7 @@ services:
       POSTGRES_USER: mailman
       POSTGRES_PASSWORD: mailmanpass
     restart: always
-    image: postgres:11-alpine
+    image: postgres:11
     volumes:
     - /opt/mailman/database:/var/lib/postgresql/data
     networks:
