@@ -23,7 +23,7 @@ RUN set -ex \
 		django-mailman3==1.3.0 \
 		whoosh \
 		uwsgi \
-		psycopg2 \
+		psycopg2_binary \
 		dj-database-url \
 		mysqlclient \
 		typing \
