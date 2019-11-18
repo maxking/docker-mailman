@@ -7,7 +7,7 @@ COPY docker-entrypoint.sh /usr/local/bin/
 
 #Install all required packages, add user for executing mailman and set execution rights for startup script
 RUN apk update \
-	&& apk add --virtual build-deps gcc python3-dev musl-dev postgresql-dev \
+	&& apk add --virtual build-deps gcc python3-dev musl-dev postgresql-dev libc-dev \
 	   libffi-dev \
 	&& apk add --no-cache bash su-exec postgresql-client mysql-client curl python py3-setuptools \
 	&& python3 -m pip install -U pip \
