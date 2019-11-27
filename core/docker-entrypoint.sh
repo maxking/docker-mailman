@@ -16,11 +16,22 @@ function wait_for_postgres () {
 function wait_for_mysql () {
 	# Check if MySQL is up and accepting connections.
 	HOSTNAME=$(python3 -c "from urllib.parse import urlparse; o = urlparse('$DATABASE_URL'); print(o.hostname);")
-	until mysqladmin ping --host "$HOSTNAME" --silent; do
-		>&2 echo "MySQL is unavailable - sleeping"
-		sleep 1
-	done
-	>&2 echo "MySQL is up - continuing"
+	PORT=$(python3 -c "from urllib.parse import urlparse; o = urlparse('$DATABASE_URL'); print(o.port);")
+
+	if [[ $PORT  == "None" ]]
+	then
+		until mysqladmin ping --host "$HOSTNAME" --silent; do
+			>&2 echo "MySQL ($HOSTNAME) is unavailable - sleeping"
+			sleep 1
+		done
+		>&2 echo "MySQL is up - continuing"
+	else
+		until mysqladmin ping --host "$HOSTNAME" --port "$PORT" --silent; do
+			>&2 echo "MySQL ($HOSTNAME) is unavailable - sleeping"
+			sleep 1
+		done
+		>&2 echo "MySQL is up - continuing"
+	fi
 }
 
 # Empty the config file.
