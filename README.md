@@ -81,8 +81,8 @@ Every commit is tested with Mailman's CI infrastructure and is included in
 rolling releases only if they have passed the complete test suite.
 
 ```
-$ docker pull quay.io/maxking/mailman-web:rolling
-$ docker pull quay.io/maxking/mailman-core:rolling
+$ docker pull docker.io/maxking/mailman-web:rolling
+$ docker pull docker.io/maxking/mailman-core:rolling
 ```
 
 Rolling releases are built with every commit and also re-generated weekly. You
