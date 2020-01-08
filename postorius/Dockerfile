@@ -23,7 +23,6 @@ RUN set -ex \
 		dj-database-url \
 		mysqlclient \
 		typing \
-		django_compressor \
 	&& apk del .build-deps \
 	&& addgroup -S mailman \
 	&& adduser -S -G mailman mailman \
