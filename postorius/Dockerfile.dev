@@ -14,22 +14,22 @@ ARG POSTORIUS_REF
 # rights for management script
 RUN set -ex \
 	&& apk add --no-cache --virtual .build-deps gcc libc-dev linux-headers \
-                postgresql-dev mariadb-dev python3-dev libffi-dev \
-        && apk add --no-cache --virtual .mailman-rundeps bash sassc \
-                postgresql-client mysql-client py-mysqldb curl mailcap \
-                python3 py3-setuptools libffi \
-        && python3 -m pip install -U 'Django<3.0' pip \
-        && python3 -m pip install git+https://gitlab.com/mailman/postorius@${POSTORIUS_REF} \
-                uwsgi \
-                psycopg2 \
-                dj-database-url \
-                mysqlclient \
-                typing \
-        && apk del .build-deps \
-        && addgroup -S mailman \
-        && adduser -S -G mailman mailman \
-        && chown -R mailman /opt/mailman-web/ \
-        && chmod u+x /opt/mailman-web/manage.py
+		postgresql-dev mariadb-dev python3-dev libffi-dev \
+	&& apk add --no-cache --virtual .mailman-rundeps bash sassc \
+		postgresql-client mysql-client py-mysqldb curl mailcap \
+		python3 py3-setuptools libffi \
+	&& python3 -m pip install -U 'Django<3.0' pip \
+	&& python3 -m pip install git+https://gitlab.com/mailman/postorius@${POSTORIUS_REF} \
+		uwsgi \
+		psycopg2 \
+		dj-database-url \
+		mysqlclient \
+		typing \
+	&& apk del .build-deps \
+	&& addgroup -S mailman \
+	&& adduser -S -G mailman mailman \
+	&& chown -R mailman /opt/mailman-web/ \
+	&& chmod u+x /opt/mailman-web/manage.py
 
 WORKDIR /opt/mailman-web
 
