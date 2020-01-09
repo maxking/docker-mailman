@@ -17,7 +17,7 @@ RUN set -ex \
 		postgresql-client mysql-client py-mysqldb curl mailcap \
 		python3 py3-setuptools libffi \
 	&& python3 -m pip install -U 'Django<3.0' pip \
-	&& python3 -mpip install postorius==1.3.1 \
+	&& python3 -m pip install postorius==1.3.1 \
 		uwsgi \
 		psycopg2 \
 		dj-database-url \

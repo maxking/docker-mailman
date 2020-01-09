@@ -1,4 +1,4 @@
-FROM python:3.6-alpine3.6
+FROM alpine:3.8
 
 MAINTAINER Abhilash Raj
 
@@ -8,31 +8,28 @@ COPY mailman-web /opt/mailman-web
 COPY docker-entrypoint.sh /usr/local/bin/
 
 ARG POSTORIUS_REF
-ARG DJ_MM3_REF
-ARG CLIENT_REF
 
 # Install packages and dependencies for postorius and hyperkitty Add user for
 # executing apps, change ownership for uwsgi+django files and set execution
 # rights for management script
 RUN set -ex \
-	&& apk add --no-cache --virtual .build-deps gcc libc-dev linux-headers git \
-	   	postgresql-dev mariadb-dev libffi-dev \
-	&& apk add --no-cache --virtual .mailman-rundeps bash libffi \
-	   postgresql-client mysql-client py-mysqldb curl mailcap \
-	&& pip install -U git+https://gitlab.com/mailman/mailmanclient@${CLIENT_REF} \
-		                git+https://gitlab.com/mailman/postorius@${POSTORIUS_REF} \
-		                whoosh \
-		                uwsgi \
-		                psycopg2 \
-		                dj-database-url \
-		                mysqlclient \
-	&& pip install -U 'Django<3.0' \
-	&& pip install -U git+https://gitlab.com/mailman/django-mailman3@${DJ_MM3_REF} \
-	&& apk del .build-deps \
-	&& addgroup -S mailman \
-	&& adduser -S -G mailman mailman \
-	&& chown -R mailman /opt/mailman-web/ \
-	&& chmod u+x /opt/mailman-web/manage.py
+	&& apk add --no-cache --virtual .build-deps gcc libc-dev linux-headers \
+                postgresql-dev mariadb-dev python3-dev libffi-dev \
+        && apk add --no-cache --virtual .mailman-rundeps bash sassc \
+                postgresql-client mysql-client py-mysqldb curl mailcap \
+                python3 py3-setuptools libffi \
+        && python3 -m pip install -U 'Django<3.0' pip \
+        && python3 -m pip install git+https://gitlab.com/mailman/postorius@${POSTORIUS_REF} \
+                uwsgi \
+                psycopg2 \
+                dj-database-url \
+                mysqlclient \
+                typing \
+        && apk del .build-deps \
+        && addgroup -S mailman \
+        && adduser -S -G mailman mailman \
+        && chown -R mailman /opt/mailman-web/ \
+        && chmod u+x /opt/mailman-web/manage.py
 
 WORKDIR /opt/mailman-web
 
