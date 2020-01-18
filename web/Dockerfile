@@ -18,9 +18,9 @@ RUN set -ex \
 	   python3 py3-setuptools xapian-core xapian-bindings-python3 libffi \
 	&& python3 -m pip install -U 'Django<3.0' pip \
 	&& python3 -m pip install mailmanclient==3.3.0 \
-		postorius==1.3.1 \
-		hyperkitty==1.3.1 \
-		django-mailman3==1.3.1 \
+		postorius==1.3.2 \
+		hyperkitty==1.3.2 \
+		django-mailman3==1.3.2 \
 		whoosh \
 		uwsgi \
 		psycopg2 \
