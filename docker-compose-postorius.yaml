@@ -2,7 +2,7 @@ version: '2'
 
 services:
   mailman-core:
-    image: quay.io/maxking/mailman-core:rolling
+    image: maxking/mailman-core:0.3
     container_name: mailman-core
     hostname: mailman-core
     volumes:
@@ -22,7 +22,7 @@ services:
         ipv4_address: 172.19.199.2
 
   mailman-web:
-    image: quay.io/maxking/postorius:latest
+    image: maxking/postorius:0.3
     container_name: mailman-web
     hostname: mailman-web
     depends_on:
