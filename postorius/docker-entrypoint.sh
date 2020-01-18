@@ -119,6 +119,9 @@ python3 manage.py collectstatic --noinput
 # this command will upgrade the database.
 python3 manage.py migrate
 
+# Compile the translations.
+python3 manage.py compilemessages
+
 # If MAILMAN_ADMIN_USER and MAILMAN_ADMIN_EMAIL is defined create a new
 # superuser for Django. There is no password setup so it can't login yet unless
 # the password is reset.
