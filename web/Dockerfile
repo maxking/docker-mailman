@@ -14,7 +14,7 @@ RUN set -ex \
 	&& apk add --no-cache --virtual .build-deps gcc libc-dev linux-headers \
 		postgresql-dev mariadb-dev python3-dev libffi-dev \
 	&& apk add --no-cache --virtual .mailman-rundeps bash sassc \
-	   postgresql-client mysql-client py-mysqldb curl mailcap \
+	   postgresql-client mysql-client py-mysqldb curl mailcap gettext \
 	   python3 py3-setuptools xapian-core xapian-bindings-python3 libffi \
 	&& python3 -m pip install -U 'Django<3.0' pip \
 	&& python3 -m pip install mailmanclient==3.3.0 \
