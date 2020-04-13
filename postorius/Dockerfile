@@ -1,4 +1,4 @@
-FROM python:3.6-alpine
+FROM alpine:3.8
 
 MAINTAINER Abhilash Raj
 
@@ -12,11 +12,12 @@ COPY docker-entrypoint.sh /usr/local/bin/
 # rights for management script
 RUN set -ex \
 	&& apk add --no-cache --virtual .build-deps gcc libc-dev linux-headers \
-	   	postgresql-dev mariadb-dev libffi-dev \
-	&& apk add --no-cache --virtual .mailman-rundeps bash libffi \
-	   postgresql-client mysql-client py-mysqldb curl mailcap \
-	&& pip install -U Django==2.1.5 pip \
-	&& pip install postorius==1.2.4 \
+		postgresql-dev mariadb-dev python3-dev libffi-dev gettext \
+	&& apk add --no-cache --virtual .mailman-rundeps bash sassc \
+		postgresql-client mysql-client py-mysqldb curl mailcap \
+		python3 py3-setuptools libffi \
+	&& python3 -m pip install -U 'Django<3.0' pip \
+	&& python3 -m pip install postorius==1.3.1 \
 		uwsgi \
 		psycopg2 \
 		dj-database-url \

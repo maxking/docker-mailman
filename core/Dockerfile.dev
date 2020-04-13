@@ -19,6 +19,7 @@ RUN apk update \
     && python3 -m pip install -U psycopg2 pymysql \
         git+https://gitlab.com/mailman/mailman@${CORE_REF} \
         git+https://gitlab.com/mailman/mailman-hyperkitty@${MM3_HK_REF} \
+        gunicorn==19.9.0 \
     && apk del build-deps \
     && adduser -S mailman
 
