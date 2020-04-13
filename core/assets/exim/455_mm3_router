@@ -4,7 +4,6 @@
 mailman3_router:
   driver = accept
   domains = +mm3_domains
-  require_files = MM3_LISTCHK
   local_part_suffix_optional
   local_part_suffix = -admin : \
      -bounces   : -bounces+* : \
