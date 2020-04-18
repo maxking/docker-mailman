@@ -17,7 +17,7 @@ ARG CLIENT_REF
 # rights for management script
 RUN set -ex \
     && apk add --no-cache --virtual .build-deps gcc libc-dev linux-headers git \
-        postgresql-dev mariadb-dev python3-dev libffi-dev \
+        postgresql-dev mariadb-dev python3-dev libffi-dev openldap-dev \
     && apk add --no-cache --virtual .mailman-rundeps bash sassc \
       python3 py3-setuptools postgresql-client mysql-client py-mysqldb\
         curl mailcap xapian-core xapian-bindings-python3 libffi gettext \
@@ -31,6 +31,7 @@ RUN set -ex \
         dj-database-url \
         mysqlclient \
         xapian-haystack \
+        django-auth-ldap \
     && python3 -m pip install -U 'Django<3.0' \
     && python3 -m pip install -U \
        git+https://gitlab.com/mailman/django-mailman3@${DJ_MM3_REF} \
