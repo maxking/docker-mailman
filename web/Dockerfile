@@ -12,7 +12,7 @@ COPY docker-entrypoint.sh /usr/local/bin/
 # rights for management script
 RUN set -ex \
 	&& apk add --no-cache --virtual .build-deps gcc libc-dev linux-headers \
-	   pcre-dev postgresql-dev mariadb-dev python3-dev libffi-dev \
+		pcre-dev postgresql-dev mariadb-dev python3-dev libffi-dev openldap-dev \
 	&& apk add --no-cache --virtual .mailman-rundeps bash sassc \
 	   postgresql-client mysql-client py-mysqldb curl mailcap gettext \
 	   python3 py3-setuptools xapian-core xapian-bindings-python3 libffi \
@@ -28,6 +28,7 @@ RUN set -ex \
 		mysqlclient \
 		typing \
 		xapian-haystack \
+		django-auth-ldap \
 	&& apk del .build-deps \
 	&& addgroup -S mailman \
 	&& adduser -S -G mailman mailman \
