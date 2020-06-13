@@ -12,7 +12,6 @@ Table of Contents
    * [GNU Mailman 3 Deployment with Docker](#gnu-mailman-3-deployment-with-docker)
    * [Release](#release)
    * [Rolling Releases](#rolling-releases)
-      * [Security](#security)
    * [Dependencies](#dependencies)
    * [Configuration](#configuration)
       * [Mailman-web](#mailman-web)
@@ -115,28 +114,6 @@ $ docker inspect --format '{{json .Config.Labels }}' mailman-web | python -m jso
 - `version.hyperkitty`: The commit hash of Hyperkitty.
 - `version.postorius`: The commit hash of Postorius.
 - `version.dj-mm3`: The commit hash of Django-Mailman3 project.
-
-Security
---------
-
-All the releases are signed and can be verified using [Docker Content
-Trust][14]. To make sure that your docker client actually verifies these
-signatures, you can enable Docker's content trust by setting an environment
-variable `DOCKER_CONTENT_TRUST`. In bash/zsh you can try this:
-
-```bash
-$ export DOCKER_CONTENT_TRUST=1
-```
-
-Or, alternatively, you can do this on a per-command basis without setting the
-environment variable above. For example, when pulling an image:
-
-```bash
-$ docker pull --disable-content-trust=false maxking/mailman-core:release
-```
-
-The above command will fail if the release tag doesn't exist or is not signed.
-
 
 Dependencies
 ============
