@@ -113,7 +113,7 @@ else
 fi
 
 # Collect static for the django installation.
-python3 manage.py collectstatic --noinput
+python3 manage.py collectstatic --noinput --clear --verbosity 0
 
 # Migrate all the data to the database if this is a new installation, otherwise
 # this command will upgrade the database.
