@@ -8,4 +8,4 @@ assignees: ''
 ---
 
 **Tag/version of Container Images**
-Choose from: latest, rolling, 0.2, 0.2.*
+Choose from: latest, rolling, 0.3, 0.3.*
