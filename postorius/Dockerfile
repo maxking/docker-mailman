@@ -14,7 +14,7 @@ RUN set -ex \
 	&& apk add --no-cache --virtual .build-deps gcc libc-dev linux-headers \
 		postgresql-dev mariadb-dev python3-dev libffi-dev gettext \
 	&& apk add --no-cache --virtual .mailman-rundeps bash sassc \
-		postgresql-client mysql-client py3-mysqldb curl mailcap \
+		postgresql-client mysql-client py3-mysqlclient curl mailcap \
 		python3 py3-pip libffi \
 	&& python3 -m pip install -U 'Django<3.0' pip wheel setuptools \
 	&& python3 -m pip install postorius==1.3.3 \
