@@ -15,8 +15,9 @@ ARG MM3_HK_REF
 RUN apk update \
 	&& apk add --no-cache --virtual build-deps gcc python3-dev musl-dev \
    	    postgresql-dev git libffi-dev  \
-    && apk add --no-cache bash su-exec postgresql-client mysql-client curl python3 py3-setuptools \
-    && python3 -m pip install -U psycopg2 pymysql \
+    && apk add --no-cache bash su-exec postgresql-client mysql-client curl python3 py3-setuptools linux-headers \
+    && python3 -m pip install -U psycopg2 pymysql setuptools wheel \
+    && python3 -m pip install \
         git+https://gitlab.com/mailman/mailman@${CORE_REF} \
         git+https://gitlab.com/mailman/mailman-hyperkitty@${MM3_HK_REF} \
         gunicorn==19.9.0 \

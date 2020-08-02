@@ -9,8 +9,9 @@ COPY docker-entrypoint.sh /usr/local/bin/
 RUN apk update \
 	&& apk add --virtual build-deps gcc python3-dev musl-dev postgresql-dev \
 	   libffi-dev \
-	&& apk add --no-cache bash su-exec postgresql-client mysql-client curl python py3-setuptools \
-	&& python3 -m pip install -U pip \
+  # psutil needs linux-headers to compile on musl c library.
+	&& apk add --no-cache bash su-exec postgresql-client mysql-client curl python3 py3-setuptools linux-headers \
+	&& python3 -m pip install -U pip setuptools wheel \
         && python3 -m pip install psycopg2 \
                    gunicorn==19.9.0 \
                    mailman==3.3.1 \
