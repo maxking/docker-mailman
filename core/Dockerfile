@@ -9,8 +9,8 @@ COPY docker-entrypoint.sh /usr/local/bin/
 RUN apk update \
 	&& apk add --virtual build-deps gcc python3-dev musl-dev postgresql-dev \
 	   libffi-dev \
-	&& apk add --no-cache bash su-exec postgresql-client mysql-client curl py3-setuptools \
-	&& python3 -m pip install -U pip==20.1 setuptools wheel \
+	&& apk add --no-cache bash su-exec postgresql-client mysql-client curl py3-setuptools ethtools \
+	&& python3 -m pip install -U pip setuptools wheel \
         && python3 -m pip install psycopg2 \
                    gunicorn==19.9.0 \
                    mailman==3.3.1 \
