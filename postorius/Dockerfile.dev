@@ -18,7 +18,7 @@ RUN set -ex \
 	&& apk add --no-cache --virtual .mailman-rundeps bash sassc \
 		postgresql-client mysql-client py-mysqldb curl mailcap \
 		python3 py3-setuptools libffi gettext \
-	&& python3 -m pip install -U 'Django<3.0' pip \
+	&& python3 -m pip install -U 'Django<3.0' pip setuptools wheel \
 	&& python3 -m pip install git+https://gitlab.com/mailman/postorius@${POSTORIUS_REF} \
 		uwsgi \
 		psycopg2 \

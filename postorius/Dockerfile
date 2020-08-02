@@ -16,8 +16,8 @@ RUN set -ex \
 	&& apk add --no-cache --virtual .mailman-rundeps bash sassc \
 		postgresql-client mysql-client py-mysqldb curl mailcap \
 		python3 py3-setuptools libffi \
-	&& python3 -m pip install -U 'Django<3.0' pip \
-	&& python3 -m pip install postorius==1.3.1 \
+	&& python3 -m pip install -U 'Django<3.0' pip wheel setuptools \
+	&& python3 -m pip install postorius==1.3.4 \
 		uwsgi \
 		psycopg2 \
 		dj-database-url \
