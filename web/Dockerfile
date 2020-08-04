@@ -1,4 +1,4 @@
-FROM alpine:3.8
+FROM alpine:3.12
 
 MAINTAINER Abhilash Raj
 
@@ -14,8 +14,8 @@ RUN set -ex \
 	&& apk add --no-cache --virtual .build-deps gcc libc-dev linux-headers \
 		postgresql-dev mariadb-dev python3-dev libffi-dev openldap-dev \
 	&& apk add --no-cache --virtual .mailman-rundeps bash sassc \
-	   postgresql-client mysql-client py-mysqldb curl mailcap gettext \
-	   python3 py3-setuptools xapian-core xapian-bindings-python3 libffi \
+	   postgresql-client mysql-client py3-mysqlclient curl mailcap gettext \
+	   python3 py3-pip xapian-core xapian-bindings-python3 libffi \
 	&& python3 -m pip install -U 'Django<3.0' pip setuptools wheel \
 	&& pip install mailmanclient==3.3.1 \
 		postorius==1.3.3 \
