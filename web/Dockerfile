@@ -29,6 +29,7 @@ RUN set -ex \
 		typing \
 		xapian-haystack \
 		django-auth-ldap \
+		python-memcached \
 	&& apk del .build-deps \
 	&& addgroup -S mailman \
 	&& adduser -S -G mailman mailman \
