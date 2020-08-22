@@ -59,8 +59,8 @@ Releases will follow the following rules:
   numbers, you can use this.
 
 * Any changes in the minor version of Mailman components of the images will
-  cause a bump in the minor version, e.g., A.(B+1) will have one (and only one)
-  updated Mailman component from A.B. Also, significant change in functionality,
+  cause a bump in the minor version, e.g., A.(B+1) can have one or more
+  updated Mailman components from A.B. Also, significant change in functionality,
   that might change how Images work or how people interact with the containers
   can also cause a bump in the minor version.
 
