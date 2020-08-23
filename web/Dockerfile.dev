@@ -1,4 +1,4 @@
-FROM alpine:3.8
+FROM alpine:3.12
 
 MAINTAINER Abhilash Raj
 
@@ -19,8 +19,9 @@ RUN set -ex \
     && apk add --no-cache --virtual .build-deps gcc libc-dev linux-headers git \
         pcre-dev postgresql-dev mariadb-dev python3-dev libffi-dev openldap-dev \
     && apk add --no-cache --virtual .mailman-rundeps bash sassc \
-      python3 py3-setuptools postgresql-client mysql-client py-mysqldb\
+      python3 py3-pip postgresql-client mysql-client py3-mysqlclient \
         curl mailcap xapian-core xapian-bindings-python3 libffi gettext \
+    && python3 -m pip install -U pip setuptools wheel \
     && python3 -m pip install -U \
         git+https://gitlab.com/mailman/mailmanclient@${CLIENT_REF} \
         git+https://gitlab.com/mailman/postorius@${POSTORIUS_REF} \
@@ -32,6 +33,7 @@ RUN set -ex \
         mysqlclient \
         xapian-haystack \
         django-auth-ldap \
+		python-memcached \
     && python3 -m pip install -U 'Django<3.0' \
     && python3 -m pip install -U \
        git+https://gitlab.com/mailman/django-mailman3@${DJ_MM3_REF} \
