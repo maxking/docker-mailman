@@ -61,6 +61,9 @@ standard version of docker-compose.yaml from this repository.
 
 - `HYPERKITTY_URL`: Default value is `http://mailman-web:8000/hyperkitty`
 
+In case of a need for fine tuning of Gunicorn web-server (e.g. for raising of timeouts)
+`/opt/mailman/gunicorn-extra.cfg` file could be provided holding necessary parameters.
+
 Running Mailman-Core
 ====================
 
