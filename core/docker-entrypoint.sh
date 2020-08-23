@@ -123,6 +123,7 @@ hostname: $MM_HOSTNAME
 port: $MAILMAN_REST_PORT
 admin_user: $MAILMAN_REST_USER
 admin_pass: $MAILMAN_REST_PASSWORD
+configuration: /etc/gunicorn.cfg
 
 [archiver.hyperkitty]
 class: mailman_hyperkitty.Archiver
@@ -130,6 +131,9 @@ enable: yes
 configuration: /etc/mailman-hyperkitty.cfg
 
 EOF
+
+# Generate a basic gunicorn.cfg.
+echo '[gunicorn]' > /etc/gunicorn.cfg
 
 # Generate a basic configuration to use exim
 cat > /tmp/exim-mailman.cfg <<EOF
@@ -186,6 +190,11 @@ then
 	cat /opt/mailman/mailman-extra.cfg >> /etc/mailman.cfg
 fi
 
+if [[ -e /opt/mailman/gunicorn-extra.cfg ]]
+then
+       echo "Found configuration file at /opt/mailman/gunicorn-extra.cfg"
+       cat /opt/mailman/gunicorn-extra.cfg >> /etc/gunicorn.cfg
+fi
 
 if [[ ! -v HYPERKITTY_API_KEY ]]; then
 	echo "HYPERKITTY_API_KEY not defined, please set this environment variable..."
