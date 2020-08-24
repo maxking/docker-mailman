@@ -192,7 +192,7 @@ fi
 
 if [[ -e /opt/mailman/gunicorn-extra.cfg ]]
 then
-       echo "Found configuration file at /opt/mailman/gunicorn-extra.cfg"
+       echo "Found [webserver] configuration file at /opt/mailman/gunicorn-extra.cfg"
        cat /opt/mailman/gunicorn-extra.cfg >> /etc/gunicorn.cfg
 fi
 
