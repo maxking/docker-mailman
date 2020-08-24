@@ -113,7 +113,12 @@ else
 fi
 
 # Collect static for the django installation.
-python3 manage.py collectstatic --noinput
+python3 manage.py collectstatic --noinput --clear --verbosity 0
+
+# Compile all the installed po files to mo.
+SITE_DIR=$(python3 -c 'import site; print(site.getsitepackages()[0])')
+echo "Compiling locale files in $SITE_DIR"
+cd $SITE_DIR && python3 /opt/mailman-web/manage.py compilemessages &&  cd -
 
 # Migrate all the data to the database if this is a new installation, otherwise
 # this command will upgrade the database.
