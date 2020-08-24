@@ -133,7 +133,8 @@ configuration: /etc/mailman-hyperkitty.cfg
 EOF
 
 # Generate a basic gunicorn.cfg.
-echo '[gunicorn]' > /etc/gunicorn.cfg
+SITE_DIR=$(python3 -c 'import site; print(site.getsitepackages()[0])')
+cp "${SITE_DIR}/mailman/config/gunicorn.cfg" /etc/gunicorn.cfg
 
 # Generate a basic configuration to use exim
 cat > /tmp/exim-mailman.cfg <<EOF
