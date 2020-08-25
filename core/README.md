@@ -63,6 +63,16 @@ standard version of docker-compose.yaml from this repository.
 
 In case of a need for fine tuning of REST API web-server that uses [Gunicorn](https://docs.gunicorn.org/en/stable/settings.html) (e.g. for raising of timeouts) `/opt/mailman/core/gunicorn-extra.cfg` file could be provided holding necessary configuration options.
 
+Configuration file, [shipped with Mailman Core](https://gitlab.com/mailman/mailman/-/blob/master/src/mailman/config/gunicorn.cfg), is used by default.
+
+For example, to increase the default 30 sec timeout, which won't work for some API calls to highly populated lists, provide the following `gunicorn-extra.cfg` file:
+
+```
+[gunicorn]
+graceful_timeout = 30
+timeout = 300
+```
+
 Running Mailman-Core
 ====================
 
@@ -105,6 +115,7 @@ hostname: $MM_HOSTNAME
 port: $MAILMAN_REST_PORT
 admin_user: $MAILMAN_REST_USER
 admin_pass: $MAILMAN_REST_PASSWORD
+configuration: /etc/gunicorn.cfg
 
 [archiver.hyperkitty]
 class: mailman_hyperkitty.Archiver
