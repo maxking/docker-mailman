@@ -194,7 +194,7 @@ fi
 if [[ -e /opt/mailman/gunicorn-extra.cfg ]]
 then
        echo "Found [webserver] configuration file at /opt/mailman/gunicorn-extra.cfg"
-       cat /opt/mailman/gunicorn-extra.cfg >> /etc/gunicorn.cfg
+       cat /opt/mailman/gunicorn-extra.cfg > /etc/gunicorn.cfg
 fi
 
 if [[ ! -v HYPERKITTY_API_KEY ]]; then
