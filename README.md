@@ -19,6 +19,7 @@ Table of Contents
    * [Running](#running)
    * [Setting up your MTA](#setting-up-your-mta)
        * [uwsgi](#uwsgi)
+   * [Setting up search indexing](#setting-up-search-indexing)
    * [Setting up your web server](#setting-up-your-web-server)
        * [Serving static files](#serving-static-files)
        * [SSL certificates](#ssl-certificates)
@@ -405,6 +406,36 @@ Setup site owner address. By default, mailman is setup with the site_owner set t
 # a human.
 site_owner: changeme@example.com
 ```
+
+Setting up search indexing
+==========================
+
+Hyperkitty in mailman-web image support full-text indexing. The current default
+indexing engine is [Whoosh](https://whoosh.readthedocs.io/en/latest/intro.html)
+for historical reasons. It is highly recommended that you instead use Xapian for
+production use cases. The default will change when the next major version bump
+happens.
+
+To configure your Mailman-web container to use Xapian, add the following to your
+`settings_local.py`:
+
+```python
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'xapian_backend.XapianEngine',
+        'PATH': "/opt/mailman-web-data/fulltext_index",
+    },
+}
+```
+
+If you have been using the default search indexing engine, you might have to
+re-index emails using the following command:
+
+```bash
+$ docker-compose exec mailman-web ./manage.py rebuild_index
+```
+
+This command can take some time if you a lot of emails, so please be patient!
 
 Setting up your web server
 ==========================
