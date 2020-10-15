@@ -11,6 +11,7 @@ Table of Contents
 
    * [GNU Mailman 3 Deployment with Docker](#gnu-mailman-3-deployment-with-docker)
    * [Release](#release)
+   * [Container Registries](#container-registries)
    * [Rolling Releases](#rolling-releases)
    * [Dependencies](#dependencies)
    * [Configuration](#configuration)
@@ -68,6 +69,30 @@ Releases will follow the following rules:
 * Major versions will change either when there are backwards incompatible
   changes or when the releases reach a certain set milestone or when there are
   bugfix releases for the internal components or both.
+
+
+Container Registries
+=========================
+
+The container images are available from multiple container registries:
+
+Mailman Core
+--------------
+- `ghcr.io/maxking/mailman-core`
+- `quay.io/maxking/mailman-core`
+- `docker.io/maxking/mailman-core`
+
+Mailman Web
+------------
+- `ghcr.io/maxking/mailman-web`
+- `quay.io/maxking/mailman-web`
+- `docker.io/maxking/mailman-web`
+
+Postorius
+----------
+- `ghcr.io/maxking/postorius`
+- `quay.io/maxking/postorius`
+- `docker.io/maxking/postorius`
 
 
 Rolling Releases
