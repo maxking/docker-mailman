@@ -25,6 +25,8 @@ def login(url):
         password = os.environ['QUAY_PASSWORD']
     elif 'docker' in url.lower():
         password = os.environ['DOCKER_PASSWORD']
+    elif 'ghcr' in url.lower():
+        password = os.environ['GITHUB_PASSWORD']
     else:
         print('Password not found for {0}'.format(url))
         return None
@@ -57,7 +59,7 @@ if __name__ == '__main__':
 
     prev_failed = False
 
-    for url in ('quay.io', 'docker.io'):
+    for url in ('quay.io', 'docker.io', 'ghcr.io'):
 
         core = ('maxking/mailman-core:rolling',
                 '{0}/maxking/mailman-core:{1}'.format(url, img_tag))
