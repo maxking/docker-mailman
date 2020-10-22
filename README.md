@@ -39,7 +39,8 @@ run multi-container applications. This repository consists of a
 [`docker-compose.yaml`](docker-compose.yaml) file which is a set of
 configurations that can be used to deploy the [Mailman 3 Suite][4].
 
-Please see [NEWS](NEWS.md) for the latest changes and releases.
+Please see [release page](https://github.com/maxking/docker-mailman/releases)
+for the releases and change log.
 
 Release
 =======
