@@ -40,8 +40,8 @@ These are the variables that you MUST change before deploying:
 These are the variables that you don't need to change if you are using a
 standard version of docker-compose.yaml from this repository.
 
-- `MM_HOSTNAME`: Which IP should Core bind to for REST API and LMTP. If not
-  defined output for `hostname -i` command is used.
+- `MM_HOSTNAME`: Which hostname or IP should Core bind to for REST API and
+  LMTP. If not defined output from `hostname` command is used.
 
 - `MAILMAN_REST_PORT`: Which port should Core use for the REST API. If not defined
   the default is `8001`.
@@ -55,7 +55,8 @@ standard version of docker-compose.yaml from this repository.
 - `MTA`: Mail Transfer Agent to use. Either `exim` or `postfix`. Default value is `exim`.
 
 - `SMTP_HOST`: IP Address/hostname from which you will be sending
-  emails. Default value is `172.19.199.1`, which is the address of the Host OS.
+  emails. Default value is the container's gateway retrieved from:
+    /sbin/ip route | awk '/default/ { print $3 }'
 
 - `SMTP_PORT`: Port used for SMTP. Default is `25`.
 

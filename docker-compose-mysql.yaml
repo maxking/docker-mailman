@@ -18,7 +18,6 @@ services:
     - HYPERKITTY_API_KEY=someapikey
     networks:
       mailman:
-        ipv4_address: 172.19.199.2
 
   mailman-web:
     image: maxking/mailman-web:0.3
@@ -39,7 +38,6 @@ services:
     - DYLD_LIBRARY_PATH=/usr/local/mysql/lib/
     networks:
       mailman:
-        ipv4_address: 172.19.199.3
 
   database:
     environment:
@@ -54,13 +52,7 @@ services:
     - /opt/mailman/database:/var/lib/mysql
     networks:
       mailman:
-        ipv4_address: 172.19.199.4
 
 networks:
    mailman:
      driver: bridge
-     ipam:
-       driver: default
-       config:
-       -
-         subnet: 172.19.199.0/24

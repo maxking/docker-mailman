@@ -53,6 +53,11 @@ function check_or_create () {
 # END
 # }
 
+# SMTP_HOST defaults to the gateway
+if [[ ! -v SMTP_HOST ]]; then
+	export SMTP_HOST=$(/sbin/ip route | awk '/default/ { print $3 }')
+fi
+
 # Check if $SECRET_KEY is defined, if not, bail out.
 if [[ ! -v SECRET_KEY ]]; then
 	echo "SECRET_KEY is not defined. Aborting."
