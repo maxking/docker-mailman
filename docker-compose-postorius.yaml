@@ -19,7 +19,6 @@ services:
     - HYPERKITTY_API_KEY=someapikey
     networks:
       mailman:
-        ipv4_address: 172.19.199.2
 
   mailman-web:
     image: maxking/postorius:0.3
@@ -40,7 +39,6 @@ services:
     - UWSGI_STATIC_MAP=/static=/opt/mailman-web-data/static 
     networks:
       mailman:
-        ipv4_address: 172.19.199.3
 
   database:
     environment:
@@ -53,13 +51,7 @@ services:
     - /opt/mailman/database:/var/lib/postgresql/data
     networks:
       mailman:
-        ipv4_address: 172.19.199.4
 
 networks:
    mailman:
      driver: bridge
-     ipam:
-       driver: default
-       config:
-       -
-         subnet: 172.19.199.0/24

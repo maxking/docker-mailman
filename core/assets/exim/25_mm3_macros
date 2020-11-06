@@ -2,7 +2,7 @@
 # /etc/exim4/conf.d/main/25_mm3_macros
 
 domainlist mm3_domains=MY_DOMAIN_NAME
-MM3_LMTP_HOST=172.19.199.2
+MM3_LMTP_HOST=mailman-core
 MM3_LMTP_PORT=8024
 MM3_HOME=/opt/mailman/core/var
 

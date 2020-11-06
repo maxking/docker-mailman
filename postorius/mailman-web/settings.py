@@ -30,6 +30,7 @@ import os
 import socket
 import dj_database_url
 import sys
+from socket import gethostbyname
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -52,7 +53,7 @@ ALLOWED_HOSTS = [
     # "lists.your-domain.org",
     # Add here all production URLs you may have.
     "mailman-web",
-    "172.19.199.3",
+    gethostbyname("mailman-web"),
     os.environ.get('SERVE_FROM_DOMAIN'),
     os.environ.get('DJANGO_ALLOWED_HOSTS'),
 ]
@@ -63,7 +64,7 @@ ALLOWED_HOSTS = [
 MAILMAN_REST_API_URL = os.environ.get('MAILMAN_REST_URL', 'http://mailman-core:8001')
 MAILMAN_REST_API_USER = os.environ.get('MAILMAN_REST_USER', 'restadmin')
 MAILMAN_REST_API_PASS = os.environ.get('MAILMAN_REST_PASSWORD', 'restpass')
-MAILMAN_ARCHIVER_FROM = (os.environ.get('MAILMAN_HOST_IP', '172.19.199.2'),)
+MAILMAN_ARCHIVER_FROM = (gethostbyname(os.environ.get('MAILMAN_HOSTNAME', os.environ.get('MAILMAN_HOST_IP', 'mailman-core'))),)
 
 # Application definition
 
@@ -211,7 +212,7 @@ SERVER_EMAIL = 'root@{}'.format(hostname)
 
 # Change this when you have a real email backend
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = os.environ.get('SMTP_HOST', '172.19.199.1')
+EMAIL_HOST = os.environ.get('SMTP_HOST', '')
 EMAIL_PORT = os.environ.get('SMTP_PORT', 25)
 EMAIL_HOST_USER = ''
 EMAIL_HOST_PASSWORD = ''
