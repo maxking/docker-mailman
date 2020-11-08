@@ -17,8 +17,6 @@ RUN apk update \
                    mailman==3.3.2 \
                    mailman-hyperkitty==1.1.0 \
                    pymysql \
-                   'dnspython<2.0' \
-                   'flufl.lock<5.0' \
     && apk del build-deps \
     && adduser -S mailman
 
