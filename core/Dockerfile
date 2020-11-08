@@ -14,7 +14,7 @@ RUN apk update \
     && python3 -m pip install -U pip setuptools wheel \
         && python3 -m pip install psycopg2 \
                    gunicorn==19.9.0 \
-                   mailman==3.3.1 \
+                   mailman==3.3.2 \
                    mailman-hyperkitty==1.1.0 \
                    pymysql \
                    'dnspython<2.0' \
