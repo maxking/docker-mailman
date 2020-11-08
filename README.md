@@ -106,7 +106,7 @@ un-released software and should be assumed to be beta quality.**
 Every commit is tested with Mailman's CI infrastructure and is included in
 rolling releases only if they have passed the complete test suite.
 
-```
+```bash
 $ docker pull docker.io/maxking/mailman-web:rolling
 $ docker pull docker.io/maxking/mailman-core:rolling
 ```
