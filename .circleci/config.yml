@@ -38,10 +38,10 @@ jobs:
 
 workflows:
   version: 2
-  test-workflow:
+  build-and-deploy-workflow:
     jobs:
-      - build
-          filters:  # Only allow specific tags to be built. Deploy script will handle publishing only on master branch.
+      - build:
+          filters:
             tags:
               only: /^v\d+\.\d+\.\d+$/
 
