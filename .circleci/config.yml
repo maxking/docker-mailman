@@ -41,9 +41,9 @@ workflows:
   test-workflow:
     jobs:
       - build
-        filters:  # Only allow specific tags to be built. Deploy script will handle publishing only on master branch.
-          tags:
-            only: /^v\d+\.\d+\.\d+$/
+          filters:  # Only allow specific tags to be built. Deploy script will handle publishing only on master branch.
+            tags:
+              only: /^v\d+\.\d+\.\d+$/
 
   cron-workflow:
     triggers:
