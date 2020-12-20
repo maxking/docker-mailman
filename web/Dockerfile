@@ -36,6 +36,14 @@ RUN set -ex \
 	&& chown -R mailman /opt/mailman-web/ \
 	&& chmod u+x /opt/mailman-web/manage.py
 
+COPY patches /opt/mailman-web/patches
+RUN set -e && \
+    apk add patch && \
+    for patch in /opt/mailman-web/patches/*; do patch -p0 <$patch; done && \
+    apk del patch && \
+    rm -fr patches && \
+    python3 -m compileall /usr/lib/python3.8/site-packages/hyperkitty
+
 WORKDIR /opt/mailman-web
 
 # Expose port 8000 for http and port 8080 for uwsgi
