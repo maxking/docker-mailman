@@ -35,6 +35,10 @@ services:
     - DATABASE_TYPE=postgres
     - DATABASE_URL=postgres://mailman:mailmanpass@database/mailmandb
     - HYPERKITTY_API_KEY=someapikey
+    # HYPERKITTY authorize clients after checking their IP and the provided api key
+    # The default authorized IP is the one retrirved for hostname 'mailman-core'
+    # Set MAILMAN_HOSTNAME or MAILMAN_HOST_IP to change this default
+    # Set MAILMAN_HOSTNAME or MAILMAN_HOST_IP to an empty string or '0.0.0.0' to disable IP check (needed for swarm mode)
     networks:
       mailman:
 
