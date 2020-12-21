@@ -62,7 +62,7 @@ MAILMAN_REST_API_URL = os.environ.get('MAILMAN_REST_URL', 'http://mailman-core:8
 MAILMAN_REST_API_USER = os.environ.get('MAILMAN_REST_USER', 'restadmin')
 MAILMAN_REST_API_PASS = os.environ.get('MAILMAN_REST_PASSWORD', 'restpass')
 MAILMAN_ARCHIVER_KEY = os.environ.get('HYPERKITTY_API_KEY')
-MAILMAN_ARCHIVER_FROM = (gethostbyname(os.environ.get('MAILMAN_HOSTNAME', os.environ.get('MAILMAN_HOST_IP', 'mailman-core'))),)
+MAILMAN_ARCHIVER_FROM = os.environ.get('MAILMAN_HOST_IP', gethostbyname(os.environ.get('MAILMAN_HOSTNAME', 'mailman-core')))
 
 # Application definition
 

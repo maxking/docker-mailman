@@ -1,0 +1,28 @@
+diff --git a/example_project/settings.py b/example_project/settings.py
+index 03feece..2fcefe3 100644
+--- a/example_project/settings.py
++++ b/example_project/settings.py
+@@ -44,6 +44,7 @@ MAILMAN_REST_API_URL = 'http://localhost:8001'
+ MAILMAN_REST_API_USER = 'restadmin'
+ MAILMAN_REST_API_PASS = 'restpass'
+ MAILMAN_ARCHIVER_KEY = 'SecretArchiverAPIKey'
++# To match any host use the wildcard entry '*' in the list below
+ MAILMAN_ARCHIVER_FROM = ('127.0.0.1', '::1')
+ 
+ # Application definition
+diff --git a/hyperkitty/views/mailman.py b/hyperkitty/views/mailman.py
+index af83231..983433b 100644
+--- a/hyperkitty/views/mailman.py
++++ b/hyperkitty/views/mailman.py
+@@ -53,7 +53,10 @@ def key_and_ip_auth(func):
+                 msg = "Missing setting: %s" % attr
+                 logger.error(msg)
+                 raise ImproperlyConfigured(msg)
+-        if (request.META.get("REMOTE_ADDR") not in
++        # '*' matches any host
++        if '*' in settings.MAILMAN_ARCHIVER_FROM:
++            pass
++        elif (request.META.get("REMOTE_ADDR") not in
+                 settings.MAILMAN_ARCHIVER_FROM):
+             logger.error(
+                 "Access to the archiving API endpoint was forbidden from "

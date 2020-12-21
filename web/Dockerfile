@@ -39,10 +39,12 @@ RUN set -ex \
 COPY patches /opt/mailman-web/patches
 RUN set -e && \
     apk add patch && \
-    for patch in /opt/mailman-web/patches/*; do patch -p0 <$patch; done && \
+    cd /usr/lib/python3.8/site-packages && \
+    for patch in /opt/mailman-web/patches/*; do patch -p1 <$patch; done && \
+    python3 -m compileall hyperkitty && \
+    cd - && \
     apk del patch && \
-    rm -fr patches && \
-    python3 -m compileall /usr/lib/python3.8/site-packages/hyperkitty
+    rm -fr patches
 
 WORKDIR /opt/mailman-web
 
