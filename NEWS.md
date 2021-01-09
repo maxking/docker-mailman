@@ -1,5 +1,11 @@
 # NEWS
 
+## Outdated
+
+Please see [release page](https://github.com/maxking/docker-mailman/releases)
+for the latest releases and change log.
+
+
 ## Mailman Core
 
 ### v1.1.1 (released Aug 9 2017)

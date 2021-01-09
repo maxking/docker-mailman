@@ -11,6 +11,7 @@ Table of Contents
 
    * [GNU Mailman 3 Deployment with Docker](#gnu-mailman-3-deployment-with-docker)
    * [Release](#release)
+   * [Container Registries](#container-registries)
    * [Rolling Releases](#rolling-releases)
    * [Dependencies](#dependencies)
    * [Configuration](#configuration)
@@ -19,6 +20,7 @@ Table of Contents
    * [Running](#running)
    * [Setting up your MTA](#setting-up-your-mta)
        * [uwsgi](#uwsgi)
+   * [Setting up search indexing](#setting-up-search-indexing)
    * [Setting up your web server](#setting-up-your-web-server)
        * [Serving static files](#serving-static-files)
        * [SSL certificates](#ssl-certificates)
@@ -37,7 +39,8 @@ run multi-container applications. This repository consists of a
 [`docker-compose.yaml`](docker-compose.yaml) file which is a set of
 configurations that can be used to deploy the [Mailman 3 Suite][4].
 
-Please see [NEWS](NEWS.md) for the latest changes and releases.
+Please see [release page](https://github.com/maxking/docker-mailman/releases)
+for the releases and change log.
 
 Release
 =======
@@ -69,6 +72,30 @@ Releases will follow the following rules:
   bugfix releases for the internal components or both.
 
 
+Container Registries
+=========================
+
+The container images are available from multiple container registries:
+
+Mailman Core
+--------------
+- `ghcr.io/maxking/mailman-core`
+- `quay.io/maxking/mailman-core`
+- `docker.io/maxking/mailman-core`
+
+Mailman Web
+------------
+- `ghcr.io/maxking/mailman-web`
+- `quay.io/maxking/mailman-web`
+- `docker.io/maxking/mailman-web`
+
+Postorius
+----------
+- `ghcr.io/maxking/postorius`
+- `quay.io/maxking/postorius`
+- `docker.io/maxking/postorius`
+
+
 Rolling Releases
 ================
 
@@ -79,7 +106,7 @@ un-released software and should be assumed to be beta quality.**
 Every commit is tested with Mailman's CI infrastructure and is included in
 rolling releases only if they have passed the complete test suite.
 
-```
+```bash
 $ docker pull docker.io/maxking/mailman-web:rolling
 $ docker pull docker.io/maxking/mailman-core:rolling
 ```
@@ -405,6 +432,36 @@ Setup site owner address. By default, mailman is setup with the site_owner set t
 # a human.
 site_owner: changeme@example.com
 ```
+
+Setting up search indexing
+==========================
+
+Hyperkitty in mailman-web image support full-text indexing. The current default
+indexing engine is [Whoosh](https://whoosh.readthedocs.io/en/latest/intro.html)
+for historical reasons. It is highly recommended that you instead use Xapian for
+production use cases. The default will change when the next major version bump
+happens.
+
+To configure your Mailman-web container to use Xapian, add the following to your
+`settings_local.py`:
+
+```python
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'xapian_backend.XapianEngine',
+        'PATH': "/opt/mailman-web-data/fulltext_index",
+    },
+}
+```
+
+If you have been using the default search indexing engine, you might have to
+re-index emails using the following command:
+
+```bash
+$ docker-compose exec mailman-web ./manage.py rebuild_index
+```
+
+This command can take some time if you a lot of emails, so please be patient!
 
 Setting up your web server
 ==========================
