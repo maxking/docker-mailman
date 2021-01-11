@@ -147,10 +147,14 @@ Dependencies
 - Docker
 - Docker-compose
 
-To run this you first need to download docker for whichever operating system you
-are using. You can find documentation about [how to install][5]. It is
-recommended to use these instead of the one from your package managers. After you
-have downloaded and installed docker, install docker-compose from [here][6].
+To install these on Ubuntu/Debian:
+
+```
+$ sudo apt install docker.io docker-compose
+```
+
+For other systems, you can read the official Docker documentation to install
+the dependencies from [here][5] and [here][6].
 
 
 Configuration
