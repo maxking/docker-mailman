@@ -479,7 +479,7 @@ that by adding the following to your configuration:
 ```
     # Nginx configuration.
     location /static {
-       alias /opt/mailman/web/static;
+        alias /opt/mailman/web/static;
         autoindex off;
     }
 
