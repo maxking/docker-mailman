@@ -479,14 +479,12 @@ that by adding the following to your configuration:
 ```
     # Nginx configuration.
     location /static {
-    alias /opt/mailman/web/static;
+       alias /opt/mailman/web/static;
         autoindex off;
     }
 
 
     location / {
-		# First attempt to serve request as file, then
-
 		  proxy_pass http://172.19.199.3:8000;
 		  include uwsgi_params;
 		  uwsgi_read_timeout 300;
@@ -516,12 +514,11 @@ To move to uwsgi protocol in the above nginx configuration use this
 ```
     # Nginx configuration.
     location /static {
-    alias /opt/mailman/web/static;
+        alias /opt/mailman/web/static;
         autoindex off;
     }
 
     location / {
-		# First attempt to serve request as file, then
 		  uwsgi_pass 172.19.199.3:8080;
 		  include uwsgi_params;
 		  uwsgi_read_timeout 300;
