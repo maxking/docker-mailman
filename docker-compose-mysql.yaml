@@ -49,6 +49,7 @@ services:
       MYSQL_RANDOM_ROOT_PASSWORD: "yes"
     restart: always
     image: mariadb:10.3
+    command: --character-set-server=utf8mb4
     volumes:
     - /opt/mailman/database:/var/lib/mysql
     networks:
