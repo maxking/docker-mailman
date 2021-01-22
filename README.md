@@ -147,10 +147,14 @@ Dependencies
 - Docker
 - Docker-compose
 
-To run this you first need to download docker for whichever operating system you
-are using. You can find documentation about [how to install][5]. It is
-recommended to use these instead of the one from your package managers. After you
-have downloaded and installed docker, install docker-compose from [here][6].
+To install these on Ubuntu/Debian:
+
+```
+$ sudo apt install docker.io docker-compose
+```
+
+For other systems, you can read the official Docker documentation to install
+the dependencies from [here][5] and [here][6].
 
 
 Configuration
@@ -207,6 +211,7 @@ password, plese follow the "Forgot Password" link on the "Sign In" page.
 
 To configure the mailman-web container to send emails, add this to your
 `settings_local.py`.:
+
 ```
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = '172.19.199.1'
@@ -279,9 +284,6 @@ expected to be served directly by the web server. The static content exists at
 server configuration.
 
 See [the nginx configuration][17] as an example.
-
-
-
 
 This command will do several things, most importantly:
 
@@ -475,17 +477,20 @@ header when you proxy the requests from your Web Server. In Nginx you can do
 that by adding the following to your configuration:
 
 ```
-       # Nginx configuration.
+    # Nginx configuration.
+    location /static {
+        alias /opt/mailman/web/static;
+        autoindex off;
+    }
 
-        location / {
-		 # First attempt to serve request as file, then
 
+    location / {
 		  proxy_pass http://172.19.199.3:8000;
 		  include uwsgi_params;
 		  uwsgi_read_timeout 300;
 		  proxy_set_header Host $host;
 		  proxy_set_header X-Forwarded-For $remote_addr;
-        }
+    }
 
 ```
 
@@ -507,15 +512,17 @@ are generally included in the distro packages.
 To move to uwsgi protocol in the above nginx configuration use this
 
 ```
-       # Nginx configuration.
+    # Nginx configuration.
+    location /static {
+        alias /opt/mailman/web/static;
+        autoindex off;
+    }
 
-        location / {
-		 # First attempt to serve request as file, then
-
+    location / {
 		  uwsgi_pass 172.19.199.3:8080;
 		  include uwsgi_params;
 		  uwsgi_read_timeout 300;
-        }
+    }
 ```
 
 Please make sure that you are using v0.1.1 or greater if you use this configuration.
@@ -563,7 +570,7 @@ fi
 exit 0
 ```
 
-Please do not forget to make the script executable (chmod +x certbot-renew.sh).
+**Please do not forget to make the script executable (`chmod +x certbot-renew.sh`).**
 
 LICENSE
 =======
