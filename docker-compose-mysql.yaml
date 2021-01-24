@@ -12,7 +12,7 @@ services:
     depends_on:
     - database
     environment:
-    - DATABASE_URL=mysql+pymysql://mailman:mailmanpass@database/mailmandb
+    - DATABASE_URL=mysql+pymysql://mailman:mailmanpass@database/mailmandb?charset=utf8mb4&use_unicode=1
     - DATABASE_TYPE=mysql
     - DATABASE_CLASS=mailman.database.mysql.MySQLDatabase
     - HYPERKITTY_API_KEY=someapikey
@@ -32,7 +32,7 @@ services:
     volumes:
     - /opt/mailman/web:/opt/mailman-web-data
     environment:
-    - DATABASE_URL=mysql://mailman:mailmanpass@database/mailmandb
+    - DATABASE_URL=mysql://mailman:mailmanpass@database/mailmandb?charset=utf8mb4
     - DATABASE_TYPE=mysql   
     - HYPERKITTY_API_KEY=someapikey
     - SECRET_KEY=thisisaverysecretkey
@@ -48,7 +48,8 @@ services:
       MYSQL_PASSWORD: mailmanpass
       MYSQL_RANDOM_ROOT_PASSWORD: "yes"
     restart: always
-    image: mariadb:10.3
+    image: mariadb:10.5
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     volumes:
     - /opt/mailman/database:/var/lib/mysql
     networks:
