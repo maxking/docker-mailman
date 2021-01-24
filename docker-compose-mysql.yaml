@@ -12,7 +12,7 @@ services:
     depends_on:
     - database
     environment:
-    - DATABASE_URL=mysql+pymysql://mailman:mailmanpass@database/mailmandb?charset=utfmb8&&use_unicode=1
+    - DATABASE_URL=mysql+pymysql://mailman:mailmanpass@database/mailmandb?charset=utfmb8&use_unicode=1
     - DATABASE_TYPE=mysql
     - DATABASE_CLASS=mailman.database.mysql.MySQLDatabase
     - HYPERKITTY_API_KEY=someapikey
