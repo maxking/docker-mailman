@@ -12,12 +12,12 @@ COPY docker-entrypoint.sh /usr/local/bin/
 # rights for management script
 RUN set -ex \
 	&& apk add --no-cache --virtual .build-deps gcc libc-dev linux-headers \
-		postgresql-dev mariadb-dev python3-dev libffi-dev openldap-dev \
+		postgresql-dev mariadb-dev python3-dev libffi-dev openldap-dev cargo rust \
 	&& apk add --no-cache --virtual .mailman-rundeps bash sassc \
 		postgresql-client mysql-client py3-mysqlclient curl mailcap gettext \
 		python3 py3-pip libffi libuuid \
 	&& python3 -m pip install -U 'Django<3.0' pip setuptools wheel \
-	&& python3 -m pip install postorius==1.3.3 \
+	&& python3 -m pip install postorius==1.3.4 \
 		uwsgi \
 		psycopg2 \
 		dj-database-url \
