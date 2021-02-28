@@ -196,7 +196,7 @@ These are the settings that you MUST change before deploying:
   (with SITE_ID=1).
 
 - `HYPERKITTY_API_KEY`: Hyperkitty's API Key, should be set to the same value
-  as set for the mailman-core.
+  as set for the mailman-core. (Not needed in case of Postorius-only version.)
 
 - `MAILMAN_ADMIN_USER`: The username for the admin user to be created by default.
 
@@ -234,7 +234,7 @@ For more details on how to configure this image, please look at
 These are the variables that you MUST change before deploying:
 
 - `HYPERKITTY_API_KEY`: Hyperkitty's API Key, should be set to the same value as
-  set for the mailman-web.
+  set for the mailman-web. Skip the variable in case of non-Hyperkitty deployment.
 
 - `DATABASE_URL`: URL of the type
   `driver://user:password@hostname:port/databasename` for the django to use. If

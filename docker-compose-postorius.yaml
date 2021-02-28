@@ -16,7 +16,6 @@ services:
     - DATABASE_URL=postgres://mailman:mailmanpass@database/mailmandb
     - DATABASE_TYPE=postgres
     - DATABASE_CLASS=mailman.database.postgresql.PostgreSQLDatabase
-    - HYPERKITTY_API_KEY=someapikey
     networks:
       mailman:
         ipv4_address: 172.19.199.2
@@ -35,7 +34,6 @@ services:
     environment:
     - DATABASE_TYPE=postgres
     - DATABASE_URL=postgres://mailman:mailmanpass@database/mailmandb
-    - HYPERKITTY_API_KEY=someapikey
     - SECRET_KEY=ksjdbaksdba
     - UWSGI_STATIC_MAP=/static=/opt/mailman-web-data/static 
     networks:
