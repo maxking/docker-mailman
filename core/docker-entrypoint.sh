@@ -125,11 +125,6 @@ admin_user: $MAILMAN_REST_USER
 admin_pass: $MAILMAN_REST_PASSWORD
 configuration: /etc/gunicorn.cfg
 
-[archiver.hyperkitty]
-class: mailman_hyperkitty.Archiver
-enable: yes
-configuration: /etc/mailman-hyperkitty.cfg
-
 EOF
 
 # Generate a basic gunicorn.cfg.
@@ -197,11 +192,17 @@ then
        cat /opt/mailman/gunicorn-extra.cfg > /etc/gunicorn.cfg
 fi
 
-if [[ ! -v HYPERKITTY_API_KEY ]]; then
-	echo "HYPERKITTY_API_KEY not defined, please set this environment variable..."
-	echo "exiting..."
-	exit 1
-fi
+if [[ -v HYPERKITTY_API_KEY ]]; then
+
+echo "HYPERKITTY_API_KEY found, setting up HyperKitty archiver..."
+
+cat >> /etc/mailman.cfg << EOF
+[archiver.hyperkitty]
+class: mailman_hyperkitty.Archiver
+enable: yes
+configuration: /etc/mailman-hyperkitty.cfg
+
+EOF
 
 if [[ ! -v HYPERKITTY_URL ]]; then
 	echo "HYPERKITTY_URL not set, using the default value of http://mailman-web:8000/hyperkitty"
@@ -214,6 +215,8 @@ cat > /etc/mailman-hyperkitty.cfg <<EOF
 base_url: $HYPERKITTY_URL
 api_key: $HYPERKITTY_API_KEY
 EOF
+
+fi
 
 # Generate the LMTP files for postfix if needed.
 mailman aliases

@@ -27,7 +27,6 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-import socket
 import dj_database_url
 import sys
 
@@ -57,8 +56,6 @@ ALLOWED_HOSTS = [
     os.environ.get('DJANGO_ALLOWED_HOSTS'),
 ]
 
-# Try to get the address of Mailman Core automatically.
-
 # Mailman API credentials
 MAILMAN_REST_API_URL = os.environ.get('MAILMAN_REST_URL', 'http://mailman-core:8001')
 MAILMAN_REST_API_USER = os.environ.get('MAILMAN_REST_USER', 'restadmin')
@@ -67,7 +64,7 @@ MAILMAN_ARCHIVER_FROM = (os.environ.get('MAILMAN_HOST_IP', '172.19.199.2'),)
 
 # Application definition
 
-INSTALLED_APPS = (
+INSTALLED_APPS = [
     'postorius',
     'django_mailman3',
     # Uncomment the next line to enable the admin:
@@ -89,9 +86,9 @@ INSTALLED_APPS = (
     'allauth.socialaccount.providers.github',
     'allauth.socialaccount.providers.gitlab',
     'allauth.socialaccount.providers.google',
-)
+]
 
-MIDDLEWARE = (
+_MIDDLEWARE = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -104,7 +101,16 @@ MIDDLEWARE = (
     'postorius.middleware.PostoriusMiddleware',
 )
 
+# Use old-style Middleware class in Python 2 and released versions of
+# Django-mailman3 don't support new style middlewares.
+
+if sys.version_info < (3, 0):
+    MIDDLEWARE_CLASSES = _MIDDLEWARE
+else:
+    MIDDLEWARE = _MIDDLEWARE
+
 ROOT_URLCONF = 'urls'
+
 
 TEMPLATES = [
     {
@@ -213,9 +219,10 @@ SERVER_EMAIL = 'root@{}'.format(hostname)
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = os.environ.get('SMTP_HOST', '172.19.199.1')
 EMAIL_PORT = os.environ.get('SMTP_PORT', 25)
-EMAIL_HOST_USER = ''
-EMAIL_HOST_PASSWORD = ''
-EMAIL_USE_TLS = False
+EMAIL_HOST_USER = os.environ.get('SMTP_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.environ.get('SMTP_HOST_PASSWORD', '')
+EMAIL_USE_TLS = os.environ.get('SMTP_USE_TLS', False)
+
 
 # Compatibility with Bootstrap 3
 from django.contrib.messages import constants as messages  # flake8: noqa
@@ -339,6 +346,7 @@ LOGGING = {
 if os.environ.get('LOG_TO_CONSOLE') == 'yes':
     LOGGING['loggers']['django']['handlers'].append('console')
     LOGGING['loggers']['django.request']['handlers'].append('console')
+POSTORIUS_TEMPLATE_BASE_URL =  os.environ.get('POSTORIUS_TEMPLATE_BASE_URL', 'http://mailman-web:8000')
 
 try:
     from settings_local import *
