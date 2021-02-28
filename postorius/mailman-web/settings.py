@@ -88,7 +88,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
 ]
 
-_MIDDLEWARE = (
+MIDDLEWARE = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -101,13 +101,6 @@ _MIDDLEWARE = (
     'postorius.middleware.PostoriusMiddleware',
 )
 
-# Use old-style Middleware class in Python 2 and released versions of
-# Django-mailman3 don't support new style middlewares.
-
-if sys.version_info < (3, 0):
-    MIDDLEWARE_CLASSES = _MIDDLEWARE
-else:
-    MIDDLEWARE = _MIDDLEWARE
 
 ROOT_URLCONF = 'urls'
 
