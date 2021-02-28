@@ -216,6 +216,10 @@ base_url: $HYPERKITTY_URL
 api_key: $HYPERKITTY_API_KEY
 EOF
 
+else
+
+echo "HYPERKITTY_API_KEY not defined, skipping HyperKitty setup..."
+
 fi
 
 # Generate the LMTP files for postfix if needed.
