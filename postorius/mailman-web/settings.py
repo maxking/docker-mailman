@@ -101,9 +101,7 @@ MIDDLEWARE = (
     'postorius.middleware.PostoriusMiddleware',
 )
 
-
 ROOT_URLCONF = 'urls'
-
 
 TEMPLATES = [
     {
