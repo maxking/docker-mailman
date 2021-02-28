@@ -400,6 +400,7 @@ FILTER_VHOST = False
 
 Q_CLUSTER = {
     'timeout': 300,
+    'retry': 300,
     'save_limit': 100,
     'orm': 'default',
 }
