@@ -36,6 +36,7 @@ fi
 # SMTP_HOST defaults to the gateway
 if [[ ! -v SMTP_HOST ]]; then
 	export SMTP_HOST=$(/sbin/ip route | awk '/default/ { print $3 }')
+	echo "SMPT_HOST not specified, using the gateway ($SMTP_HOST) as default"
 fi
 
 if [[ ! -v SMTP_PORT ]]; then
