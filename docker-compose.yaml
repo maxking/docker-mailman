@@ -57,4 +57,3 @@ services:
 
 networks:
    mailman:
-     driver: bridge
