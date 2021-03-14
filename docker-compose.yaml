@@ -17,6 +17,9 @@ services:
     - DATABASE_TYPE=postgres
     - DATABASE_CLASS=mailman.database.postgresql.PostgreSQLDatabase
     - HYPERKITTY_API_KEY=someapikey
+    ports:
+    - "8001:8001" # API
+    - "8024:8024" # LMTP - incoming emails
     networks:
       mailman:
 
@@ -35,6 +38,9 @@ services:
     - DATABASE_TYPE=postgres
     - DATABASE_URL=postgres://mailman:mailmanpass@database/mailmandb
     - HYPERKITTY_API_KEY=someapikey
+    ports:
+    - "8000:8000" # HTTP
+    - "8080:8080" # uwsgi
     networks:
       mailman:
 
