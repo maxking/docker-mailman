@@ -16,6 +16,9 @@ services:
     - DATABASE_TYPE=mysql
     - DATABASE_CLASS=mailman.database.mysql.MySQLDatabase
     - HYPERKITTY_API_KEY=someapikey
+    ports:
+    - "127.0.0.1:8001:8001" # API
+    - "127.0.0.1:8024:8024" # LMTP - incoming emails
     networks:
       mailman:
 
@@ -36,6 +39,9 @@ services:
     - HYPERKITTY_API_KEY=someapikey
     - SECRET_KEY=thisisaverysecretkey
     - DYLD_LIBRARY_PATH=/usr/local/mysql/lib/
+    ports:
+    - "127.0.0.1:8000:8000" # HTTP
+    - "127.0.0.1:8080:8080" # uwsgi
     networks:
       mailman:
 
@@ -55,4 +61,3 @@ services:
 
 networks:
    mailman:
-     driver: bridge

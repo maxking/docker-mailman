@@ -16,6 +16,9 @@ services:
     - DATABASE_URL=postgres://mailman:mailmanpass@database/mailmandb
     - DATABASE_TYPE=postgres
     - DATABASE_CLASS=mailman.database.postgresql.PostgreSQLDatabase
+    ports:
+    - "127.0.0.1:8001:8001" # API
+    - "127.0.0.1:8024:8024" # LMTP - incoming emails
     networks:
       mailman:
 
@@ -35,6 +38,9 @@ services:
     - DATABASE_URL=postgres://mailman:mailmanpass@database/mailmandb
     - SECRET_KEY=ksjdbaksdba
     - UWSGI_STATIC_MAP=/static=/opt/mailman-web-data/static 
+    ports:
+    - "127.0.0.1:8000:8000" # HTTP
+    - "127.0.0.1:8080:8080" # uwsgi
     networks:
       mailman:
 
@@ -52,4 +58,3 @@ services:
 
 networks:
    mailman:
-     driver: bridge
