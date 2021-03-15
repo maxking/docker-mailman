@@ -214,12 +214,12 @@ To configure the mailman-web container to send emails, add this to your
 
 ```
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = '172.19.199.1'
+EMAIL_HOST = 'smtp.example.com'
 EMAIL_PORT = 25
 ```
 
 Alternatively, you can use the environment variables `SMTP_HOST` (defaults to
-`172.19.199.1`), `SMTP_PORT` (defaults to `25`), `SMTP_HOST_USER` (defaults to
+the container's gateway), `SMTP_PORT` (defaults to `25`), `SMTP_HOST_USER` (defaults to
 an empty string), `SMTP_HOST_PASSWORD` (defaults to an empty string) and
 `SMTP_USE_TLS` (defaults to `False`).
 
@@ -288,7 +288,7 @@ See [the nginx configuration][17] as an example.
 This command will do several things, most importantly:
 
 - Run a wsgi server using [`uwsgi`][7] for the Mailman's Django-based web
-  frontend listening on http://172.19.199.3:8000/. It will run 2 worker
+  frontend listening on port 8000. It will run 2 worker
   processes with 4 threads each. You may want to change the setting
   `ALLOWED_HOSTS` in the settings before deploying the application in
   production.
@@ -297,9 +297,9 @@ This command will do several things, most importantly:
   mentioned in the `docker-compose.yaml`. You will have to change configuration
   files too if you change any of these.
 
-- Run mailman-core listening an LMTP server at http://172.19.199.2:8024/ for
-  messages from your MTA. You will have to configure your MTA to send messages at
-  this address.
+- Run mailman-core listening on port 8001 for REST API and port 8024 (LMTP
+  server) for messages from your MTA. You will have to configure your MTA to
+  send messages at this address.
 
 Some more details about what the above system achieves is mentioned below. If you
 are only going to deploy a simple configuration, you don't need to read
@@ -307,13 +307,12 @@ this. However, these are very easy to understand if you know how docker works.
 
 - First create a bridge network called `mailman` in the
   `docker-compose.yaml`. It will probably be named something else in your
-  machine, but it will use the `172.19.199.0/24` as subnet. All the containers
+  machine. All the containers
   mentioned (mailman-core, mailman-web, database) will join this network and are
-  assigned static IPs. The host operating system is available at `172.19.199.1`
+  assigned static IPs. The host operating system is the default gateway
   from within these containers.
 
-- Spin off a mailman-core container which has a static IP address of
-  `172.19.199.2` in the mailman bridge network created above. It has
+- Spin off a mailman-core container attached to the mailman bridge network created above. It has
   GNU Mailman 3 core running inside it. Mailman core's REST API is available at
   port 8001 and LMTP server listens at port 8024.
 
@@ -354,8 +353,8 @@ The provided docker containers do not have an MTA in-built. You can either run
 your own MTA inside a container and have them relay emails to the mailman-core
 container or just install an MTA on the host and have them relay emails.
 
-To use [Exim4][8], it should be setup to relay emails from `172.19.199.3` and
-`172.19.199.2`. The mailman specific configuration is provided in the
+To use [Exim4][8], it should be setup to relay emails from mailman-core and
+mailman-web. The mailman specific configuration is provided in the
 repository at `core/assets/exim`. There are three files
 
 - [25_mm_macros](core/assets/exim/25_mm3_macros) to be placed at
@@ -387,7 +386,7 @@ configuration: python:mailman.config.exim4
 
 To use [Postfix][12], edit the `main.cf` configuration file, which is typically
 at `/etc/postfix/main.cf` on Debian-based operating systems.  Add
-`172.19.199.2` and `172.19.199.3` to `mynetworks` so it will relay emails from
+mailman-core and mailman-web to `mynetworks` so it will relay emails from
 the containers and add the following configuration lines:
 
 ```
@@ -415,9 +414,11 @@ at `/opt/mailman/core/mailman-extra.cfg`.
 [mta]
 incoming: mailman.mta.postfix.LMTP
 outgoing: mailman.mta.deliver.deliver
-lmtp_host: 172.19.199.2
+# mailman-core hostname or IP from the Postfix server
+lmtp_host: localhost
 lmtp_port: 8024
-smtp_host: 172.19.199.1
+# Postfix server's hostname or IP from mailman-core
+smtp_host: smtp.example.com
 smtp_port: 25
 configuration: /etc/postfix-mailman.cfg
 ```
@@ -472,7 +473,7 @@ It is advisable to run your Django (interfaced through WSGI server) through an
 _actual_ webserver in production for better performance.
 
 If you are using v0.1.0, the uwsgi server is configured to listen to requests at
-`172.19.199.3:8000` using the `HTTP` protocol. Make sure that you preserve the `HOST`
+port `8000` using the `HTTP` protocol. Make sure that you preserve the `HOST`
 header when you proxy the requests from your Web Server. In Nginx you can do
 that by adding the following to your configuration:
 
@@ -485,7 +486,7 @@ that by adding the following to your configuration:
 
 
     location / {
-		  proxy_pass http://172.19.199.3:8000;
+		  proxy_pass http://localhost:8000;
 		  include uwsgi_params;
 		  uwsgi_read_timeout 300;
 		  proxy_set_header Host $host;
@@ -500,7 +501,7 @@ uwsgi
 -----
 
 Starting from v0.1.1, the uwsgi server is configured to listen to requests at
-`172.19.199.3:8000` with the http protocol and `172.19.199.3:8080` for the uwsgi
+port `8000` with the http protocol and port `8080` for the uwsgi
 protocol.
 
 **Please make sure that you are using port 8080 for uwsgi protocol.**
@@ -519,7 +520,7 @@ To move to uwsgi protocol in the above nginx configuration use this
     }
 
     location / {
-		  uwsgi_pass 172.19.199.3:8080;
+		  uwsgi_pass localhost:8080;
 		  include uwsgi_params;
 		  uwsgi_read_timeout 300;
     }
