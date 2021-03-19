@@ -99,16 +99,6 @@ MAILMAN_WEB_SOCIAL_AUTH = [
     'allauth.socialaccount.providers.google',
 ]
 
-# Optionally include paintstore, if it was installed with Hyperkitty.
-# TODO: Remove this after a new version of Hyperkitty is released and
-# neither the stable nor the rolling version needs it.
-try:
-    import paintstore
-    DEFAULT_APPS.append('paintstore')
-except ImportError:
-    pass
-
-
 MIDDLEWARE = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
