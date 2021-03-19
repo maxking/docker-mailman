@@ -65,7 +65,8 @@ MAILMAN_ARCHIVER_FROM = (os.environ.get('MAILMAN_HOST_IP', gethostbyname(os.envi
 
 # Application definition
 
-INSTALLED_APPS = [
+INSTALLED_APPS = []
+DEFAULT_APPS = [
     'postorius',
     'django_mailman3',
     # Uncomment the next line to enable the admin:
@@ -82,6 +83,8 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+]
+MAILMAN_WEB_SOCIAL_AUTH = [
     'django_mailman3.lib.auth.fedora',
     'allauth.socialaccount.providers.openid',
     'allauth.socialaccount.providers.github',
@@ -344,3 +347,7 @@ try:
     from settings_local import *
 except ImportError:
     pass
+
+# Compatibility for older installs that override INSTALLED_APPS
+if not INSTALLED_APPS:
+    INSTALLED_APPS = DEFAULT_APPS + MAILMAN_WEB_SOCIAL_AUTH

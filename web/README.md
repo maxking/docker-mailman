@@ -71,6 +71,14 @@ change them unless you know what you want.
   `http://mailman-web:8000` by default so that Core can fetch templates from
   Web.
 
+- `MAILMAN_WEB_SOCIAL_AUTH`: This is a list of Social login providers.
+  It contains a default set of providers. Override it if you want to remove
+  or disable social login entierly.
+  If `INSTALLED_APPS` is overridden `MAILMAN_WEB_SOCIAL_AUTH` is not used and
+  you must specify any social login provider in `INSTALLED_APPS` instead.
+  See [settings.py](mailman-web/settings.py) for implementation details.
+
+
 Running
 =======
 
