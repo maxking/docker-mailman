@@ -17,6 +17,7 @@ RUN apk update \
                    mailman==3.3.3 \
                    mailman-hyperkitty==1.1.0 \
                    pymysql \
+                   'sqlalchemy<1.4.0' \
     && apk del build-deps \
     && adduser -S mailman
 
