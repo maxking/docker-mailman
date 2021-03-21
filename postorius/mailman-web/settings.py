@@ -27,9 +27,9 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-import socket
 import dj_database_url
 import sys
+from socket import gethostbyname
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -52,22 +52,21 @@ ALLOWED_HOSTS = [
     # "lists.your-domain.org",
     # Add here all production URLs you may have.
     "mailman-web",
-    "172.19.199.3",
+    gethostbyname("mailman-web"),
     os.environ.get('SERVE_FROM_DOMAIN'),
     os.environ.get('DJANGO_ALLOWED_HOSTS'),
 ]
-
-# Try to get the address of Mailman Core automatically.
 
 # Mailman API credentials
 MAILMAN_REST_API_URL = os.environ.get('MAILMAN_REST_URL', 'http://mailman-core:8001')
 MAILMAN_REST_API_USER = os.environ.get('MAILMAN_REST_USER', 'restadmin')
 MAILMAN_REST_API_PASS = os.environ.get('MAILMAN_REST_PASSWORD', 'restpass')
-MAILMAN_ARCHIVER_FROM = (os.environ.get('MAILMAN_HOST_IP', '172.19.199.2'),)
+MAILMAN_ARCHIVER_FROM = (os.environ.get('MAILMAN_HOST_IP', gethostbyname(os.environ.get('MAILMAN_HOSTNAME', 'mailman-core'))),)
 
 # Application definition
 
-INSTALLED_APPS = (
+INSTALLED_APPS = []
+DEFAULT_APPS = [
     'postorius',
     'django_mailman3',
     # Uncomment the next line to enable the admin:
@@ -84,12 +83,14 @@ INSTALLED_APPS = (
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+]
+MAILMAN_WEB_SOCIAL_AUTH = [
     'django_mailman3.lib.auth.fedora',
     'allauth.socialaccount.providers.openid',
     'allauth.socialaccount.providers.github',
     'allauth.socialaccount.providers.gitlab',
     'allauth.socialaccount.providers.google',
-)
+]
 
 MIDDLEWARE = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -211,11 +212,12 @@ SERVER_EMAIL = 'root@{}'.format(hostname)
 
 # Change this when you have a real email backend
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = os.environ.get('SMTP_HOST', '172.19.199.1')
+EMAIL_HOST = os.environ.get('SMTP_HOST', '')
 EMAIL_PORT = os.environ.get('SMTP_PORT', 25)
-EMAIL_HOST_USER = ''
-EMAIL_HOST_PASSWORD = ''
-EMAIL_USE_TLS = False
+EMAIL_HOST_USER = os.environ.get('SMTP_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.environ.get('SMTP_HOST_PASSWORD', '')
+EMAIL_USE_TLS = os.environ.get('SMTP_USE_TLS', False)
+
 
 # Compatibility with Bootstrap 3
 from django.contrib.messages import constants as messages  # flake8: noqa
@@ -339,8 +341,13 @@ LOGGING = {
 if os.environ.get('LOG_TO_CONSOLE') == 'yes':
     LOGGING['loggers']['django']['handlers'].append('console')
     LOGGING['loggers']['django.request']['handlers'].append('console')
+POSTORIUS_TEMPLATE_BASE_URL =  os.environ.get('POSTORIUS_TEMPLATE_BASE_URL', 'http://mailman-web:8000')
 
 try:
     from settings_local import *
 except ImportError:
     pass
+
+# Compatibility for older installs that override INSTALLED_APPS
+if not INSTALLED_APPS:
+    INSTALLED_APPS = DEFAULT_APPS + MAILMAN_WEB_SOCIAL_AUTH

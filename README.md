@@ -11,6 +11,7 @@ Table of Contents
 
    * [GNU Mailman 3 Deployment with Docker](#gnu-mailman-3-deployment-with-docker)
    * [Release](#release)
+   * [Container Registries](#container-registries)
    * [Rolling Releases](#rolling-releases)
    * [Dependencies](#dependencies)
    * [Configuration](#configuration)
@@ -19,6 +20,7 @@ Table of Contents
    * [Running](#running)
    * [Setting up your MTA](#setting-up-your-mta)
        * [uwsgi](#uwsgi)
+   * [Setting up search indexing](#setting-up-search-indexing)
    * [Setting up your web server](#setting-up-your-web-server)
        * [Serving static files](#serving-static-files)
        * [SSL certificates](#ssl-certificates)
@@ -37,7 +39,8 @@ run multi-container applications. This repository consists of a
 [`docker-compose.yaml`](docker-compose.yaml) file which is a set of
 configurations that can be used to deploy the [Mailman 3 Suite][4].
 
-Please see [NEWS](NEWS.md) for the latest changes and releases.
+Please see [release page](https://github.com/maxking/docker-mailman/releases)
+for the releases and change log.
 
 Release
 =======
@@ -69,6 +72,30 @@ Releases will follow the following rules:
   bugfix releases for the internal components or both.
 
 
+Container Registries
+=========================
+
+The container images are available from multiple container registries:
+
+Mailman Core
+--------------
+- `ghcr.io/maxking/mailman-core`
+- `quay.io/maxking/mailman-core`
+- `docker.io/maxking/mailman-core`
+
+Mailman Web
+------------
+- `ghcr.io/maxking/mailman-web`
+- `quay.io/maxking/mailman-web`
+- `docker.io/maxking/mailman-web`
+
+Postorius
+----------
+- `ghcr.io/maxking/postorius`
+- `quay.io/maxking/postorius`
+- `docker.io/maxking/postorius`
+
+
 Rolling Releases
 ================
 
@@ -79,7 +106,7 @@ un-released software and should be assumed to be beta quality.**
 Every commit is tested with Mailman's CI infrastructure and is included in
 rolling releases only if they have passed the complete test suite.
 
-```
+```bash
 $ docker pull docker.io/maxking/mailman-web:rolling
 $ docker pull docker.io/maxking/mailman-core:rolling
 ```
@@ -120,10 +147,14 @@ Dependencies
 - Docker
 - Docker-compose
 
-To run this you first need to download docker for whichever operating system you
-are using. You can find documentation about [how to install][5]. It is
-recommended to use these instead of the one from your package managers. After you
-have downloaded and installed docker, install docker-compose from [here][6].
+To install these on Ubuntu/Debian:
+
+```
+$ sudo apt install docker.io docker-compose
+```
+
+For other systems, you can read the official Docker documentation to install
+the dependencies from [here][5] and [here][6].
 
 
 Configuration
@@ -165,7 +196,7 @@ These are the settings that you MUST change before deploying:
   (with SITE_ID=1).
 
 - `HYPERKITTY_API_KEY`: Hyperkitty's API Key, should be set to the same value
-  as set for the mailman-core.
+  as set for the mailman-core. (Not needed in case of Postorius-only version.)
 
 - `MAILMAN_ADMIN_USER`: The username for the admin user to be created by default.
 
@@ -180,14 +211,15 @@ password, plese follow the "Forgot Password" link on the "Sign In" page.
 
 To configure the mailman-web container to send emails, add this to your
 `settings_local.py`.:
+
 ```
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = '172.19.199.1'
+EMAIL_HOST = 'smtp.example.com'
 EMAIL_PORT = 25
 ```
 
 Alternatively, you can use the environment variables `SMTP_HOST` (defaults to
-`172.19.199.1`), `SMTP_PORT` (defaults to `25`), `SMTP_HOST_USER` (defaults to
+the container's gateway), `SMTP_PORT` (defaults to `25`), `SMTP_HOST_USER` (defaults to
 an empty string), `SMTP_HOST_PASSWORD` (defaults to an empty string) and
 `SMTP_USE_TLS` (defaults to `False`).
 
@@ -202,7 +234,7 @@ For more details on how to configure this image, please look at
 These are the variables that you MUST change before deploying:
 
 - `HYPERKITTY_API_KEY`: Hyperkitty's API Key, should be set to the same value as
-  set for the mailman-web.
+  set for the mailman-web. Skip the variable in case of non-Hyperkitty deployment.
 
 - `DATABASE_URL`: URL of the type
   `driver://user:password@hostname:port/databasename` for the django to use. If
@@ -253,13 +285,10 @@ server configuration.
 
 See [the nginx configuration][17] as an example.
 
-
-
-
 This command will do several things, most importantly:
 
 - Run a wsgi server using [`uwsgi`][7] for the Mailman's Django-based web
-  frontend listening on http://172.19.199.3:8000/. It will run 2 worker
+  frontend listening on port 8000. It will run 2 worker
   processes with 4 threads each. You may want to change the setting
   `ALLOWED_HOSTS` in the settings before deploying the application in
   production.
@@ -268,9 +297,9 @@ This command will do several things, most importantly:
   mentioned in the `docker-compose.yaml`. You will have to change configuration
   files too if you change any of these.
 
-- Run mailman-core listening an LMTP server at http://172.19.199.2:8024/ for
-  messages from your MTA. You will have to configure your MTA to send messages at
-  this address.
+- Run mailman-core listening on port 8001 for REST API and port 8024 (LMTP
+  server) for messages from your MTA. You will have to configure your MTA to
+  send messages at this address.
 
 Some more details about what the above system achieves is mentioned below. If you
 are only going to deploy a simple configuration, you don't need to read
@@ -278,13 +307,12 @@ this. However, these are very easy to understand if you know how docker works.
 
 - First create a bridge network called `mailman` in the
   `docker-compose.yaml`. It will probably be named something else in your
-  machine, but it will use the `172.19.199.0/24` as subnet. All the containers
+  machine. All the containers
   mentioned (mailman-core, mailman-web, database) will join this network and are
-  assigned static IPs. The host operating system is available at `172.19.199.1`
+  assigned static IPs. The host operating system is the default gateway
   from within these containers.
 
-- Spin off a mailman-core container which has a static IP address of
-  `172.19.199.2` in the mailman bridge network created above. It has
+- Spin off a mailman-core container attached to the mailman bridge network created above. It has
   GNU Mailman 3 core running inside it. Mailman core's REST API is available at
   port 8001 and LMTP server listens at port 8024.
 
@@ -325,8 +353,8 @@ The provided docker containers do not have an MTA in-built. You can either run
 your own MTA inside a container and have them relay emails to the mailman-core
 container or just install an MTA on the host and have them relay emails.
 
-To use [Exim4][8], it should be setup to relay emails from `172.19.199.3` and
-`172.19.199.2`. The mailman specific configuration is provided in the
+To use [Exim4][8], it should be setup to relay emails from mailman-core and
+mailman-web. The mailman specific configuration is provided in the
 repository at `core/assets/exim`. There are three files
 
 - [25_mm_macros](core/assets/exim/25_mm3_macros) to be placed at
@@ -358,7 +386,7 @@ configuration: python:mailman.config.exim4
 
 To use [Postfix][12], edit the `main.cf` configuration file, which is typically
 at `/etc/postfix/main.cf` on Debian-based operating systems.  Add
-`172.19.199.2` and `172.19.199.3` to `mynetworks` so it will relay emails from
+mailman-core and mailman-web to `mynetworks` so it will relay emails from
 the containers and add the following configuration lines:
 
 ```
@@ -386,9 +414,11 @@ at `/opt/mailman/core/mailman-extra.cfg`.
 [mta]
 incoming: mailman.mta.postfix.LMTP
 outgoing: mailman.mta.deliver.deliver
-lmtp_host: 172.19.199.2
+# mailman-core hostname or IP from the Postfix server
+lmtp_host: localhost
 lmtp_port: 8024
-smtp_host: 172.19.199.1
+# Postfix server's hostname or IP from mailman-core
+smtp_host: smtp.example.com
 smtp_port: 25
 configuration: /etc/postfix-mailman.cfg
 ```
@@ -406,6 +436,36 @@ Setup site owner address. By default, mailman is setup with the site_owner set t
 site_owner: changeme@example.com
 ```
 
+Setting up search indexing
+==========================
+
+Hyperkitty in mailman-web image support full-text indexing. The current default
+indexing engine is [Whoosh](https://whoosh.readthedocs.io/en/latest/intro.html)
+for historical reasons. It is highly recommended that you instead use Xapian for
+production use cases. The default will change when the next major version bump
+happens.
+
+To configure your Mailman-web container to use Xapian, add the following to your
+`settings_local.py`:
+
+```python
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'xapian_backend.XapianEngine',
+        'PATH': "/opt/mailman-web-data/fulltext_index",
+    },
+}
+```
+
+If you have been using the default search indexing engine, you might have to
+re-index emails using the following command:
+
+```bash
+$ docker-compose exec mailman-web ./manage.py rebuild_index
+```
+
+This command can take some time if you a lot of emails, so please be patient!
+
 Setting up your web server
 ==========================
 
@@ -413,22 +473,25 @@ It is advisable to run your Django (interfaced through WSGI server) through an
 _actual_ webserver in production for better performance.
 
 If you are using v0.1.0, the uwsgi server is configured to listen to requests at
-`172.19.199.3:8000` using the `HTTP` protocol. Make sure that you preserve the `HOST`
+port `8000` using the `HTTP` protocol. Make sure that you preserve the `HOST`
 header when you proxy the requests from your Web Server. In Nginx you can do
 that by adding the following to your configuration:
 
 ```
-       # Nginx configuration.
+    # Nginx configuration.
+    location /static {
+        alias /opt/mailman/web/static;
+        autoindex off;
+    }
 
-        location / {
-		 # First attempt to serve request as file, then
 
-		  proxy_pass http://172.19.199.3:8000;
+    location / {
+		  proxy_pass http://localhost:8000;
 		  include uwsgi_params;
 		  uwsgi_read_timeout 300;
 		  proxy_set_header Host $host;
 		  proxy_set_header X-Forwarded-For $remote_addr;
-        }
+    }
 
 ```
 
@@ -438,7 +501,7 @@ uwsgi
 -----
 
 Starting from v0.1.1, the uwsgi server is configured to listen to requests at
-`172.19.199.3:8000` with the http protocol and `172.19.199.3:8080` for the uwsgi
+port `8000` with the http protocol and port `8080` for the uwsgi
 protocol.
 
 **Please make sure that you are using port 8080 for uwsgi protocol.**
@@ -450,15 +513,17 @@ are generally included in the distro packages.
 To move to uwsgi protocol in the above nginx configuration use this
 
 ```
-       # Nginx configuration.
+    # Nginx configuration.
+    location /static {
+        alias /opt/mailman/web/static;
+        autoindex off;
+    }
 
-        location / {
-		 # First attempt to serve request as file, then
-
-		  uwsgi_pass 172.19.199.3:8080;
+    location / {
+		  uwsgi_pass localhost:8080;
 		  include uwsgi_params;
 		  uwsgi_read_timeout 300;
-        }
+    }
 ```
 
 Please make sure that you are using v0.1.1 or greater if you use this configuration.
@@ -506,7 +571,7 @@ fi
 exit 0
 ```
 
-Please do not forget to make the script executable (chmod +x certbot-renew.sh).
+**Please do not forget to make the script executable (`chmod +x certbot-renew.sh`).**
 
 LICENSE
 =======

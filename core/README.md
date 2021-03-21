@@ -40,8 +40,8 @@ These are the variables that you MUST change before deploying:
 These are the variables that you don't need to change if you are using a
 standard version of docker-compose.yaml from this repository.
 
-- `MM_HOSTNAME`: Which IP should Core bind to for REST API and LMTP. If not
-  defined output for `hostname -i` command is used.
+- `MM_HOSTNAME`: Which hostname or IP should Core bind to for REST API and
+  LMTP. If not defined output from `hostname` command is used.
 
 - `MAILMAN_REST_PORT`: Which port should Core use for the REST API. If not defined
   the default is `8001`.
@@ -55,11 +55,24 @@ standard version of docker-compose.yaml from this repository.
 - `MTA`: Mail Transfer Agent to use. Either `exim` or `postfix`. Default value is `exim`.
 
 - `SMTP_HOST`: IP Address/hostname from which you will be sending
-  emails. Default value is `172.19.199.1`, which is the address of the Host OS.
+  emails. Default value is the container's gateway retrieved from:
+    /sbin/ip route | awk '/default/ { print $3 }'
 
 - `SMTP_PORT`: Port used for SMTP. Default is `25`.
 
 - `HYPERKITTY_URL`: Default value is `http://mailman-web:8000/hyperkitty`
+
+In case of a need for fine tuning of REST API web-server that uses [Gunicorn](https://docs.gunicorn.org/en/stable/settings.html) (e.g. for raising of timeouts) `/opt/mailman/core/gunicorn-extra.cfg` file could be provided holding necessary configuration options.
+
+Configuration file, [shipped with Mailman Core](https://gitlab.com/mailman/mailman/-/blob/master/src/mailman/config/gunicorn.cfg), is used by default.
+
+For example, to increase the default 30 sec timeout, which won't work for some API calls to highly populated lists, provide the following `gunicorn-extra.cfg` file:
+
+```
+[gunicorn]
+graceful_timeout = 30
+timeout = 300
+```
 
 Running Mailman-Core
 ====================
@@ -103,6 +116,7 @@ hostname: $MM_HOSTNAME
 port: $MAILMAN_REST_PORT
 admin_user: $MAILMAN_REST_USER
 admin_pass: $MAILMAN_REST_PASSWORD
+configuration: /etc/gunicorn.cfg
 
 [archiver.hyperkitty]
 class: mailman_hyperkitty.Archiver

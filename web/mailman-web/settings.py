@@ -29,6 +29,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 import os
 import dj_database_url
 import sys
+from socket import gethostbyname
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -51,7 +52,7 @@ ALLOWED_HOSTS = [
     # "lists.your-domain.org",
     # Add here all production URLs you may have.
     "mailman-web",
-    "172.19.199.3",
+    gethostbyname("mailman-web"),
     os.environ.get('SERVE_FROM_DOMAIN'),
     os.environ.get('DJANGO_ALLOWED_HOSTS'),
 ]
@@ -61,11 +62,12 @@ MAILMAN_REST_API_URL = os.environ.get('MAILMAN_REST_URL', 'http://mailman-core:8
 MAILMAN_REST_API_USER = os.environ.get('MAILMAN_REST_USER', 'restadmin')
 MAILMAN_REST_API_PASS = os.environ.get('MAILMAN_REST_PASSWORD', 'restpass')
 MAILMAN_ARCHIVER_KEY = os.environ.get('HYPERKITTY_API_KEY')
-MAILMAN_ARCHIVER_FROM = (os.environ.get('MAILMAN_HOST_IP', '172.19.199.2'),)
+MAILMAN_ARCHIVER_FROM = (os.environ.get('MAILMAN_HOST_IP', gethostbyname(os.environ.get('MAILMAN_HOSTNAME', 'mailman-core'))),)
 
 # Application definition
 
-INSTALLED_APPS = [
+INSTALLED_APPS = []
+DEFAULT_APPS = [
     'hyperkitty',
     'postorius',
     'django_mailman3',
@@ -88,6 +90,8 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+]
+MAILMAN_WEB_SOCIAL_AUTH = [
     'django_mailman3.lib.auth.fedora',
     'allauth.socialaccount.providers.openid',
     'allauth.socialaccount.providers.github',
@@ -95,17 +99,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
 ]
 
-# Optionally include paintstore, if it was installed with Hyperkitty.
-# TODO: Remove this after a new version of Hyperkitty is released and
-# neither the stable nor the rolling version needs it.
-try:
-    import paintstore
-    INSTALLED_APPS.append('paintstore')
-except ImportError:
-    pass
-
-
-_MIDDLEWARE = (
+MIDDLEWARE = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -118,16 +112,7 @@ _MIDDLEWARE = (
     'postorius.middleware.PostoriusMiddleware',
 )
 
-# Use old-style Middleware class in Python 2 and released versions of
-# Django-mailman3 don't support new style middlewares.
-
-if sys.version_info < (3, 0):
-    MIDDLEWARE_CLASSES = _MIDDLEWARE
-else:
-    MIDDLEWARE = _MIDDLEWARE
-
 ROOT_URLCONF = 'urls'
-
 
 TEMPLATES = [
     {
@@ -236,7 +221,7 @@ SERVER_EMAIL = 'root@{}'.format(hostname)
 
 # Change this when you have a real email backend
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = os.environ.get('SMTP_HOST', '172.19.199.1')
+EMAIL_HOST = os.environ.get('SMTP_HOST', '')
 EMAIL_PORT = os.environ.get('SMTP_PORT', 25)
 EMAIL_HOST_USER = os.environ.get('SMTP_HOST_USER', '')
 EMAIL_HOST_PASSWORD = os.environ.get('SMTP_HOST_PASSWORD', '')
@@ -409,6 +394,7 @@ FILTER_VHOST = False
 
 Q_CLUSTER = {
     'timeout': 300,
+    'retry': 300,
     'save_limit': 100,
     'orm': 'default',
 }
@@ -419,3 +405,7 @@ try:
     from settings_local import *
 except ImportError:
     pass
+
+# Compatibility for older installs that override INSTALLED_APPS
+if not INSTALLED_APPS:
+    INSTALLED_APPS = DEFAULT_APPS + MAILMAN_WEB_SOCIAL_AUTH

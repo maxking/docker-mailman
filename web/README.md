@@ -43,11 +43,12 @@ change them unless you know what you want.
 - `MAILMAN_REST_PASSWORD`: Mailman's REST API user's password. Default value is
   `restpass`
 
-- `MAILMAN_HOST_IP`: IP of the Container from which Mailman will send emails to
-  hyperkitty (django). Set to `172.19.199.2` by default.
+- `MAILMAN_HOSTNAME`: IP of the Container from which Mailman will send emails to
+  hyperkitty (django). Set to `mailman-core` by default.
 
 - `SMTP_HOST`: IP Address/hostname from which you will be sending
-  emails. Default value is `172.19.199.1`, which is the address of the Host OS.
+  emails. Default value is the container's gateway retrieved from:
+    /sbin/ip route | awk '/default/ { print $3 }'
 
 - `SMTP_PORT`: Port used for SMTP. Default is `25`.
 
@@ -69,6 +70,14 @@ change them unless you know what you want.
   container can be reached from `mailman-core` container. This is set to
   `http://mailman-web:8000` by default so that Core can fetch templates from
   Web.
+
+- `MAILMAN_WEB_SOCIAL_AUTH`: This is a list of Social login providers.
+  It contains a default set of providers. Override it if you want to remove
+  or disable social login entierly.
+  If `INSTALLED_APPS` is overridden `MAILMAN_WEB_SOCIAL_AUTH` is not used and
+  you must specify any social login provider in `INSTALLED_APPS` instead.
+  See [settings.py](mailman-web/settings.py) for implementation details.
+
 
 Running
 =======

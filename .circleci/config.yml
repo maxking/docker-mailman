@@ -33,18 +33,17 @@ jobs:
           name: MySQL Test
           command: bash tests/test.sh
       - deploy:
-          environment:
-            REGISTRY: QUAY
           command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
               python .travis/deploy.py
-            fi
 
 workflows:
   version: 2
-  test-workflow:
+  build-and-deploy-workflow:
     jobs:
-      - build
+      - build:
+          filters:
+            tags:
+              only: /^v\d+\.\d+\.\d+$/
 
   cron-workflow:
     triggers:
@@ -61,3 +60,7 @@ workflows:
     jobs:
       - build:
           context: org-global
+          filters:
+            branches:
+              # Forked pull requests have CIRCLE_BRANCH set to pull/XXX
+              ignore: /pull\/[0-9]+/
