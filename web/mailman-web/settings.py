@@ -52,8 +52,7 @@ ALLOWED_HOSTS = [
     # "lists.your-domain.org",
     # Add here all production URLs you may have.
     "mailman-web",
-    gethostbyname("mailman-web"),
-    os.environ.get('SERVE_FROM_DOMAIN'),
+    os.environ.get('SERVE_FROM_DOMAIN', gethostbyname("mailman-web")),
     os.environ.get('DJANGO_ALLOWED_HOSTS'),
 ]
 
