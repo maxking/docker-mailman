@@ -7,7 +7,7 @@ permalink: /
 
 
 
-[![CircleCI](https://circleci.com/gh/maxking/docker-mailman/tree/master.svg?style=svg)](https://circleci.com/gh/maxking/docker-mailman/tree/master)
+[![CircleCI](https://circleci.com/gh/maxking/docker-mailman/tree/main.svg?style=svg)](https://circleci.com/gh/maxking/docker-mailman/tree/main)
 
 This repository hosts code for two docker images `maxking/mailman-core` and
 `maxking/mailman-web` both of which are meant to deploy [GNU Mailman 3][1] in
