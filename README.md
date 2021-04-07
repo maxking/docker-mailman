@@ -3,28 +3,8 @@ permalink: /
 ---
 
 
-GNU Mailman 3 Deployment with Docker
-====================================
+# GNU Mailman 3 Deployment with Docker
 
-Table of Contents
------------------
-
-   * [GNU Mailman 3 Deployment with Docker](#gnu-mailman-3-deployment-with-docker)
-   * [Release](#release)
-   * [Container Registries](#container-registries)
-   * [Rolling Releases](#rolling-releases)
-   * [Dependencies](#dependencies)
-   * [Configuration](#configuration)
-      * [Mailman-web](#mailman-web)
-      * [Mailman-Core](#mailman-core)
-   * [Running](#running)
-   * [Setting up your MTA](#setting-up-your-mta)
-       * [uwsgi](#uwsgi)
-   * [Setting up search indexing](#setting-up-search-indexing)
-   * [Setting up your web server](#setting-up-your-web-server)
-       * [Serving static files](#serving-static-files)
-       * [SSL certificates](#ssl-certificates)
-   * [LICENSE](#license)
 
 
 [![CircleCI](https://circleci.com/gh/maxking/docker-mailman/tree/master.svg?style=svg)](https://circleci.com/gh/maxking/docker-mailman/tree/master)
@@ -42,8 +22,8 @@ configurations that can be used to deploy the [Mailman 3 Suite][4].
 Please see [release page](https://github.com/maxking/docker-mailman/releases)
 for the releases and change log.
 
-Release
-=======
+## Release
+
 
 The tags for the images are assumed to be release versions for images. This is
 going to be a somewhat common philosophy of distributing Container images where
@@ -72,32 +52,30 @@ Releases will follow the following rules:
   bugfix releases for the internal components or both.
 
 
-Container Registries
-=========================
+## Container Registries
+
 
 The container images are available from multiple container registries:
 
-Mailman Core
---------------
+### Mailman Core
+
 - `ghcr.io/maxking/mailman-core`
 - `quay.io/maxking/mailman-core`
 - `docker.io/maxking/mailman-core`
 
-Mailman Web
-------------
+### Mailman Web
+
 - `ghcr.io/maxking/mailman-web`
 - `quay.io/maxking/mailman-web`
 - `docker.io/maxking/mailman-web`
 
-Postorius
-----------
+### Postorius
+
 - `ghcr.io/maxking/postorius`
 - `quay.io/maxking/postorius`
 - `docker.io/maxking/postorius`
 
-
-Rolling Releases
-================
+## Rolling Releases
 
 Rolling releases are made up of Mailman Components installed from [git
 source](https://gitlab.com/mailman). **Note that these releases are made up of
@@ -142,8 +120,8 @@ $ docker inspect --format '{{json .Config.Labels }}' mailman-web | python -m jso
 - `version.postorius`: The commit hash of Postorius.
 - `version.dj-mm3`: The commit hash of Django-Mailman3 project.
 
-Dependencies
-============
+## Dependencies
+
 - Docker
 - Docker-compose
 
@@ -157,8 +135,7 @@ For other systems, you can read the official Docker documentation to install
 the dependencies from [here][5] and [here][6].
 
 
-Configuration
-=============
+## Configuration
 
 Most of the common configuration is handled through environment variables in the
 `docker-compose.yaml`. However, there is need for some extra configuration that
@@ -263,8 +240,7 @@ emails.
 To configure the mailman-core container to send emails, see the [Setting your MTA
 section below](#setting-up-your-mta).
 
-Running
-=======
+## Running
 
 To run the containers, simply run:
 
@@ -346,8 +322,7 @@ this. However, these are very easy to understand if you know how docker works.
   PostgreSQL can persist its data even if the database containers are
   updated/changed/removed.
 
-Setting up your MTA
-===================
+## Setting up your MTA
 
 The provided docker containers do not have an MTA in-built. You can either run
 your own MTA inside a container and have them relay emails to the mailman-core
@@ -436,8 +411,7 @@ Setup site owner address. By default, mailman is setup with the site_owner set t
 site_owner: changeme@example.com
 ```
 
-Setting up search indexing
-==========================
+## Setting up search indexing
 
 Hyperkitty in mailman-web image support full-text indexing. The current default
 indexing engine is [Whoosh](https://whoosh.readthedocs.io/en/latest/intro.html)
@@ -466,8 +440,7 @@ $ docker-compose exec mailman-web ./manage.py rebuild_index
 
 This command can take some time if you a lot of emails, so please be patient!
 
-Setting up your web server
-==========================
+## Setting up your web server
 
 It is advisable to run your Django (interfaced through WSGI server) through an
 _actual_ webserver in production for better performance.
@@ -497,8 +470,8 @@ that by adding the following to your configuration:
 
 Make sure you are using `proxy_pass` for the `HTTP` protocol.
 
-uwsgi
------
+### uwsgi
+
 
 Starting from v0.1.1, the uwsgi server is configured to listen to requests at
 port `8000` with the http protocol and port `8080` for the uwsgi
@@ -573,8 +546,7 @@ exit 0
 
 **Please do not forget to make the script executable (`chmod +x certbot-renew.sh`).**
 
-LICENSE
-=======
+## LICENSE
 
 This repository is licensed under the MIT License. Please see the LICENSE file for
 more details.
