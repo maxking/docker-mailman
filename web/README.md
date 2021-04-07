@@ -76,8 +76,9 @@ change them unless you know what you want.
   or disable social login entierly.
   If `INSTALLED_APPS` is overridden `MAILMAN_WEB_SOCIAL_AUTH` is not used and
   you must specify any social login provider in `INSTALLED_APPS` instead.
-  See [settings.py](mailman-web/settings.py) for implementation details.
+  See [settings.py][1] for implementation details.
 
+[1]: https://github.com/maxking/docker-mailman/blob/master/web/mailman-web/settings.py
 
 Running
 =======
