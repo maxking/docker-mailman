@@ -16,8 +16,10 @@ a production environment.
 [Docker][2] is a container ecosystem which can run containers on several
 platforms. It consists of a tool called [docker-compose][3] which can be used to
 run multi-container applications. This repository consists of a
-[`docker-compose.yaml`](docker-compose.yaml) file which is a set of
+[`docker-compose.yaml`][1] file which is a set of
 configurations that can be used to deploy the [Mailman 3 Suite][4].
+
+[1]: https://github.com/maxking/docker-mailman/blob/master/docker-compose.yaml
 
 Please see [release page](https://github.com/maxking/docker-mailman/releases)
 for the releases and change log.
@@ -149,11 +151,12 @@ the host running the containers and are imported at runtime in the containers.
   take effect.
 
 * `/opt/mailman/web/settings_local.py` : This is the Django configuration that
-  is imported by the [existing configuration](web/mailman-web/settings.py)
+  is imported by the [existing configuration][2]
   provided by the mailman-web container. **This file is referred to as 
   `settings.py` in most of the Postorius and Django documentation.** To change
   or override any settings in Django/Postorius, you need to create/edit this file. 
 
+[2]: https://github.com/maxking/docker-mailman/blob/master/web/mailman-web/settings.py
 
 Also, note that if you need any other files to be accessible from the host to
 inside the container, you can place them at certain directories which are
@@ -204,7 +207,7 @@ This is required in addition to the [Setup your MTA](#setting-up-your-mta)
 section below, which covers email setup for Mailman Core.
 
 For more details on how to configure this image, please look at
-[Mailman-web's Readme](web/README.md)
+[Mailman-web's Readme](web/)
 
 ### Mailman-Core
 
@@ -230,7 +233,7 @@ These are the variables that you MUST change before deploying:
   the mailman's documentation [here][11].
 
 For more details on how to configure this image, please look [Mailman-core's
-Readme](core/README.md)
+Readme](core/)
 
 
 While the above configuration will allow you to run the images and possibly view
@@ -295,7 +298,7 @@ this. However, these are very easy to understand if you know how docker works.
 - Spin off a mailman-web container which has a Django application running with
   both Mailman's web frontend Postorius and Mailman's web-based Archiver
   running. [Uwsgi][7] server is used to run a web server with the configuration
-  provided in this repository [here](web/assets/settings.py). You may want to
+  provided in this repository [here][2]. You may want to
   change the setting `ALLOWED_HOSTS` in the settings before deploying the
   application in production. You can do that by adding a
   `/opt/mailman/web/settings_local.py` which is imported by the Django when
@@ -311,8 +314,10 @@ this. However, these are very easy to understand if you know how docker works.
   also be provided at `/opt/mailman/core/mailman-extra.cfg` (on host), and will
   be added to generated configuration file. Mailman also needs another
   configuration file called
-  [mailman-hyperkitty.cfg](core/assets/mailman-hyperkitty.cfg) and is also
+  [mailman-hyperkitty.cfg][3] and is also
   expected to be at `/opt/mailman/core/` on the host OS.
+
+[3]: https://github.com/maxking/docker-mailman/blob/master/core/assets/mailman-hyperkitty.cfg
 
 - mailman-web mounts `/opt/mailman/web` from the host OS to
   `/opt/mailman-web-data` in the container. It consists of the logs and
