@@ -78,6 +78,12 @@ change them unless you know what you want.
   you must specify any social login provider in `INSTALLED_APPS` instead.
   See [settings.py][1] for implementation details.
 
+- `BASE_PATH`: The base url at which the `mailman-web` container can be reached
+  from the reverse proxy. A value like `mailman/` will lead to URLs like
+  `/mailman/postorius/lists/`, `/mailman/hyperkitty/` and `/mailman/admin/`.
+  The reverse proxy for `/static` and `uwsgi`-requests has to be configured
+  accordingly. Default is empty.
+
 [1]: https://github.com/maxking/docker-mailman/blob/master/web/mailman-web/settings.py
 
 Running

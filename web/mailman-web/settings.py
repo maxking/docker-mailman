@@ -193,7 +193,7 @@ USE_TZ = True
 
 STATIC_ROOT = '/opt/mailman-web-data/static'
 
-STATIC_URL = '/static/'
+STATIC_URL = '/{base}static/'.format(base=os.environ.get('BASE_PATH', ''))
 
 # Additional locations of static files
 
