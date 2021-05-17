@@ -190,7 +190,7 @@ environment variables mentioned above (`MAILMAN_ADMIN_USER` &
 password, plese follow the "Forgot Password" link on the "Sign In" page.
 
 To configure the mailman-web container to send emails, add this to your
-`settings_local.py`.:
+`settings_local.py`:
 
 ```
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -337,7 +337,7 @@ To use [Exim4][8], it should be setup to relay emails from mailman-core and
 mailman-web. The mailman specific configuration is provided in the
 repository at `core/assets/exim`. There are three files
 
-- [25_mm_macros](core/assets/exim/25_mm3_macros) to be placed at
+- [25_mm3_macros](core/assets/exim/25_mm3_macros) to be placed at
   `/etc/exim4/conf.d/main/25_mm3_macros` in a typical Debian install of
   exim4. Please change MY_DOMAIN_NAME to the domain name that will be used to
   serve mailman. Multi-domain setups will be added later.
