@@ -154,7 +154,8 @@ the host running the containers and are imported at runtime in the containers.
   is imported by the [existing configuration][2]
   provided by the mailman-web container. **This file is referred to as 
   `settings.py` in most of the Postorius and Django documentation.** To change
-  or override any settings in Django/Postorius, you need to create/edit this file. 
+  or override any settings in Django/Postorius, you need to create/edit this file.
+  A useful configuration for troubleshooting is `DEBUG = True`.
 
 [2]: https://github.com/maxking/docker-mailman/blob/master/web/mailman-web/settings.py
 
@@ -333,6 +334,8 @@ The provided docker containers do not have an MTA in-built. You can either run
 your own MTA inside a container and have them relay emails to the mailman-core
 container or just install an MTA on the host and have them relay emails.
 
+### Exim4
+
 To use [Exim4][8], it should be setup to relay emails from mailman-core and
 mailman-web. The mailman specific configuration is provided in the
 repository at `core/assets/exim`. There are three files
@@ -363,6 +366,8 @@ smtp_host: $SMTP_HOST
 smtp_port: $SMTP_PORT
 configuration: python:mailman.config.exim4
 ```
+
+### Postfix
 
 To use [Postfix][12], edit the `main.cf` configuration file, which is typically
 at `/etc/postfix/main.cf` on Debian-based operating systems.  Add
