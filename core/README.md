@@ -41,7 +41,7 @@ These are the variables that you don't need to change if you are using a
 standard version of docker-compose.yaml from this repository.
 
 - `MM_HOSTNAME`: Which hostname or IP should Core bind to for REST API and
-  LMTP. If not defined output from `hostname` command is used.
+  LMTP. If not defined output from the `hostname -i` command is used.
 
 - `MAILMAN_REST_PORT`: Which port should Core use for the REST API. If not defined
   the default is `8001`.
