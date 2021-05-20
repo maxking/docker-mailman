@@ -28,7 +28,7 @@ These are the variables that you MUST change before deploying:
   to change this if you are happy with postgresql.
 
 - `DATABASE_TYPE`: It's value can be one of `sqlite`, `postgres` or `mysql` as
-  these are the only three database types that Mailman 3 supports. It's defualt
+  these are the only three database types that Mailman 3 supports. Its default
   value is set to `sqlite` along with the default database class and default
   database url above.
 
