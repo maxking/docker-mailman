@@ -383,6 +383,12 @@ local_recipient_maps =
     regexp:/opt/mailman/core/var/data/postfix_lmtp
 relay_domains =
     regexp:/opt/mailman/core/var/data/postfix_domains
+
+# example: add the containers with IPs 172.19.199.x to mynetworks
+mynetworks = 127.0.0.0/8 172.19.199.0/24 [::ffff:127.0.0.0]/104 [::1]/128
+
+# example: add the container's gateway interface and the public IP
+inet_interfaces = localhost, 172.19.199.1, the_public_IP
 ```
 
 To configure Mailman to use Postfix, add the following to `mailman-extra.cfg`
@@ -394,11 +400,11 @@ at `/opt/mailman/core/mailman-extra.cfg`.
 [mta]
 incoming: mailman.mta.postfix.LMTP
 outgoing: mailman.mta.deliver.deliver
-# mailman-core hostname or IP from the Postfix server
-lmtp_host: localhost
+# mailman-core IP from the Postfix server (example: mailman-core has address 172.19.199.2)
+lmtp_host: 172.19.199.2
 lmtp_port: 8024
-# Postfix server's hostname or IP from mailman-core
-smtp_host: smtp.example.com
+# Postfix server's hostname or IP address (example: gateway has address 172.19.199.1)
+smtp_host: 172.19.199.1
 smtp_port: 25
 configuration: /etc/postfix-mailman.cfg
 ```
