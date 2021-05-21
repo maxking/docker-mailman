@@ -5,7 +5,7 @@ When you spawn off this container, you must mount `/opt/mailman` to the
 container. Mailman's `var` directory will also be stored here so that it can
 persist across different sessions and containers. Any configuration at
 `/opt/mailman/core/mailman-extra.cfg` (on the host) will be added to the mailman's default
-generated confifguration (See below).
+generated confifguration (see below).
 
 It is not advised to run multiple mailman processes on the same host sharing the
 same `/opt/mailman` (`/opt/mailman/core` on the host) directory as this will
@@ -25,9 +25,9 @@ These are the variables that you MUST change before deploying:
   not set, the default is set to
   `sqlite:///opt/mailman-web-data/mailmanweb.db`. The standard
   docker-compose.yaml comes with it set to a postgres database. It is not must
-  to change this if you are happy with postgresql.
+  to change this if you are happy with PostgreSQL.
 
-- `DATABASE_TYPE`: It's value can be one of `sqlite`, `postgres` or `mysql` as
+- `DATABASE_TYPE`: Its value can be one of `sqlite`, `postgres` or `mysql` as
   these are the only three database types that Mailman 3 supports. Its default
   value is set to `sqlite` along with the default database class and default
   database url above.
@@ -79,7 +79,7 @@ Running Mailman-Core
 
 It is highly recomended that you run this image along with the
 docker-compose.yaml file provided at the [github repo][1] of this
-image. However, it is possibel to run this image as a standalone container if
+image. However, it is possible to run this image as a standalone container if
 you want just a mailman-core.
 
 ```bash
@@ -88,11 +88,11 @@ $ docker run -it -e "HYPERKITTY_API_KEY=changeme" -h mailman-core -v /opt/mailma
 ```
 
 However, if you don't provide the environment `DATABASE_URL`, the database _may_
-not be persistant. All the configuration options are explained in more detail.
+not be persisted. All the configuration options are explained in more detail.
 
 If you need mode advanced configuration for mailman, you can create
 `/opt/mailman/mailman.cfg` and it be added to the configuration inside the
-container. Note that, anything inside this configuration will override the
+container. Note that anything inside this configuration will override the
 settings provided via the environment variables and their default values.
 
 By default, the following settings are generated:
@@ -142,7 +142,7 @@ You can use Postfix or [Exim][2] with this image to send emails. Mailman Core
 can interact with any modern MTA which can deliver emails over LMTP. The
 documentation for Mailman Core has configuration settigs for using them.
 
-Only Exim and Postfix has been tested with these images and are supported as of
+Only Exim and Postfix have been tested with these images and are supported as of
 now. There _might_ be some limitations with using other MTAs in a containerized
 environments. Contributions are welcome for anything additional needed to
 support other MTAs.
