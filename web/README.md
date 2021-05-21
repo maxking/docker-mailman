@@ -33,7 +33,7 @@ change them unless you know what you want.
   not set, the default is set to
   `sqlite:///opt/mailman-web-data/mailmanweb.db`. The standard
   docker-compose.yaml comes with it set to a postgres database. It is not must
-  to change this if you are happy with postgresql.
+  to change this if you are happy with PostgreSQL.
 
 - `MAILMAN_REST_URL`: The URL to the Mailman core's REST API server.  Defaut
   value is `http://mailman-core:8001`.
