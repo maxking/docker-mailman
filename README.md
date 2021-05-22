@@ -360,7 +360,7 @@ to Exim, but just for reference, it looks like this:
 [mta]
 incoming: mailman.mta.exim4.LMTP
 outgoing: mailman.mta.deliver.deliver
-lmtp_host: $MM_HOSTNAME
+lmtp_host: $MAILMAN_HOST
 lmtp_port: 8024
 smtp_host: $SMTP_HOST
 smtp_port: $SMTP_PORT

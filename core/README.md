@@ -40,7 +40,7 @@ These are the variables that you MUST change before deploying:
 These are the variables that you don't need to change if you are using a
 standard version of docker-compose.yaml from this repository.
 
-- `MM_HOSTNAME`: Which hostname or IP should Core bind to for REST API and
+- `MAILMAN_HOST`: Which hostname or IP should Core bind to for REST API and
   LMTP. If not defined output from the `hostname -i` command is used.
 
 - `MAILMAN_REST_PORT`: Which port should Core use for the REST API. If not defined
@@ -102,7 +102,7 @@ By default, the following settings are generated:
 [mta]
 incoming: mailman.mta.exim4.LMTP
 outgoing: mailman.mta.deliver.deliver
-lmtp_host: $MM_HOSTNAME
+lmtp_host: $MAILMAN_HOST
 lmtp_port: 8024
 smtp_host: $SMTP_HOST
 smtp_port: $SMTP_PORT
@@ -112,7 +112,7 @@ configuration: python:mailman.config.exim4
 sleep_time: 10s
 
 [webservice]
-hostname: $MM_HOSTNAME
+hostname: $MAILMAN_HOST
 port: $MAILMAN_REST_PORT
 admin_user: $MAILMAN_REST_USER
 admin_pass: $MAILMAN_REST_PASSWORD
