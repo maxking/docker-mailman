@@ -133,6 +133,9 @@ EOF
 SITE_DIR=$(python3 -c 'import site; print(site.getsitepackages()[0])')
 cp "${SITE_DIR}/mailman/config/gunicorn.cfg" /etc/gunicorn.cfg
 
+# Set worker_tmp_dir to tmpfs
+echo 'worker_tmp_dir = /dev/shm' >> /etc/gunicorn.cfg
+
 # Generate a basic configuration to use exim
 cat > /tmp/exim-mailman.cfg <<EOF
 [mta]
