@@ -16,7 +16,7 @@ RUN set -ex \
 	&& apk add --no-cache --virtual .mailman-rundeps bash sassc \
 	   postgresql-client mysql-client py3-mysqlclient curl mailcap gettext \
 	   python3 py3-pip xapian-core xapian-bindings-python3 libffi pcre-dev \
-	&& python3 -m pip install -U 'Django<3.0' pip setuptools wheel \
+	&& python3 -m pip install -U 'Django<3.1' pip setuptools wheel \
 	&& pip install mailmanclient==3.3.2 \
 		postorius==1.3.4 \
 		hyperkitty==1.3.4 \
@@ -30,6 +30,7 @@ RUN set -ex \
 		xapian-haystack \
 		django-auth-ldap \
 		python-memcached \
+		diskcache \
 	&& apk del .build-deps \
 	&& addgroup -S mailman \
 	&& adduser -S -G mailman mailman \
