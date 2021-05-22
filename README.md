@@ -277,7 +277,7 @@ This command will do several things, most importantly:
   mentioned in the `docker-compose.yaml`. You will have to change configuration
   files too if you change any of these.
 
-- Run mailman-core listening on port 8001 for REST API and port 8024 (LMTP
+- Run mailman-core listening on port 8001 for the REST API and port 8024 (LMTP
   server) for messages from your MTA. You will have to configure your MTA to
   send messages at this address.
 
