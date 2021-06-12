@@ -391,12 +391,15 @@ Q_CLUSTER = {
 
 POSTORIUS_TEMPLATE_BASE_URL =  os.environ.get('POSTORIUS_TEMPLATE_BASE_URL', 'http://mailman-web:8000')
 
+DISKCACHE_PATH = os.environ.get('DISKCACHE_PATH', '/opt/mailman-web-data/diskcache')
+DISKCACHE_SIZE = os.environ.get('DISKCACHE_SIZE', 2 ** 30) # 1 gigabyte
+
 CACHES = {
     'default': {
         'BACKEND': 'diskcache.DjangoCache',
-        'LOCATION': '/opt/mailman-web-data/diskcache',
+        'LOCATION': DISKCACHE_PATH,
         'OPTIONS': {
-            'size_limit': 2 ** 30   # 1 gigabyte
+            'size_limit': DISKCACHE_SIZE,
         },
     },
 }
