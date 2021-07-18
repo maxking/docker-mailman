@@ -28,7 +28,7 @@ RUN set -ex \
         git+https://gitlab.com/mailman/hyperkitty@${HYPERKITTY_REF} \
         whoosh \
         uwsgi \
-        psycopg2 \
+        'psycopg2<2.9' \
         dj-database-url \
         mysqlclient \
         xapian-haystack \
