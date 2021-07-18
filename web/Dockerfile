@@ -31,6 +31,7 @@ RUN set -ex \
 		django-auth-ldap \
 		python-memcached \
 		diskcache \
+		django-utils-six \
 	&& apk del .build-deps \
 	&& addgroup -S mailman \
 	&& adduser -S -G mailman mailman \
