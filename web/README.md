@@ -78,6 +78,9 @@ change them unless you know what you want.
   you must specify any social login provider in `INSTALLED_APPS` instead.
   See [settings.py][1] for implementation details.
 
+- `DISKCACHE_PATH` and `DISKCACHE_SIZE`: Django Diskcache location path and
+  size respectively. Defaults are `/opt/mailman-web-data/diskcache` and 1G.
+
 [1]: https://github.com/maxking/docker-mailman/blob/master/web/mailman-web/settings.py
 
 Running

@@ -158,4 +158,6 @@ fi
 # directory for it. Also chown the logs directory to write the files.
 chown mailman:mailman /opt/mailman-web-data -R
 
+[[ -v DISKCACHE_PATH ]] && chown mailman:mailman "${DISKCACHE_PATH}" -R
+
 exec $@
