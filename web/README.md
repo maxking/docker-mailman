@@ -59,6 +59,9 @@ change them unless you know what you want.
 - `SMTP_USE_TLS`: Specifies wheather the SMTP connection is encrypted
   via TLS. Default is `False`.
 
+- `SMTP_USE_SSL`: Specifies wheather the SMTP connection is encrypted
+  via SSL. Default is `False`.
+
 - `DJANGO_LOG_URL`: Path to the django's log file. Defaults to
   `/opt/mailman-web-data/logs/mailmanweb.log`.
 
