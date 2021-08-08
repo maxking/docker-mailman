@@ -25,16 +25,17 @@ if [ "$EVENT_TYPE" = "cron" ]  || [ "$DEV" = "true" ]; then
     MM3_HK_REF=$(python get_latest_ref.py mailman/mailman-hyperkitty)
 
     # Build the mailman-core image.
-    $DOCKER build -f core/Dockerfile.dev \
+    $DOCKER buildx build -f core/Dockerfile.dev \
             --build-arg CORE_REF=$CORE_REF \
             --build-arg MM3_HK_REF=$MM3_HK_REF \
             --label version.core="$CORE_REF" \
             --label version.mm3-hk="$MM3_HK_REF" \
             --label version.git_commit="$COMMIT_ID" \
-            -t maxking/mailman-core:rolling core/
+            --platform linux/arm/v7,linux/arm64/v8,linux/amd64
+	        --tag maxking/mailman-core:rolling core/
 
     # Build the mailman-web image.
-    $DOCKER build -f web/Dockerfile.dev \
+    $DOCKER buildx build -f web/Dockerfile.dev \
             --label version.git_commit="$COMMIT_ID" \
             --label version.postorius="$POSTORIUS_REF" \
             --label version.hyperkitty="$HYPERKITTY_REF" \
@@ -44,9 +45,10 @@ if [ "$EVENT_TYPE" = "cron" ]  || [ "$DEV" = "true" ]; then
             --build-arg CLIENT_REF=$CLIENT_REF \
             --build-arg HYPERKITTY_REF=$HYPERKITTY_REF \
             --build-arg DJ_MM3_REF=$DJ_MM3_REF \
-            -t maxking/mailman-web:rolling web/
+			--platform linux/arm/v7,linux/arm64/v8,linux/amd64
+	        --tag maxking/mailman-web:rolling web/
 
-    $DOCKER build -f postorius/Dockerfile.dev\
+    $DOCKER buildx build -f postorius/Dockerfile.dev\
 			--label version.git_commit="$COMMIT_ID"\
             --label version.postorius="$POSTORIUS_REF" \
             --label version.client="$CLIENT_REF" \
@@ -54,10 +56,17 @@ if [ "$EVENT_TYPE" = "cron" ]  || [ "$DEV" = "true" ]; then
             --build-arg POSTORIUS_REF=$POSTORIUS_REF \
             --build-arg CLIENT_REF=$CLIENT_REF \
             --build-arg DJ_MM3_REF=$DJ_MM3_REF \
-			-t maxking/postorius:rolling postorius/
+			--platform linux/arm/v7,linux/arm64/v8,linux/amd64
+	        --tag maxking/postorius:rolling postorius/
 else
     # Do the normal building process.
-    $DOCKER build -t maxking/mailman-core:rolling core/
-    $DOCKER build -t maxking/mailman-web:rolling web/
-    $DOCKER build -t maxking/postorius:rolling postorius/
+    $DOCKER buildx build \
+	  --platform linux/arm/v7,linux/arm64/v8,linux/amd64
+	  --tag maxking/mailman-core:rolling core/
+    $DOCKER buildx build \
+	  --platform linux/arm/v7,linux/arm64/v8,linux/amd64
+	  --tag maxking/mailman-web:rolling web/
+    $DOCKER buildx build \
+	  --platform linux/arm/v7,linux/arm64/v8,linux/amd64
+	  --tag maxking/postorius:rolling postorius/
 fi
