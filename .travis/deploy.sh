@@ -14,9 +14,12 @@ deploy() {
 	docker tag maxking/postorius:rolling "$URL/maxking/postorius:$TAG"
 	# Login to the registry and push.
 	docker login -u $USER -p $PASSWORD $URL
-	docker push "$URL/maxking/mailman-web:$TAG"
-	docker push "$URL/maxking/mailman-core:$TAG"
-	docker push "$URL/maxking/postorius:$TAG"
+	#docker push "$URL/maxking/mailman-web:$TAG"
+	#docker push "$URL/maxking/mailman-core:$TAG"
+	#docker push "$URL/maxking/postorius:$TAG"	
+	docker manifest push "$URL/maxking/mailman-web:$TAG"
+    docker manifest push "$URL/maxking/mailman-core:$TAG"
+    docker manifest push "$URL/maxking/postorius:$TAG"
 }
 
 if [ ! "$BRANCH" = "master" ] && [ "$PULL_REQUEST" ]; then
