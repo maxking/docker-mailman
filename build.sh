@@ -35,6 +35,7 @@ if [ "$EVENT_TYPE" = "cron" ]  || [ "$DEV" = "true" ]; then
             --label version.mm3-hk="$MM3_HK_REF" \
             --label version.git_commit="$COMMIT_ID" \
 	        -t maxking/mailman-core:rolling-$arch core/
+		$DOCKER push maxking/mailman-core:rolling-$arch core
 
 		# Build the mailman-web image.
 		$DOCKER build -f web/Dockerfile.dev \
@@ -49,6 +50,7 @@ if [ "$EVENT_TYPE" = "cron" ]  || [ "$DEV" = "true" ]; then
             --build-arg HYPERKITTY_REF=$HYPERKITTY_REF \
             --build-arg DJ_MM3_REF=$DJ_MM3_REF \
 	        -t maxking/mailman-web:rolling-$arch web/
+		$DOCKER push maxking/mailman-web:rolling-$arch web
 
 		$DOCKER build -f postorius/Dockerfile.dev\
 	        --build-arg ARCH=$arch \
@@ -60,6 +62,7 @@ if [ "$EVENT_TYPE" = "cron" ]  || [ "$DEV" = "true" ]; then
             --build-arg CLIENT_REF=$CLIENT_REF \
             --build-arg DJ_MM3_REF=$DJ_MM3_REF \
 	        -t maxking/postorius:rolling-$arch postorius/
+		$DOCKER push maxking/postorius:rolling-$arch postorius
 	done
 else
 	for arch in amd64 arm32v7 arm64v8
@@ -68,12 +71,17 @@ else
 		$DOCKER build \
 		--build-arg ARCH=$arch \
 		-t maxking/mailman-core:rolling-$arch core/
+		$DOCKER push maxking/mailman-core:rolling-$arch core
+		
 		$DOCKER build \
 		--build-arg ARCH=$arch \
 		-t maxking/mailman-web:rolling-$arch web/
+		$DOCKER push maxking/mailman-web:rolling-$arch web
+		
 		$DOCKER build \
 		--build-arg ARCH=$arch \
 		-t maxking/postorius:rolling-$arch postorius/
+		$DOCKER push maxking/postorius:rolling-$arch postorius
 	done
 fi
 
@@ -82,15 +90,21 @@ docker manifest create \
 	--amend maxking/mailman-core:rolling-amd64 \
 	--amend maxking/mailman-core:rolling-arm32v7 \
 	--amend maxking/mailman-core:rolling-arm64v8
+	
+docker manifest push maxking/mailman-core:rolling
 
 docker manifest create \
 	maxking/mailman-web:rolling \
 	--amend maxking/mailman-web:rolling-amd64 \
 	--amend maxking/mailman-web:rolling-arm32v7 \
 	--amend maxking/mailman-web:rolling-arm64v8
+	
+docker manifest push maxking/mailman-web:rolling
 
 docker manifest create \
 	maxking/postorius:rolling \
 	--amend maxking/postorius:rolling-amd64 \
 	--amend maxking/postorius:rolling-arm32v7 \
 	--amend maxking/postorius:rolling-arm64v8
+	
+docker manifest push maxking/postorius:rolling
