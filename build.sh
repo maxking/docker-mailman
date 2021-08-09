@@ -71,12 +71,12 @@ else
 		$DOCKER build \
 		--build-arg ARCH=$arch \
 		-t maxking/mailman-core:rolling-$arch core/
-		$DOCKER push maxking/mailman-core:rolling-$arch core
+		$DOCKER push maxking/mailman-core:rolling-$arch
 		
 		$DOCKER build \
 		--build-arg ARCH=$arch \
 		-t maxking/mailman-web:rolling-$arch web/
-		$DOCKER push maxking/mailman-web:rolling-$arch web
+		$DOCKER push maxking/mailman-web:rolling-$arch
 		
 		$DOCKER build \
 		--build-arg ARCH=$arch \
