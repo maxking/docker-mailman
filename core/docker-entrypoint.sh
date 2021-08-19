@@ -224,10 +224,10 @@ echo "HYPERKITTY_API_KEY not defined, skipping HyperKitty setup..."
 
 fi
 
-# Generate the LMTP files for postfix if needed.
-su-exec mailman mailman aliases
-
 # Now chown the places where mailman wants to write stuff.
 chown -R mailman /opt/mailman
+
+# Generate the LMTP files for postfix if needed.
+su-exec mailman mailman aliases
 
 exec su-exec mailman "$@"
