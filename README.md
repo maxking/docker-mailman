@@ -390,25 +390,29 @@ relay_domains =
     regexp:/opt/mailman/core/var/data/postfix_domains
 ```
 
-To configure Mailman to use Postfix, add the following to `mailman-extra.cfg`
-at `/opt/mailman/core/mailman-extra.cfg`.
+To configure Mailman to use Postfix, set `MTA=postfix` under mailman-core
+in the docker-compose.yaml:
 
 ```
-# mailman-extra.cfg
-
-[mta]
-incoming: mailman.mta.postfix.LMTP
-outgoing: mailman.mta.deliver.deliver
-# mailman-core hostname or IP from the Postfix server
-lmtp_host: localhost
-lmtp_port: 8024
-# Postfix server's hostname or IP from mailman-core
-smtp_host: smtp.example.com
-smtp_port: 25
-configuration: /etc/postfix-mailman.cfg
+  mailman-core:
+    <snip>
+    environment:
+    - MTA=postfix
 ```
 
-The configuration file `/etc/postfix-mailman.cfg` is generated automatically
+This will auto-generate the configuration to talk to Postfix assuming that
+Postfix is available at the gateway address for the container's bridge network
+at port 25. The final configuration can be found by executing:
+
+```
+$ docker exec mailman-core cat /etc/mailman.cfg
+```
+
+Please verify the output for `[mta]` section to ensure that it points to
+the right `smtp_host` (address to reach postfix from mailman-core container)
+and `lmtp_host` (address to reach mailman-core container from postfix).
+
+The configuration file `/etc/postfix-mailman.cfg` is also generated automatically
 inside the `mailman-core` container and contains the configuration specific
 for Postfix.
 
