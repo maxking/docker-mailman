@@ -408,7 +408,11 @@ smtp_port: 25
 configuration: /etc/postfix-mailman.cfg
 ```
 
-The configuration file `/etc/postfix-mailman.cfg` is generated automatically.
+The configuration file `/etc/postfix-mailman.cfg` is generated automatically
+inside the `mailman-core` container and contains the configuration specific
+for Postfix.
+
+## Site Owner
 
 Setup site owner address. By default, mailman is setup with the site_owner set to 'changeme@example.com'. This should be pointing to a valid mailbox. Add the following to the '/opt/mailman/core/mailman-extra.cfg'.
 
