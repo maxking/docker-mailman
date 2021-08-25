@@ -390,8 +390,8 @@ relay_domains =
     regexp:/opt/mailman/core/var/data/postfix_domains
 ```
 
-To configure Mailman to use Postfix, set `MTA=postfix` under mailman-core
-in the docker-compose.yaml:
+To configure Mailman to use Postfix, add `MTA=postfix` under mailman-core's
+environment section in the `docker-compose.yaml`:
 
 ```
   mailman-core:
