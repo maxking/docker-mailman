@@ -8,6 +8,8 @@ COPY mailman-web /opt/mailman-web
 COPY docker-entrypoint.sh /usr/local/bin/
 
 ARG POSTORIUS_REF
+ARG DJ_MM3_REF
+ARG CLIENT_REF
 
 # Install packages and dependencies for postorius and hyperkitty Add user for
 # executing apps, change ownership for uwsgi+django files and set execution
@@ -18,13 +20,19 @@ RUN set -ex \
 	&& apk add --no-cache --virtual .mailman-rundeps bash sassc \
 		postgresql-client mysql-client py3-mysqlclient curl mailcap \
 		python3 py3-pip libffi gettext \
-	&& python3 -m pip install -U 'Django<3.2' pip setuptools wheel \
-	&& python3 -m pip install git+https://gitlab.com/mailman/postorius@${POSTORIUS_REF} \
+    && python3 -m pip install -U pip setuptools wheel \
+    && python3 -m pip install -U \
+        git+https://gitlab.com/mailman/mailmanclient@${CLIENT_REF} \
+        git+https://gitlab.com/mailman/postorius@${POSTORIUS_REF} \
 		uwsgi \
 		psycopg2 \
 		dj-database-url \
 		mysqlclient \
 		typing \
+		django-utils-six \
+    && python3 -m pip install -U 'Django<3.2' \
+    && python3 -m pip install -U \
+       git+https://gitlab.com/mailman/django-mailman3@${DJ_MM3_REF} \
 	&& apk del .build-deps \
 	&& addgroup -S mailman \
 	&& adduser -S -G mailman mailman \

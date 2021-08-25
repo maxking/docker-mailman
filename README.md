@@ -169,7 +169,7 @@ mounted inside the containers.
    container.
 
 ### Mailman-web
-These are the settings that you MUST change before deploying:
+These are the settings that you MUST change in your docker-compose.yaml before deploying:
 
 - `SERVE_FROM_DOMAIN`: The domain name from which Django will be served. To be
   added to `ALLOWED_HOSTS` in django settings. Default value is not set. This
@@ -212,7 +212,7 @@ For more details on how to configure this image, please look at
 
 ### Mailman-Core
 
-These are the variables that you MUST change before deploying:
+These are the variables that you MUST change in your docker-compose.yaml before deploying:
 
 - `HYPERKITTY_API_KEY`: Hyperkitty's API Key, should be set to the same value as
   set for the mailman-web. Skip the variable in case of non-Hyperkitty deployment.
@@ -576,5 +576,5 @@ more details.
 [13]: http://semver.org/
 [14]: https://docs.docker.com/engine/security/trust/content_trust/
 [15]: http://docs.mailman3.org/en/latest/config-web.html#setting-up-email
-[17]: http://docs.mailman3.org/en/latest/prodsetup.html#nginx-configuration
+[17]: https://docs.mailman3.org/en/latest/install/virtualenv.html#nginx-configuration
 [18]: http://docs.list.org/en/latest/pre-installation-guide.html#django-static-files
