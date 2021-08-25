@@ -29,8 +29,8 @@ def main():
     # Find the last commit in the branch that passed the CI
     # successfully and return the reference to it.
     for commit in project.commits.list(ref=branch_name):
-        stasues = (status.status == 'success' for status in
-                commit.statuses.list() if status.allow_failure == False)
+        stasues = list(status.status == 'success' for status in
+                        commit.statuses.list() if status.allow_failure == False)
         if len(stasues) == 0:
             continue
         if all(stasues):
