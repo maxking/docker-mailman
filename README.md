@@ -190,19 +190,15 @@ environment variables mentioned above (`MAILMAN_ADMIN_USER` &
 `MAILMAN_ADMIN_EMAIL`), no password is set for your admin account. To set a
 password, plese follow the "Forgot Password" link on the "Sign In" page.
 
-To configure the mailman-web container to send emails, add this to your
-`settings_local.py`:
+Mailman web is already configured to send emails through `$SMTP_HOST` as the
+MTA's address. If you want to modify it, you can set the value in under
+docker-compose.yaml for mailman-web container. By default, `SMTP_HOST` points
+to the gateway of the web container, which is the host itself.
 
-```
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.example.com'
-EMAIL_PORT = 25
-```
-
-Alternatively, you can use the environment variables `SMTP_HOST` (defaults to
-the container's gateway), `SMTP_PORT` (defaults to `25`), `SMTP_HOST_USER` (defaults to
-an empty string), `SMTP_HOST_PASSWORD` (defaults to an empty string) and
-`SMTP_USE_TLS` (defaults to `False`).
+You can also use the environment variables `SMTP_HOST` (defaults to
+the container's gateway and is set automatically), `SMTP_PORT` (defaults to `25`),
+`SMTP_HOST_USER` (defaults to an empty string), `SMTP_HOST_PASSWORD` (defaults 
+to an empty string) and `SMTP_USE_TLS` (defaults to `False`).
 
 This is required in addition to the [Setup your MTA](#setting-up-your-mta)
 section below, which covers email setup for Mailman Core.
@@ -407,6 +403,21 @@ at port 25. The final configuration can be found by executing:
 ```
 $ docker exec mailman-core cat /etc/mailman.cfg
 ```
+
+The postfix configuration that is generated looks like this:
+```
+[mta]
+incoming: mailman.mta.postfix.LMTP
+outgoing: mailman.mta.deliver.deliver
+lmtp_host: $MM_HOSTNAME
+lmtp_port: 8024
+smtp_host: $SMTP_HOST
+smtp_port: $SMTP_PORT
+configuration: /etc/postfix-mailman.cfg
+```
+
+So, if you need to update the values, you can set `SMTP_HOST`, `SMTP_PORT`, 
+`MM_HOSTNAME` environment variables in `mailman-core` container.
 
 Please verify the output for `[mta]` section to ensure that it points to
 the right `smtp_host` (address to reach postfix from mailman-core container)
