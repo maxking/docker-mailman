@@ -152,7 +152,7 @@ the host running the containers and are imported at runtime in the containers.
 
 * `/opt/mailman/web/settings_local.py` : This is the Django configuration that
   is imported by the [existing configuration][2]
-  provided by the mailman-web container. **This file is referred to as 
+  provided by the mailman-web container. **This file is referred to as
   `settings.py` in most of the Postorius and Django documentation.** To change
   or override any settings in Django/Postorius, you need to create/edit this file.
   A useful configuration for troubleshooting is `DEBUG = True`.
@@ -196,9 +196,9 @@ docker-compose.yaml for mailman-web container. By default, `SMTP_HOST` points
 to the gateway of the web container, which is the host itself.
 
 You can also use the environment variables `SMTP_HOST` (defaults to
-the container's gateway and is set automatically), `SMTP_PORT` (defaults to `25`),
-`SMTP_HOST_USER` (defaults to an empty string), `SMTP_HOST_PASSWORD` (defaults 
-to an empty string) and `SMTP_USE_TLS` (defaults to `False`).
+the container's gateway), `SMTP_PORT` (defaults to `25`), `SMTP_HOST_USER` (defaults to
+an empty string), `SMTP_HOST_PASSWORD` (defaults to an empty string),
+`SMTP_USE_TLS` (defaults to `False`) and `SMTP_USE_SSL` (defaults to `False`).
 
 This is required in addition to the [Setup your MTA](#setting-up-your-mta)
 section below, which covers email setup for Mailman Core.

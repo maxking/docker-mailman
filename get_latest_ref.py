@@ -25,14 +25,17 @@ def main():
     gl = gitlab.Gitlab('https://gitlab.com/', gl_token)
 
     project = gl.projects.get(project_name)
-    branch = project.branches.get(branch_name)
-    top_commit = project.commits.get(branch.commit['short_id'])
 
-    if top_commit.last_pipeline['status'] == 'success':
-        print(top_commit.short_id)
-    else:
-        exit(1)
-
+    # Find the last commit in the branch that passed the CI
+    # successfully and return the reference to it.
+    for commit in project.commits.list(ref=branch_name):
+        stasues = list(status.status == 'success' for status in
+                        commit.statuses.list() if status.allow_failure == False)
+        if len(stasues) == 0:
+            continue
+        if all(stasues):
+            print(commit.short_id)
+            break
 
 if __name__ == '__main__':
     main()
