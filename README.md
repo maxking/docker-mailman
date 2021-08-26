@@ -488,7 +488,7 @@ that by adding the following to your configuration:
 
 
     location / {
-		  proxy_pass http://localhost:8000;
+		  proxy_pass http://127.0.0.1:8000;
 		  include uwsgi_params;
 		  uwsgi_read_timeout 300;
 		  proxy_set_header Host $host;
