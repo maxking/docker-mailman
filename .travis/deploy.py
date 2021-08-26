@@ -32,7 +32,7 @@ USER = 'maxking'
 
 TAG_VAR = 'CIRCLE_TAG'
 BRANCH_VAR = 'CIRCLE_BRANCH'
-PRIMARY_BRANCH = 'master'
+PRIMARY_BRANCH = 'main'
 
 
 def tag(original, final):
@@ -89,7 +89,7 @@ def main():
     elif os.environ.get(BRANCH_VAR) == PRIMARY_BRANCH:
         img_tag = 'rolling'
     else:
-        print(f'Not running on master branch or Git tag so not publishing...')
+        print(f'Not running on {PRIMARY_BRANCH} branch or Git tag so not publishing...')
         exit(0)
 
     for url in ('quay.io', 'docker.io', 'ghcr.io'):
