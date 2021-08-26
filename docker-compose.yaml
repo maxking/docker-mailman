@@ -56,4 +56,10 @@ services:
       mailman:
 
 networks:
-   mailman:
+  mailman:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      -
+        subnet: 172.19.199.0/24
