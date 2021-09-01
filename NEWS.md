@@ -79,10 +79,10 @@ enable: yes
 configuration: /etc/mailman-hyperkitty.cfg
 ```
 
-**Note that lmtp_host can be different than before since new
-containers don't have static IP addresses. They are automatically
-parsed from the output of "ip route" command from inside mailman-core
-container.**
+**Note that lmtp_host and webserver hostname can be different than 
+before since new containers don't have static IP addresses. They 
+are automatically parsed from the output of "ip route" command 
+from inside mailman-core container.**
 
 You can verify that the IP address of the containers by running the
 following commands, note that the **output can be different** and it is
