@@ -11,6 +11,7 @@ nav:
   - Home: "index.md"
   - Mailman Core: "core.md"
   - Mailman Web: "web.md"
+  - News: "news.md"
 
 markdown_extensions:
   - toc:
