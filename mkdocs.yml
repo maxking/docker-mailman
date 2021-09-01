@@ -2,7 +2,7 @@ site_name: docker-mailman
 site_description: Container images for GNU Mailman
 
 theme:
-  name: material
+  name: mkdocs
 
 repo_name: maxking/docker-mailman
 repo_url: https://github.com/maxking/docker-mailman
@@ -11,6 +11,7 @@ nav:
   - Home: "index.md"
   - Mailman Core: "core.md"
   - Mailman Web: "web.md"
+  - News: "news.md"
 
 markdown_extensions:
   - toc:
