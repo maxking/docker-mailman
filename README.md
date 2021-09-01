@@ -486,7 +486,6 @@ that by adding the following to your configuration:
         autoindex off;
     }
 
-
     location / {
 		  proxy_pass http://127.0.0.1:8000;
 		  include uwsgi_params;
