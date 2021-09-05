@@ -17,10 +17,10 @@ RUN set -ex \
 	   postgresql-client mysql-client py3-mysqlclient curl mailcap gettext \
 	   python3 py3-pip xapian-core xapian-bindings-python3 libffi pcre-dev \
 	&& python3 -m pip install -U 'Django<3.0' pip setuptools wheel \
-	&& pip install mailmanclient==3.3.2 \
+	&& pip install mailmanclient==3.3.3 \
 		postorius==1.3.5 \
 		hyperkitty==1.3.4 \
-		django-mailman3==1.3.5 \
+		django-mailman3==1.3.7 \
 		whoosh \
 		uwsgi \
 		psycopg2 \
