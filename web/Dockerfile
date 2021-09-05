@@ -16,20 +16,22 @@ RUN set -ex \
 	&& apk add --no-cache --virtual .mailman-rundeps bash sassc \
 	   postgresql-client mysql-client py3-mysqlclient curl mailcap gettext \
 	   python3 py3-pip xapian-core xapian-bindings-python3 libffi pcre-dev \
-	&& python3 -m pip install -U 'Django<3.0' pip setuptools wheel \
+	&& python3 -m pip install -U 'Django<3.2' pip setuptools wheel \
 	&& pip install mailmanclient==3.3.3 \
 		postorius==1.3.5 \
 		hyperkitty==1.3.4 \
 		django-mailman3==1.3.7 \
 		whoosh \
 		uwsgi \
-		psycopg2 \
+		'psycopg2<2.9' \
 		dj-database-url \
 		mysqlclient \
 		typing \
 		xapian-haystack \
 		django-auth-ldap \
 		python-memcached \
+		diskcache \
+		django-utils-six \
 	&& apk del .build-deps \
 	&& addgroup -S mailman \
 	&& adduser -S -G mailman mailman \

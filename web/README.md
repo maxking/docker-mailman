@@ -33,7 +33,7 @@ change them unless you know what you want.
   not set, the default is set to
   `sqlite:///opt/mailman-web-data/mailmanweb.db`. The standard
   docker-compose.yaml comes with it set to a postgres database. It is not must
-  to change this if you are happy with postgresql.
+  to change this if you are happy with PostgreSQL.
 
 - `MAILMAN_REST_URL`: The URL to the Mailman core's REST API server.  Defaut
   value is `http://mailman-core:8001`.
@@ -59,6 +59,9 @@ change them unless you know what you want.
 - `SMTP_USE_TLS`: Specifies wheather the SMTP connection is encrypted
   via TLS. Default is `False`.
 
+- `SMTP_USE_SSL`: Specifies wheather the SMTP connection is encrypted
+  via SSL. Default is `False`.
+
 - `DJANGO_LOG_URL`: Path to the django's log file. Defaults to
   `/opt/mailman-web-data/logs/mailmanweb.log`.
 
@@ -76,8 +79,12 @@ change them unless you know what you want.
   or disable social login entierly.
   If `INSTALLED_APPS` is overridden `MAILMAN_WEB_SOCIAL_AUTH` is not used and
   you must specify any social login provider in `INSTALLED_APPS` instead.
-  See [settings.py](mailman-web/settings.py) for implementation details.
+  See [settings.py][1] for implementation details.
 
+- `DISKCACHE_PATH` and `DISKCACHE_SIZE`: Django Diskcache location path and
+  size respectively. Defaults are `/opt/mailman-web-data/diskcache` and 1G.
+
+[1]: https://github.com/maxking/docker-mailman/blob/master/web/mailman-web/settings.py
 
 Running
 =======

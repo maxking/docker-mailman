@@ -46,7 +46,7 @@ ADMINS = (
 SITE_ID = 1
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
-# See https://docs.djangoproject.com/en/1.8/ref/settings/#allowed-hosts
+# See https://docs.djangoproject.com/en/3.1/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = [
     "localhost",  # Archiving API from Mailman, keep it.
     # "lists.your-domain.org",
@@ -91,6 +91,7 @@ DEFAULT_APPS = [
     'allauth.account',
     'allauth.socialaccount',
 ]
+
 MAILMAN_WEB_SOCIAL_AUTH = [
     'django_mailman3.lib.auth.fedora',
     'allauth.socialaccount.providers.openid',
@@ -143,9 +144,7 @@ WSGI_APPLICATION = 'wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
-
-
-# This uses $DATABASE_URL from the environment variable to create a
+# dj_database_url uses $DATABASE_URL environment variable to create a
 # django-style-config-dict.
 # https://github.com/kennethreitz/dj-database-url
 DATABASES = {
@@ -161,20 +160,16 @@ USE_X_FORWARDED_HOST = True
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME':
-'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
     },
     {
-        'NAME':
-'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
     },
     {
-        'NAME':
-'django.contrib.auth.password_validation.CommonPasswordValidator',
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
     },
     {
-        'NAME':
-'django.contrib.auth.password_validation.NumericPasswordValidator',
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
 
@@ -226,7 +221,7 @@ EMAIL_PORT = os.environ.get('SMTP_PORT', 25)
 EMAIL_HOST_USER = os.environ.get('SMTP_HOST_USER', '')
 EMAIL_HOST_PASSWORD = os.environ.get('SMTP_HOST_PASSWORD', '')
 EMAIL_USE_TLS = os.environ.get('SMTP_USE_TLS', False)
-
+EMAIL_USE_SSL = os.environ.get('SMTP_USE_SSL', False)
 
 # Compatibility with Bootstrap 3
 from django.contrib.messages import constants as messages  # flake8: noqa
@@ -343,8 +338,6 @@ LOGGING = {
             'level': 'INFO',
             'stream': sys.stdout,
         },
-        # TODO: use an environment variable $DJ_LOG_URL to configure the logging
-        # using an environment variable.
     },
     'loggers': {
         'django.request': {
@@ -376,16 +369,13 @@ LOGGING = {
             'format': '%(levelname)s %(message)s'
         },
     },
-    #'root': {
-    #    'handlers': ['file'],
-    #    'level': 'INFO',
-    #},
 }
 
 
 if os.environ.get('LOG_TO_CONSOLE') == 'yes':
     LOGGING['loggers']['django']['handlers'].append('console')
     LOGGING['loggers']['django.request']['handlers'].append('console')
+
 # HyperKitty-specific
 #
 # Only display mailing-lists from the same virtual host as the webserver
@@ -400,6 +390,19 @@ Q_CLUSTER = {
 }
 
 POSTORIUS_TEMPLATE_BASE_URL =  os.environ.get('POSTORIUS_TEMPLATE_BASE_URL', 'http://mailman-web:8000')
+
+DISKCACHE_PATH = os.environ.get('DISKCACHE_PATH', '/opt/mailman-web-data/diskcache')
+DISKCACHE_SIZE = os.environ.get('DISKCACHE_SIZE', 2 ** 30) # 1 gigabyte
+
+CACHES = {
+    'default': {
+        'BACKEND': 'diskcache.DjangoCache',
+        'LOCATION': DISKCACHE_PATH,
+        'OPTIONS': {
+            'size_limit': DISKCACHE_SIZE,
+        },
+    },
+}
 
 try:
     from settings_local import *

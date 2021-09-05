@@ -61,7 +61,6 @@ ALLOWED_HOSTS = [
 MAILMAN_REST_API_URL = os.environ.get('MAILMAN_REST_URL', 'http://mailman-core:8001')
 MAILMAN_REST_API_USER = os.environ.get('MAILMAN_REST_USER', 'restadmin')
 MAILMAN_REST_API_PASS = os.environ.get('MAILMAN_REST_PASSWORD', 'restpass')
-MAILMAN_ARCHIVER_FROM = (os.environ.get('MAILMAN_HOST_IP', gethostbyname(os.environ.get('MAILMAN_HOSTNAME', 'mailman-core'))),)
 
 # Application definition
 
@@ -217,7 +216,7 @@ EMAIL_PORT = os.environ.get('SMTP_PORT', 25)
 EMAIL_HOST_USER = os.environ.get('SMTP_HOST_USER', '')
 EMAIL_HOST_PASSWORD = os.environ.get('SMTP_HOST_PASSWORD', '')
 EMAIL_USE_TLS = os.environ.get('SMTP_USE_TLS', False)
-
+EMAIL_USE_SSL = os.environ.get('SMTP_USE_SSL', False)
 
 # Compatibility with Bootstrap 3
 from django.contrib.messages import constants as messages  # flake8: noqa

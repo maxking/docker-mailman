@@ -3,31 +3,11 @@ permalink: /
 ---
 
 
-GNU Mailman 3 Deployment with Docker
-====================================
-
-Table of Contents
------------------
-
-   * [GNU Mailman 3 Deployment with Docker](#gnu-mailman-3-deployment-with-docker)
-   * [Release](#release)
-   * [Container Registries](#container-registries)
-   * [Rolling Releases](#rolling-releases)
-   * [Dependencies](#dependencies)
-   * [Configuration](#configuration)
-      * [Mailman-web](#mailman-web)
-      * [Mailman-Core](#mailman-core)
-   * [Running](#running)
-   * [Setting up your MTA](#setting-up-your-mta)
-       * [uwsgi](#uwsgi)
-   * [Setting up search indexing](#setting-up-search-indexing)
-   * [Setting up your web server](#setting-up-your-web-server)
-       * [Serving static files](#serving-static-files)
-       * [SSL certificates](#ssl-certificates)
-   * [LICENSE](#license)
+# GNU Mailman 3 Deployment with Docker
 
 
-[![CircleCI](https://circleci.com/gh/maxking/docker-mailman/tree/master.svg?style=svg)](https://circleci.com/gh/maxking/docker-mailman/tree/master)
+
+[![CircleCI](https://circleci.com/gh/maxking/docker-mailman/tree/main.svg?style=svg)](https://circleci.com/gh/maxking/docker-mailman/tree/main)
 
 This repository hosts code for two docker images `maxking/mailman-core` and
 `maxking/mailman-web` both of which are meant to deploy [GNU Mailman 3][1] in
@@ -36,14 +16,16 @@ a production environment.
 [Docker][2] is a container ecosystem which can run containers on several
 platforms. It consists of a tool called [docker-compose][3] which can be used to
 run multi-container applications. This repository consists of a
-[`docker-compose.yaml`](docker-compose.yaml) file which is a set of
+[`docker-compose.yaml`][1] file which is a set of
 configurations that can be used to deploy the [Mailman 3 Suite][4].
+
+[1]: https://github.com/maxking/docker-mailman/blob/master/docker-compose.yaml
 
 Please see [release page](https://github.com/maxking/docker-mailman/releases)
 for the releases and change log.
 
-Release
-=======
+## Release
+
 
 The tags for the images are assumed to be release versions for images. This is
 going to be a somewhat common philosophy of distributing Container images where
@@ -72,32 +54,30 @@ Releases will follow the following rules:
   bugfix releases for the internal components or both.
 
 
-Container Registries
-=========================
+## Container Registries
+
 
 The container images are available from multiple container registries:
 
-Mailman Core
---------------
+### Mailman Core
+
 - `ghcr.io/maxking/mailman-core`
 - `quay.io/maxking/mailman-core`
 - `docker.io/maxking/mailman-core`
 
-Mailman Web
-------------
+### Mailman Web
+
 - `ghcr.io/maxking/mailman-web`
 - `quay.io/maxking/mailman-web`
 - `docker.io/maxking/mailman-web`
 
-Postorius
-----------
+### Postorius
+
 - `ghcr.io/maxking/postorius`
 - `quay.io/maxking/postorius`
 - `docker.io/maxking/postorius`
 
-
-Rolling Releases
-================
+## Rolling Releases
 
 Rolling releases are made up of Mailman Components installed from [git
 source](https://gitlab.com/mailman). **Note that these releases are made up of
@@ -142,8 +122,8 @@ $ docker inspect --format '{{json .Config.Labels }}' mailman-web | python -m jso
 - `version.postorius`: The commit hash of Postorius.
 - `version.dj-mm3`: The commit hash of Django-Mailman3 project.
 
-Dependencies
-============
+## Dependencies
+
 - Docker
 - Docker-compose
 
@@ -154,11 +134,10 @@ $ sudo apt install docker.io docker-compose
 ```
 
 For other systems, you can read the official Docker documentation to install
-the dependencies from [here][5] and [here][6].
+[Docker from here][5] and [docker-compose from here][6].
 
 
-Configuration
-=============
+## Configuration
 
 Most of the common configuration is handled through environment variables in the
 `docker-compose.yaml`. However, there is need for some extra configuration that
@@ -172,11 +151,13 @@ the host running the containers and are imported at runtime in the containers.
   take effect.
 
 * `/opt/mailman/web/settings_local.py` : This is the Django configuration that
-  is imported by the [existing configuration](web/mailman-web/settings.py)
-  provided by the mailman-web container. **This file is referred to as 
+  is imported by the [existing configuration][2]
+  provided by the mailman-web container. **This file is referred to as
   `settings.py` in most of the Postorius and Django documentation.** To change
-  or override any settings in Django/Postorius, you need to create/edit this file. 
+  or override any settings in Django/Postorius, you need to create/edit this file.
+  A useful configuration for troubleshooting is `DEBUG = True`.
 
+[2]: https://github.com/maxking/docker-mailman/blob/master/web/mailman-web/settings.py
 
 Also, note that if you need any other files to be accessible from the host to
 inside the container, you can place them at certain directories which are
@@ -188,7 +169,7 @@ mounted inside the containers.
    container.
 
 ### Mailman-web
-These are the settings that you MUST change before deploying:
+These are the settings that you MUST change in your docker-compose.yaml before deploying:
 
 - `SERVE_FROM_DOMAIN`: The domain name from which Django will be served. To be
   added to `ALLOWED_HOSTS` in django settings. Default value is not set. This
@@ -209,29 +190,25 @@ environment variables mentioned above (`MAILMAN_ADMIN_USER` &
 `MAILMAN_ADMIN_EMAIL`), no password is set for your admin account. To set a
 password, plese follow the "Forgot Password" link on the "Sign In" page.
 
-To configure the mailman-web container to send emails, add this to your
-`settings_local.py`.:
+Mailman web is already configured to send emails through `$SMTP_HOST` as the
+MTA's address. If you want to modify it, you can set the value in under
+docker-compose.yaml for mailman-web container. By default, `SMTP_HOST` points
+to the gateway of the web container, which is the host itself.
 
-```
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.example.com'
-EMAIL_PORT = 25
-```
-
-Alternatively, you can use the environment variables `SMTP_HOST` (defaults to
+You can also use the environment variables `SMTP_HOST` (defaults to
 the container's gateway), `SMTP_PORT` (defaults to `25`), `SMTP_HOST_USER` (defaults to
-an empty string), `SMTP_HOST_PASSWORD` (defaults to an empty string) and
-`SMTP_USE_TLS` (defaults to `False`).
+an empty string), `SMTP_HOST_PASSWORD` (defaults to an empty string),
+`SMTP_USE_TLS` (defaults to `False`) and `SMTP_USE_SSL` (defaults to `False`).
 
 This is required in addition to the [Setup your MTA](#setting-up-your-mta)
 section below, which covers email setup for Mailman Core.
 
 For more details on how to configure this image, please look at
-[Mailman-web's Readme](web/README.md)
+[Mailman-web's Readme](web/)
 
 ### Mailman-Core
 
-These are the variables that you MUST change before deploying:
+These are the variables that you MUST change in your docker-compose.yaml before deploying:
 
 - `HYPERKITTY_API_KEY`: Hyperkitty's API Key, should be set to the same value as
   set for the mailman-web. Skip the variable in case of non-Hyperkitty deployment.
@@ -253,7 +230,7 @@ These are the variables that you MUST change before deploying:
   the mailman's documentation [here][11].
 
 For more details on how to configure this image, please look [Mailman-core's
-Readme](core/README.md)
+Readme](core/)
 
 
 While the above configuration will allow you to run the images and possibly view
@@ -263,8 +240,7 @@ emails.
 To configure the mailman-core container to send emails, see the [Setting your MTA
 section below](#setting-up-your-mta).
 
-Running
-=======
+## Running
 
 To run the containers, simply run:
 
@@ -319,7 +295,7 @@ this. However, these are very easy to understand if you know how docker works.
 - Spin off a mailman-web container which has a Django application running with
   both Mailman's web frontend Postorius and Mailman's web-based Archiver
   running. [Uwsgi][7] server is used to run a web server with the configuration
-  provided in this repository [here](web/assets/settings.py). You may want to
+  provided in this repository [here][2]. You may want to
   change the setting `ALLOWED_HOSTS` in the settings before deploying the
   application in production. You can do that by adding a
   `/opt/mailman/web/settings_local.py` which is imported by the Django when
@@ -335,8 +311,10 @@ this. However, these are very easy to understand if you know how docker works.
   also be provided at `/opt/mailman/core/mailman-extra.cfg` (on host), and will
   be added to generated configuration file. Mailman also needs another
   configuration file called
-  [mailman-hyperkitty.cfg](core/assets/mailman-hyperkitty.cfg) and is also
+  [mailman-hyperkitty.cfg][3] and is also
   expected to be at `/opt/mailman/core/` on the host OS.
+
+[3]: https://github.com/maxking/docker-mailman/blob/master/core/assets/mailman-hyperkitty.cfg
 
 - mailman-web mounts `/opt/mailman/web` from the host OS to
   `/opt/mailman-web-data` in the container. It consists of the logs and
@@ -346,18 +324,19 @@ this. However, these are very easy to understand if you know how docker works.
   PostgreSQL can persist its data even if the database containers are
   updated/changed/removed.
 
-Setting up your MTA
-===================
+## Setting up your MTA
 
 The provided docker containers do not have an MTA in-built. You can either run
 your own MTA inside a container and have them relay emails to the mailman-core
 container or just install an MTA on the host and have them relay emails.
 
+### Exim4
+
 To use [Exim4][8], it should be setup to relay emails from mailman-core and
 mailman-web. The mailman specific configuration is provided in the
 repository at `core/assets/exim`. There are three files
 
-- [25_mm_macros](core/assets/exim/25_mm3_macros) to be placed at
+- [25_mm3_macros](core/assets/exim/25_mm3_macros) to be placed at
   `/etc/exim4/conf.d/main/25_mm3_macros` in a typical Debian install of
   exim4. Please change MY_DOMAIN_NAME to the domain name that will be used to
   serve mailman. Multi-domain setups will be added later.
@@ -384,6 +363,8 @@ smtp_port: $SMTP_PORT
 configuration: python:mailman.config.exim4
 ```
 
+### Postfix
+
 To use [Postfix][12], edit the `main.cf` configuration file, which is typically
 at `/etc/postfix/main.cf` on Debian-based operating systems.  Add
 mailman-core and mailman-web to `mynetworks` so it will relay emails from
@@ -405,25 +386,48 @@ relay_domains =
     regexp:/opt/mailman/core/var/data/postfix_domains
 ```
 
-To configure Mailman to use Postfix, add the following to `mailman-extra.cfg`
-at `/opt/mailman/core/mailman-extra.cfg`.
+To configure Mailman to use Postfix, add `MTA=postfix` under mailman-core's
+environment section in the `docker-compose.yaml`:
 
 ```
-# mailman-extra.cfg
+  mailman-core:
+    <snip>
+    environment:
+    - MTA=postfix
+```
 
+This will auto-generate the configuration to talk to Postfix assuming that
+Postfix is available at the gateway address for the container's bridge network
+at port 25. The final configuration can be found by executing:
+
+```
+$ docker exec mailman-core cat /etc/mailman.cfg
+```
+
+The postfix configuration that is generated looks like this:
+```
 [mta]
 incoming: mailman.mta.postfix.LMTP
 outgoing: mailman.mta.deliver.deliver
-# mailman-core hostname or IP from the Postfix server
-lmtp_host: localhost
+lmtp_host: $MM_HOSTNAME
 lmtp_port: 8024
-# Postfix server's hostname or IP from mailman-core
-smtp_host: smtp.example.com
-smtp_port: 25
+smtp_host: $SMTP_HOST
+smtp_port: $SMTP_PORT
 configuration: /etc/postfix-mailman.cfg
 ```
 
-The configuration file `/etc/postfix-mailman.cfg` is generated automatically.
+So, if you need to update the values, you can set `SMTP_HOST`, `SMTP_PORT`, 
+`MM_HOSTNAME` environment variables in `mailman-core` container.
+
+Please verify the output for `[mta]` section to ensure that it points to
+the right `smtp_host` (address to reach postfix from mailman-core container)
+and `lmtp_host` (address to reach mailman-core container from postfix).
+
+The configuration file `/etc/postfix-mailman.cfg` is also generated automatically
+inside the `mailman-core` container and contains the configuration specific
+for Postfix.
+
+## Site Owner
 
 Setup site owner address. By default, mailman is setup with the site_owner set to 'changeme@example.com'. This should be pointing to a valid mailbox. Add the following to the '/opt/mailman/core/mailman-extra.cfg'.
 
@@ -436,8 +440,7 @@ Setup site owner address. By default, mailman is setup with the site_owner set t
 site_owner: changeme@example.com
 ```
 
-Setting up search indexing
-==========================
+## Setting up search indexing
 
 Hyperkitty in mailman-web image support full-text indexing. The current default
 indexing engine is [Whoosh](https://whoosh.readthedocs.io/en/latest/intro.html)
@@ -466,8 +469,7 @@ $ docker-compose exec mailman-web ./manage.py rebuild_index
 
 This command can take some time if you a lot of emails, so please be patient!
 
-Setting up your web server
-==========================
+## Setting up your web server
 
 It is advisable to run your Django (interfaced through WSGI server) through an
 _actual_ webserver in production for better performance.
@@ -484,9 +486,8 @@ that by adding the following to your configuration:
         autoindex off;
     }
 
-
     location / {
-		  proxy_pass http://localhost:8000;
+		  proxy_pass http://127.0.0.1:8000;
 		  include uwsgi_params;
 		  uwsgi_read_timeout 300;
 		  proxy_set_header Host $host;
@@ -497,8 +498,8 @@ that by adding the following to your configuration:
 
 Make sure you are using `proxy_pass` for the `HTTP` protocol.
 
-uwsgi
------
+### uwsgi
+
 
 Starting from v0.1.1, the uwsgi server is configured to listen to requests at
 port `8000` with the http protocol and port `8080` for the uwsgi
@@ -573,8 +574,7 @@ exit 0
 
 **Please do not forget to make the script executable (`chmod +x certbot-renew.sh`).**
 
-LICENSE
-=======
+## LICENSE
 
 This repository is licensed under the MIT License. Please see the LICENSE file for
 more details.
@@ -594,5 +594,5 @@ more details.
 [13]: http://semver.org/
 [14]: https://docs.docker.com/engine/security/trust/content_trust/
 [15]: http://docs.mailman3.org/en/latest/config-web.html#setting-up-email
-[17]: http://docs.mailman3.org/en/latest/prodsetup.html#nginx-configuration
+[17]: https://docs.mailman3.org/en/latest/install/virtualenv.html#nginx-configuration
 [18]: http://docs.list.org/en/latest/pre-installation-guide.html#django-static-files

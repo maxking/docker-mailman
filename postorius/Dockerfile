@@ -15,8 +15,8 @@ RUN set -ex \
 		postgresql-dev mariadb-dev python3-dev libffi-dev openldap-dev cargo rust \
 	&& apk add --no-cache --virtual .mailman-rundeps bash sassc \
 		postgresql-client mysql-client py3-mysqlclient curl mailcap gettext \
-		python3 py3-pip libffi libuuid \
-	&& python3 -m pip install -U 'Django<3.0' pip setuptools wheel \
+		python3 py3-pip libffi libuuid pcre-dev \
+	&& python3 -m pip install -U 'Django<3.2' pip setuptools wheel \
 	&& python3 -m pip install postorius==1.3.5 \
 		uwsgi \
 		psycopg2 \
