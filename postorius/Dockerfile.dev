@@ -25,7 +25,7 @@ RUN set -ex \
         git+https://gitlab.com/mailman/mailmanclient@${CLIENT_REF} \
         git+https://gitlab.com/mailman/postorius@${POSTORIUS_REF} \
 		uwsgi \
-		psycopg2 \
+		'psycopg2<2.9' \
 		dj-database-url \
 		mysqlclient \
 		typing \
