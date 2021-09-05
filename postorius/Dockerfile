@@ -18,8 +18,8 @@ RUN set -ex \
 		python3 py3-pip libffi libuuid \
 	&& python3 -m pip install -U 'Django<3.0' pip setuptools wheel \
 	&& python3 -m pip install postorius==1.3.5 \
-		uwsgi \
-		psycopg2 \
+        uwsgi \
+		'psycopg2<2.9' \
 		dj-database-url \
 		mysqlclient \
 		typing \

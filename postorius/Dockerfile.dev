@@ -21,7 +21,7 @@ RUN set -ex \
 	&& python3 -m pip install -U 'Django<3.0' pip setuptools wheel \
 	&& python3 -m pip install git+https://gitlab.com/mailman/postorius@${POSTORIUS_REF} \
 		uwsgi \
-		psycopg2 \
+		'psycopg2<2.9' \
 		dj-database-url \
 		mysqlclient \
 		typing \
