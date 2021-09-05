@@ -134,7 +134,7 @@ $ sudo apt install docker.io docker-compose
 ```
 
 For other systems, you can read the official Docker documentation to install
-the dependencies from [here][5] and [here][6].
+[Docker from here][5] and [docker-compose from here][6].
 
 
 ## Configuration
