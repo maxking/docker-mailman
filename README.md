@@ -16,10 +16,8 @@ a production environment.
 [Docker][2] is a container ecosystem which can run containers on several
 platforms. It consists of a tool called [docker-compose][3] which can be used to
 run multi-container applications. This repository consists of a
-[`docker-compose.yaml`][1] file which is a set of
+[`docker-compose.yaml`][19] file which is a set of
 configurations that can be used to deploy the [Mailman 3 Suite][4].
-
-[1]: https://github.com/maxking/docker-mailman/blob/master/docker-compose.yaml
 
 Please see [release page](https://github.com/maxking/docker-mailman/releases)
 for the releases and change log.
@@ -596,3 +594,4 @@ more details.
 [15]: http://docs.mailman3.org/en/latest/config-web.html#setting-up-email
 [17]: https://docs.mailman3.org/en/latest/install/virtualenv.html#nginx-configuration
 [18]: http://docs.list.org/en/latest/pre-installation-guide.html#django-static-files
+[19]: https://github.com/maxking/docker-mailman/blob/master/docker-compose.yaml
