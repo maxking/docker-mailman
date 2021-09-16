@@ -1,13 +1,12 @@
-Mailman 3 Web UI
-================
+# Mailman 3 Web UI
 
 This image consists of Mailman3's Web UI(Postorius) and Archiver
 (Hyperkitty). This image is built from latest sources on [gitlab][1]. In future,
 latest and stable releases will be seperate. I am looking forward to the release
 of Mailman Suite 3.1 before that.
 
-Configuration
-=============
+## Configuration
+
 
 These are the settings that you MUST change before deploying:
 
@@ -86,8 +85,8 @@ change them unless you know what you want.
 
 [1]: https://github.com/maxking/docker-mailman/blob/master/web/mailman-web/settings.py
 
-Running
-=======
+## Running
+
 
 It is highly recommended that you run this using the [docker-compose.yaml][2]
 provided in the [github repo][3] of this project. You will need to proxy the
@@ -104,8 +103,43 @@ After the first run, you can create a superuser for django using the following
 command:
 
 ```bash
-    $ docker exec -it mailman-web python manage.py createsuperuser
+$ docker exec -it mailman-web python3 manage.py createsuperuser
 ```
+
+## Django management commands
+
+In order to run Django management commands in the `mailman-web` container, you
+can run following:
+
+```bash
+$ docker exec -it mailman-web python3 manage.py <command>
+```
+
+And replace `<command>` with the appropriate management command.
+
+
+## Importing Archives from Mailman 2
+
+In order to import archvies from Mailman 2, you need to get the `listname.mbox`
+file in a location that is readable inside `mailman-web` container. 
+
+Please place `listname.mbox` file at `/opt/mailman/web` **on the host**. Verify
+that the file is present inside the `mailman-web` contianer by running:
+
+```bash
+$ docker exec -it mailman-web ls /opt/mailman-web-data
+```
+And verify that you can see `listname.mbox` in the `ls` output above. After you 
+have verified that, you can then run the `hyperkitty_import` command to do the
+actual import:
+
+```bash
+$ docker exec -it mailman-web python3 manage.py hyperkitty_import -l listname@domain /opt/mailman-web-data/listname.mbox
+```
+
+This should take some time to import depending on how many emails are in the
+archives.
+
 
 [1]: https://gitlab.com/mailman
 [3]: https://github.com/maxking/docker-mailman/
