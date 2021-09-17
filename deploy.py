@@ -26,6 +26,7 @@
 
 import os
 import subprocess
+from packaging import version
 
 #: Default user, which owns the repositories.
 USER = 'maxking'
@@ -81,35 +82,62 @@ def tag_and_push(image_names, url, img_tag):
     push(final)
 
 
+def get_tag_without_patch(tag):
+    """Given A.B.C return A.B"""
+    v = version.parse(tag)
+    return f'{v.major}.{v.minor}'
+
+
+def get_urls(url, img_tag):
+    core = ('maxking/mailman-core:rolling',
+            '{0}/maxking/mailman-core:{1}'.format(url, img_tag))
+    web = ('maxking/mailman-web:rolling',
+        '{0}/maxking/mailman-web:{1}'.format(url, img_tag))
+    postorius = ('maxking/postorius:rolling',
+        '{0}/maxking/postorius:{1}'.format(url, img_tag))
+
+    return (core, web, postorius)
+                     
+
+
 def main():
     """Primary entrypoint to this script."""
-    
+    # Boolean signifying if this is a stable release tag or just a branch.
+    is_release = False
+
     if os.environ.get(TAG_VAR) not in (None, ''):
         img_tag = os.environ.get(TAG_VAR)
+        # Released versions are tagged vA.B.C, so remove
+        # v from the tag when creating the release.
+        if img_tag.startswith('v'):
+            img_tag = img_tag[1:]
+            is_release = True
+
     elif os.environ.get(BRANCH_VAR) == PRIMARY_BRANCH:
         img_tag = 'rolling'
     else:
         print(f'Not running on {PRIMARY_BRANCH} branch or Git tag so not publishing...')
         exit(0)
 
+    # All the registries we are pushing to.
     for url in ('quay.io', 'docker.io', 'ghcr.io'):
-
-        core = ('maxking/mailman-core:rolling',
-                '{0}/maxking/mailman-core:{1}'.format(url, img_tag))
-        web = ('maxking/mailman-web:rolling',
-               '{0}/maxking/mailman-web:{1}'.format(url, img_tag))
-        postorius = ('maxking/postorius:rolling',
-                     '{0}/maxking/postorius:{1}'.format(url, img_tag))
 
         try:
             login(url)
         except subprocess.CalledProcessError:
             print('Failed to login to {}'.format(url))
             continue
+        
+        # Push all the container images.
+        for each in get_urls(url, img_tag):
+            tag_and_push(each, url, img_tag)
 
-        tag_and_push(core, url, img_tag)
-        tag_and_push(web, url, img_tag)
-        tag_and_push(postorius, url, img_tag)
+        # If this is a release tag, tag them also with a.b version.
+        if is_release:
+            rel_tag = get_tag_without_patch(img_tag)
+            for each in get_urls(url, rel_tag):
+                tag_and_push(each, url, rel_tag)
+
 
 
 if __name__ == '__main__':

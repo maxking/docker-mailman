@@ -3,7 +3,7 @@ version: '2'
 jobs:
   build:
     docker:
-      - image: circleci/python:3.6-stretch-browsers
+      - image: cimg/python:3.9.7
     environment:
       REGISTRY: QUAY
       QUAY_URL: quay.io
@@ -14,8 +14,8 @@ jobs:
           name: Setup Environment
           command: source setup_env.sh
       - run:
-          name: Install Docker Compose
-          command: sudo pip install docker-compose
+          name: Install Python dependencies
+          command: sudo pip install docker-compose packaging
       - run:
           name: Building Container Images
           command: ./build.sh
@@ -34,7 +34,7 @@ jobs:
           command: bash tests/test.sh
       - deploy:
           command: |
-              python .travis/deploy.py
+              python deploy.py
 
 workflows:
   version: 2
@@ -51,7 +51,7 @@ workflows:
           cron: "0 0 * * *"
           filters:
             branches:
-              only: master
+              only: main
     jobs:
       - build:
           context: org-global
