@@ -20,12 +20,12 @@ jobs:
           command: python3 -m pip install packaging
       - restore_cache:
           keys:
-            - python-deps-cache-v1
+            - python-deps-cache-v2
       - run:
           name: Building Container Images
           command: ./build.sh << parameters.rolling >>
       - save_cache:
-          key: python-deps-cache-v1
+          key: python-deps-cache-v2
           paths:
             - /root/.cache
       - run:
