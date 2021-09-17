@@ -1,7 +1,11 @@
-version: '2'
+version: '2.1'
 
 jobs:
   build:
+    parameters:
+      rolling:
+        type: string
+        default: "no"
     machine:
       image: ubuntu-2004:202010-01
       docker_layer_caching: true
@@ -11,9 +15,6 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Setup Environment
-          command: source setup_env.sh
-      - run:
           name: Install Python dependencies
           command: python3 -m pip install packaging
       - restore_cache:
@@ -21,7 +22,7 @@ jobs:
             - python-deps-cache-v1
       - run:
           name: Building Container Images
-          command: ./build.sh
+          command: ./build.sh << parameters.rolling >>
       - save_cache:
           key: python-deps-cache-v1
           paths:
@@ -48,6 +49,7 @@ workflows:
   build-and-deploy-workflow:
     jobs:
       - build:
+          rolling: "no"
           filters:
             tags:
               only: /^v\d+\.\d+\.\d+$/
@@ -61,11 +63,13 @@ workflows:
               only: main
     jobs:
       - build:
+          rolling: "yes"
           context: org-global
 
   rolling-workflow:
     jobs:
       - build:
+          rolling: "yes"
           context: org-global
           filters:
             branches:

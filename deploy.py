@@ -34,6 +34,7 @@ USER = 'maxking'
 TAG_VAR = 'CIRCLE_TAG'
 BRANCH_VAR = 'CIRCLE_BRANCH'
 PRIMARY_BRANCH = 'main'
+ROLLING_VAR = "BUILD_ROLLING"
 
 
 def tag(original, final):
@@ -112,8 +113,7 @@ def main():
         if img_tag.startswith('v'):
             img_tag = img_tag[1:]
             is_release = True
-
-    elif os.environ.get(BRANCH_VAR) == PRIMARY_BRANCH:
+    elif os.environ.get(BRANCH_VAR) == PRIMARY_BRANCH and os.environ.get(ROLLING_VAR) == "yes":
         img_tag = 'rolling'
     else:
         print('Not running on {PRIMARY_BRANCH} branch or Git tag so not publishing...'.format(

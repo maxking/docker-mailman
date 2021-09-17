@@ -2,16 +2,13 @@
 
 set -ex
 
+# Set the default value of BUILD_ROLLING to no.
+export BUILD_ROLLING="${1:-no}"
+
 DOCKER=docker
 
-# Set the env variable to later test this release before it is deployed.
-if [ "$1" = "dev" ]; then
-    export DEV=true
-fi
-
-REG_URL=${REGISTRY}_URL
-
-if [ "$EVENT_TYPE" = "cron" ]  || [ "$DEV" = "true" ]; then
+if [ "$BUILD_ROLLING" = "yes" ]; then
+    echo "Building rolling releases..."
     python3 -m venv venv
     source venv/bin/activate
     pip install python-gitlab
@@ -46,6 +43,7 @@ if [ "$EVENT_TYPE" = "cron" ]  || [ "$DEV" = "true" ]; then
             --build-arg DJ_MM3_REF=$DJ_MM3_REF \
             -t maxking/mailman-web:rolling web/
 
+    # build the postorius image.
     $DOCKER build -f postorius/Dockerfile.dev\
 			--label version.git_commit="$COMMIT_ID"\
             --label version.postorius="$POSTORIUS_REF" \
@@ -56,7 +54,8 @@ if [ "$EVENT_TYPE" = "cron" ]  || [ "$DEV" = "true" ]; then
             --build-arg DJ_MM3_REF=$DJ_MM3_REF \
 			-t maxking/postorius:rolling postorius/
 else
-    # Do the normal building process.
+    echo "Building stable releases..."
+    # Build the stable releases.
     $DOCKER build -t maxking/mailman-core:rolling core/
     $DOCKER build -t maxking/mailman-web:rolling web/
     $DOCKER build -t maxking/postorius:rolling postorius/
