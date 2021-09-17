@@ -73,20 +73,34 @@ change them unless you know what you want.
   `http://mailman-web:8000` by default so that Core can fetch templates from
   Web.
 
-- `MAILMAN_WEB_SOCIAL_AUTH`: This is a list of Social login providers.
-  It contains a default set of providers. Override it if you want to remove
-  or disable social login entierly.
-  If `INSTALLED_APPS` is overridden `MAILMAN_WEB_SOCIAL_AUTH` is not used and
-  you must specify any social login provider in `INSTALLED_APPS` instead.
-  See [settings.py][1] for implementation details.
-
 - `DISKCACHE_PATH` and `DISKCACHE_SIZE`: Django Diskcache location path and
   size respectively. Defaults are `/opt/mailman-web-data/diskcache` and 1G.
 
 [1]: https://github.com/maxking/docker-mailman/blob/master/web/mailman-web/settings.py
 
-## Running
+## Social Auth
 
+In order to separate `INSTALLED_APPS` from the social authentication plugins a new settings `MAILMAN_WEB_SOCIAL_AUTH` is created. This includes all the enabled social auth plugins.
+
+### Disable social auth
+
+In order to disable social auth, you can add the following to your
+settings_local.py
+
+```python
+MAILMAN_WEB_SOCIAL_AUTH = []
+```
+
+In older versions of continer images (0.3.*), you had to override
+`INSTALLED_APPS` in order to disable social auth, but addition of
+this new setting will make it easier to disable social auth making
+sure that you get any updates to the django apps that are added in
+future.
+
+The default behavior will remain the same as 0.3 release if you
+have not overriden `INSTALLED_APPS` though.
+
+## Running
 
 It is highly recommended that you run this using the [docker-compose.yaml][2]
 provided in the [github repo][3] of this project. You will need to proxy the
