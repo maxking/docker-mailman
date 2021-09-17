@@ -3,7 +3,7 @@ version: '2'
 jobs:
   build:
     machine:
-      image: ubuntu-1604:201903-01
+      image: ubuntu-2004:202010-01
       docker_layer_caching: true
     environment:
       DOCKER_BUILDKIT: 1
@@ -14,7 +14,7 @@ jobs:
           command: source setup_env.sh
       - run:
           name: Install Python dependencies
-          command: pip install docker-compose packaging
+          command: pip install packaging
       - run:
           name: Building Container Images
           command: ./build.sh
