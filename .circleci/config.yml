@@ -16,9 +16,16 @@ jobs:
       - run:
           name: Install Python dependencies
           command: pip install packaging
+      - restore_cache:
+          keys:
+            - python-deps-cache-v1
       - run:
           name: Building Container Images
           command: ./build.sh
+      - save_cache:
+          key: python-deps-cache-v1
+          paths:
+            - /root/.cache
       - run:
           name: Generate Tests
           command: bash tests/generate_tests.sh

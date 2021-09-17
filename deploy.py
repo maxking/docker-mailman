@@ -85,7 +85,7 @@ def tag_and_push(image_names, url, img_tag):
 def get_tag_without_patch(tag):
     """Given A.B.C return A.B"""
     v = version.parse(tag)
-    return f'{v.major}.{v.minor}'
+    return '{}.{}'.format(v.major, v.minor)
 
 
 def get_urls(url, img_tag):
