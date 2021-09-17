@@ -116,7 +116,8 @@ def main():
     elif os.environ.get(BRANCH_VAR) == PRIMARY_BRANCH:
         img_tag = 'rolling'
     else:
-        print(f'Not running on {PRIMARY_BRANCH} branch or Git tag so not publishing...')
+        print('Not running on {PRIMARY_BRANCH} branch or Git tag so not publishing...'.format(
+            PRIMARY_BRANCH=PRIMARY_BRANCH))
         exit(0)
 
     # All the registries we are pushing to.
