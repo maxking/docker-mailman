@@ -1,12 +1,12 @@
+# syntax = docker/dockerfile:1.3
 FROM alpine:3.12
-
-MAINTAINER Abhilash Raj
 
 #Add startup script to container
 COPY docker-entrypoint.sh /usr/local/bin/
 
 #Install all required packages, add user for executing mailman and set execution rights for startup script
-RUN apk update \
+RUN --mount=type=cache,target=/root/.cache \
+    apk update \
     && apk add --virtual build-deps gcc python3-dev musl-dev postgresql-dev \
        libffi-dev \
   # psutil needs linux-headers to compile on musl c library.
