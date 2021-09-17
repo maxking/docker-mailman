@@ -9,7 +9,6 @@ jobs:
       DOCKER_BUILDKIT: 1
     steps:
       - checkout
-      - setup_remote_docker
       - run:
           name: Setup Environment
           command: source setup_env.sh
