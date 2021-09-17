@@ -15,7 +15,7 @@ jobs:
           command: source setup_env.sh
       - run:
           name: Install Python dependencies
-          command: pip install packaging
+          command: python3 -m pip install packaging
       - restore_cache:
           keys:
             - python-deps-cache-v1
