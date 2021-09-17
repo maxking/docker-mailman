@@ -28,7 +28,7 @@ if [ "$BUILD_ROLLING" = "yes" ]; then
             --label version.core="$CORE_REF" \
             --label version.mm3-hk="$MM3_HK_REF" \
             --label version.git_commit="$COMMIT_ID" \
-            -t maxking/mailman-core:rolling core/
+            -t maxking/mailman-core:rolling core/ &
 
     # Build the mailman-web image.
     $DOCKER build -f web/Dockerfile.dev \
@@ -41,7 +41,7 @@ if [ "$BUILD_ROLLING" = "yes" ]; then
             --build-arg CLIENT_REF=$CLIENT_REF \
             --build-arg HYPERKITTY_REF=$HYPERKITTY_REF \
             --build-arg DJ_MM3_REF=$DJ_MM3_REF \
-            -t maxking/mailman-web:rolling web/
+            -t maxking/mailman-web:rolling web/ &
 
     # build the postorius image.
     $DOCKER build -f postorius/Dockerfile.dev\
@@ -52,11 +52,13 @@ if [ "$BUILD_ROLLING" = "yes" ]; then
             --build-arg POSTORIUS_REF=$POSTORIUS_REF \
             --build-arg CLIENT_REF=$CLIENT_REF \
             --build-arg DJ_MM3_REF=$DJ_MM3_REF \
-			-t maxking/postorius:rolling postorius/
+			-t maxking/postorius:rolling postorius/ &
 else
     echo "Building stable releases..."
     # Build the stable releases.
-    $DOCKER build -t maxking/mailman-core:rolling core/
-    $DOCKER build -t maxking/mailman-web:rolling web/
-    $DOCKER build -t maxking/postorius:rolling postorius/
+    $DOCKER build -t maxking/mailman-core:rolling core/ &
+    $DOCKER build -t maxking/mailman-web:rolling web/ &
+    $DOCKER build -t maxking/postorius:rolling postorius/ &
 fi
+
+wait
