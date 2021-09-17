@@ -15,7 +15,7 @@ jobs:
           command: source setup_env.sh
       - run:
           name: Install Python dependencies
-          command: sudo pip install docker-compose packaging
+          command: pip install docker-compose packaging
       - run:
           name: Building Container Images
           command: ./build.sh
