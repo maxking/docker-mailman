@@ -12,6 +12,7 @@ jobs:
     environment:
       DOCKER_BUILDKIT: 1
       BUILDKIT_PROGRESS: plain
+      BUILD_ROLLING: << parameters.rolling >>
     steps:
       - checkout
       - run:
