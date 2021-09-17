@@ -2,23 +2,30 @@ version: '2'
 
 jobs:
   build:
-    docker:
-      - image: circleci/python:3.6-stretch-browsers
+    machine:
+      image: ubuntu-2004:202010-01
+      docker_layer_caching: true
     environment:
-      REGISTRY: QUAY
-      QUAY_URL: quay.io
+      DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
     steps:
       - checkout
-      - setup_remote_docker
       - run:
           name: Setup Environment
           command: source setup_env.sh
       - run:
-          name: Install Docker Compose
-          command: sudo pip install docker-compose
+          name: Install Python dependencies
+          command: python3 -m pip install packaging
+      - restore_cache:
+          keys:
+            - python-deps-cache-v1
       - run:
           name: Building Container Images
           command: ./build.sh
+      - save_cache:
+          key: python-deps-cache-v1
+          paths:
+            - /root/.cache
       - run:
           name: Generate Tests
           command: bash tests/generate_tests.sh
@@ -34,7 +41,7 @@ jobs:
           command: bash tests/test.sh
       - deploy:
           command: |
-              python .travis/deploy.py
+              python3 deploy.py
 
 workflows:
   version: 2
@@ -51,7 +58,7 @@ workflows:
           cron: "0 0 * * *"
           filters:
             branches:
-              only: master
+              only: main
     jobs:
       - build:
           context: org-global

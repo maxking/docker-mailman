@@ -1,6 +1,5 @@
+# syntax = docker/dockerfile:1.3
 FROM alpine:3.12
-
-MAINTAINER Abhilash Raj
 
 #Add startup script to container
 COPY docker-entrypoint.sh /usr/local/bin/
@@ -12,7 +11,8 @@ ARG MM3_HK_REF
 
 #Install all required packages, add user for executing mailman and set execution
 #rights for startup script
-RUN apk update \
+RUN --mount=type=cache,target=/root/.cache \
+    apk update \
 	&& apk add --no-cache --virtual build-deps gcc python3-dev musl-dev \
    	    postgresql-dev git libffi-dev  \
     && apk add --no-cache bash su-exec postgresql-client mysql-client curl python3 py3-pip linux-headers \
