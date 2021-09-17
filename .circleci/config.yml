@@ -5,8 +5,7 @@ jobs:
     docker:
       - image: cimg/python:3.9.7
     environment:
-      REGISTRY: QUAY
-      QUAY_URL: quay.io
+      DOCKER_BUILDKIT: 1
     steps:
       - checkout
       - setup_remote_docker
