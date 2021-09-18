@@ -4,10 +4,10 @@ set -e
 # If the DB environment variable is not set, use postgres.x
 if [ "$DB" = "postgres" ] || [ -z $DB ]
 then
-	docker-compose -f docker-compose.yaml -f docker-test.yaml up -d
+	docker-compose -f docker-compose.yaml -f tests/docker-test.yaml up -d
 elif [ "$DB" = "mysql" ]
 then
-	docker-compose -f docker-compose-mysql.yaml -f docker-test.yaml up -d
+	docker-compose -f docker-compose-mysql.yaml -f tests/docker-test.yaml up -d
 fi
 
 # Print the IP Addresses of the Containers.
