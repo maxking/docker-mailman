@@ -29,9 +29,6 @@ jobs:
           paths:
             - /root/.cache
       - run:
-          name: Generate Tests
-          command: bash tests/generate_tests.sh
-      - run:
           environment:
             DB: postgres
           name: Postgres Tests
@@ -42,6 +39,7 @@ jobs:
           name: MySQL Test
           command: bash tests/test.sh
       - deploy:
+          name: Deploy
           command: |
               python3 --version
               python3 deploy.py

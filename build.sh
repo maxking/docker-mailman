@@ -2,6 +2,9 @@
 
 set -ex
 
+# Since all the dockerfiles now require buildkit features.
+export DOCKER_BUILDKIT=1
+
 # Set the default value of BUILD_ROLLING to no.
 export BUILD_ROLLING="${1:-no}"
 
