@@ -43,6 +43,7 @@ jobs:
           command: bash tests/test.sh
       - deploy:
           command: |
+              python3 --version
               python3 deploy.py
 
 workflows:
