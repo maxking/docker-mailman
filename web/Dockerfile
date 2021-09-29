@@ -18,7 +18,7 @@ RUN --mount=type=cache,target=/root/.cache \
 	   python3 py3-pip xapian-core xapian-bindings-python3 libffi pcre-dev \
 	&& python3 -m pip install -U 'Django<3.2' pip setuptools wheel \
 	&& pip install mailmanclient==3.3.3 \
-		postorius==1.3.5 \
+		postorius==1.3.6 \
 		hyperkitty==1.3.4 \
 		django-mailman3==1.3.7 \
 		whoosh \
