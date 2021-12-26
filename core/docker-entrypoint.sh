@@ -15,8 +15,8 @@ function wait_for_postgres () {
 
 function wait_for_mysql () {
 	# Check if MySQL is up and accepting connections.
-	HOSTNAME=$(python3 -c "from urllib.parse import urlparse; o = urlparse('$DATABASE_URL'); print(o.hostname);")
-	until mysqladmin ping --host "$HOSTNAME" --silent; do
+	readarray -d' ' -t ENDPOINT <<< $(python3 -c "from urllib.parse import urlparse; o = urlparse('$DATABASE_URL'); print('%s %s' % (o.hostname, o.port if o.port else '3306'));")
+	until mysqladmin ping --host ${ENDPOINT[0]} --port ${ENDPOINT[1]} --silent; do
 		>&2 echo "MySQL is unavailable - sleeping"
 		sleep 1
 	done
