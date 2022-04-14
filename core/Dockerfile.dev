@@ -18,8 +18,8 @@ RUN --mount=type=cache,target=/root/.cache \
     && apk add --no-cache bash su-exec postgresql-client mysql-client curl python3 py3-pip linux-headers py-cryptography mariadb-connector-c \
     && python3 -m pip install -U psycopg2 pymysql setuptools wheel \
     && python3 -m pip install \
-        git+https://gitlab.com/mailman/mailman@${CORE_REF} \
-        git+https://gitlab.com/mailman/mailman-hyperkitty@${MM3_HK_REF} \
+        git+https://gitlab.com/mailman/mailman \
+        git+https://gitlab.com/mailman/mailman-hyperkitty \
         gunicorn==19.9.0 \
     && apk del build-deps \
     && adduser -S mailman

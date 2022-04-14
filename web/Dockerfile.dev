@@ -23,9 +23,9 @@ RUN --mount=type=cache,target=/root/.cache \
         curl mailcap xapian-core xapian-bindings-python3 libffi gettext py-cryptography \
     && python3 -m pip install -U pip setuptools wheel \
     && python3 -m pip install -U \
-        git+https://gitlab.com/mailman/mailmanclient@${CLIENT_REF} \
-        git+https://gitlab.com/mailman/postorius@${POSTORIUS_REF} \
-        git+https://gitlab.com/mailman/hyperkitty@${HYPERKITTY_REF} \
+        git+https://gitlab.com/mailman/mailmanclient \
+        git+https://gitlab.com/mailman/postorius \
+        git+https://gitlab.com/mailman/hyperkitty \
         whoosh \
         uwsgi \
         'psycopg2<2.9' \

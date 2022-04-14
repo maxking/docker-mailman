@@ -22,8 +22,8 @@ RUN --mount=type=cache,target=/root/.cache \
 		python3 py3-pip libffi gettext py-cryptography \
     && python3 -m pip install -U pip setuptools wheel \
     && python3 -m pip install -U \
-        git+https://gitlab.com/mailman/mailmanclient@${CLIENT_REF} \
-        git+https://gitlab.com/mailman/postorius@${POSTORIUS_REF} \
+        git+https://gitlab.com/mailman/mailmanclient \
+        git+https://gitlab.com/mailman/postorius \
 		uwsgi \
 		'psycopg2<2.9' \
 		dj-database-url \
