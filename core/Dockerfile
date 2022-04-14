@@ -15,7 +15,7 @@ RUN --mount=type=cache,target=/root/.cache \
         && python3 -m pip install psycopg2 \
                    gunicorn==19.9.0 \
                    mailman==3.3.5 \
-                   mailman-hyperkitty==1.1.0 \
+                   mailman-hyperkitty==1.2.0 \
                    pymysql \
                    'sqlalchemy<1.4.0' \
     && apk del build-deps \
