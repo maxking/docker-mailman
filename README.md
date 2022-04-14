@@ -89,36 +89,24 @@ $ docker pull docker.io/maxking/mailman-web:rolling
 $ docker pull docker.io/maxking/mailman-core:rolling
 ```
 
-Rolling releases are built with every commit and also re-generated weekly. You
+Rolling releases are built with every commit and also re-generated nightly. You
 can inspect the images to get which commit it was built using:
 
 ```bash
 $ docker inspect --format '{{json .Config.Labels }}' mailman-core | python -m json.tool
 {
-    "version.core": "31f434d0",
     "version.git_commit": "45a4d7805b2b3d0e7c51679f59682d64ba02f05f",
-    "version.mm3-hk": "c625bfd2"
 }
 
 $ docker inspect --format '{{json .Config.Labels }}' mailman-web | python -m json.tool
 {
-    "version.client": "d9e9cb73",
-    "version.dj-mm3": "72a7d6c4",
     "version.git_commit": "45a4d7805b2b3d0e7c51679f59682d64ba02f05f",
-    "version.hyperkitty": "b67ca8a8",
-    "version.postorius": "73328ad4"
 }
 
 ```
 
 - `version.git_commit` : This is the commit hash of the Dockerfile in the
   [Github repo](https://github.com/maxking/docker-mailman)
-- `version.core`: The commit hash of Mailman Core
-- `version.mm3-hk`: The commit hash of Mailman3-hyperkitty plugin.
-- `version.client`: The commit hash of Mailman Client.
-- `version.hyperkitty`: The commit hash of Hyperkitty.
-- `version.postorius`: The commit hash of Postorius.
-- `version.dj-mm3`: The commit hash of Django-Mailman3 project.
 
 ## Dependencies
 
@@ -414,7 +402,7 @@ smtp_port: $SMTP_PORT
 configuration: /etc/postfix-mailman.cfg
 ```
 
-So, if you need to update the values, you can set `SMTP_HOST`, `SMTP_PORT`, 
+So, if you need to update the values, you can set `SMTP_HOST`, `SMTP_PORT`,
 `MM_HOSTNAME` environment variables in `mailman-core` container.
 
 Please verify the output for `[mta]` section to ensure that it points to
