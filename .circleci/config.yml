@@ -1,27 +1,32 @@
-version: '2'
+version: '2.1'
 
 jobs:
   build:
-    docker:
-      - image: circleci/python:3
+    parameters:
+      rolling:
+        type: string
+        default: "no"
+    machine:
+      image: ubuntu-2004:202010-01
     environment:
-      REGISTRY: QUAY
-      QUAY_URL: quay.io
+      DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
+      BUILD_ROLLING: << parameters.rolling >>
     steps:
       - checkout
-      - setup_remote_docker
       - run:
-          name: Setup Environment
-          command: source setup_env.sh
-      - run:
-          name: Install Docker Compose
-          command: sudo pip install docker-compose
+          name: Install Python dependencies
+          command: python3 -m pip install packaging
+      - restore_cache:
+          keys:
+            - python-deps-cache-v1
       - run:
           name: Building Container Images
-          command: ./build.sh
-      - run:
-          name: Generate Tests
-          command: bash tests/generate_tests.sh
+          command: ./build.sh << parameters.rolling >>
+      - save_cache:
+          key: python-deps-cache-v1
+          paths:
+            - /root/.cache
       - run:
           environment:
             DB: postgres
@@ -33,18 +38,20 @@ jobs:
           name: MySQL Test
           command: bash tests/test.sh
       - deploy:
-          environment:
-            REGISTRY: QUAY
+          name: Deploy
           command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              bash .travis/deploy.sh
-            fi
+              python3 --version
+              python3 deploy.py
 
 workflows:
   version: 2
-  test-workflow:
+  build-and-deploy-workflow:
     jobs:
-      - build
+      - build:
+          rolling: "no"
+          filters:
+            tags:
+              only: /^v\d+\.\d+\.\d+$/
 
   cron-workflow:
     triggers:
@@ -52,12 +59,18 @@ workflows:
           cron: "0 0 * * *"
           filters:
             branches:
-              only: master
+              only: main
     jobs:
       - build:
+          rolling: "yes"
           context: org-global
 
   rolling-workflow:
     jobs:
       - build:
+          rolling: "yes"
           context: org-global
+          filters:
+            branches:
+              # Forked pull requests have CIRCLE_BRANCH set to pull/XXX
+              ignore: /pull\/[0-9]+/

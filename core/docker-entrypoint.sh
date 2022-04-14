@@ -4,7 +4,7 @@ set -e
 function wait_for_postgres () {
 	# Check if the postgres database is up and accepting connections before
 	# moving forward.
-	# TODO: Use python's psycopg2 module to do this in python instead of
+	# TODO: Use python3's psycopg2 module to do this in python3 instead of
 	# installing postgres-client in the image.
 	until psql $DATABASE_URL -c '\l'; do
 		>&2 echo "Postgres is unavailable - sleeping"
@@ -15,8 +15,8 @@ function wait_for_postgres () {
 
 function wait_for_mysql () {
 	# Check if MySQL is up and accepting connections.
-	HOSTNAME=$(python3 -c "from urllib.parse import urlparse; o = urlparse('$DATABASE_URL'); print(o.hostname);")
-	until mysqladmin ping --host "$HOSTNAME" --silent; do
+	readarray -d' ' -t ENDPOINT <<< $(python3 -c "from urllib.parse import urlparse; o = urlparse('$DATABASE_URL'); print('%s %s' % (o.hostname, o.port if o.port else '3306'));")
+	until mysqladmin ping --host ${ENDPOINT[0]} --port ${ENDPOINT[1]} --silent; do
 		>&2 echo "MySQL is unavailable - sleeping"
 		sleep 1
 	done
@@ -33,8 +33,10 @@ if [[ ! -v MM_HOSTNAME ]]; then
 	export MM_HOSTNAME=`hostname -i`
 fi
 
+# SMTP_HOST defaults to the gateway
 if [[ ! -v SMTP_HOST ]]; then
-	export SMTP_HOST='172.19.199.1'
+	export SMTP_HOST=$(/sbin/ip route | awk '/default/ { print $3 }')
+	echo "SMTP_HOST not specified, using the gateway ($SMTP_HOST) as default"
 fi
 
 if [[ ! -v SMTP_PORT ]]; then
@@ -58,7 +60,7 @@ fi
 function setup_database () {
 	if [[ ! -v DATABASE_URL ]]
 	then
-		echo "Environemnt variable DATABASE_URL should be defined..."
+		echo "Environment variable DATABASE_URL should be defined..."
 		exit 1
 	fi
 
@@ -114,7 +116,25 @@ then
 fi
 
 # Generate a basic mailman.cfg.
-cat >> /etc/mailman.cfg <<EOF
+cat >> /etc/mailman.cfg << EOF
+[runner.retry]
+sleep_time: 10s
+
+[webservice]
+hostname: $MM_HOSTNAME
+port: $MAILMAN_REST_PORT
+admin_user: $MAILMAN_REST_USER
+admin_pass: $MAILMAN_REST_PASSWORD
+configuration: /etc/gunicorn.cfg
+
+EOF
+
+# Generate a basic gunicorn.cfg.
+SITE_DIR=$(python3 -c 'import site; print(site.getsitepackages()[0])')
+cp "${SITE_DIR}/mailman/config/gunicorn.cfg" /etc/gunicorn.cfg
+
+# Generate a basic configuration to use exim
+cat > /tmp/exim-mailman.cfg <<EOF
 [mta]
 incoming: mailman.mta.exim4.LMTP
 outgoing: mailman.mta.deliver.deliver
@@ -124,23 +144,9 @@ smtp_host: $SMTP_HOST
 smtp_port: $SMTP_PORT
 configuration: python:mailman.config.exim4
 
-[runner.retry]
-sleep_time: 10s
-
-[webservice]
-hostname: $MM_HOSTNAME
-port: $MAILMAN_REST_PORT
-admin_user: $MAILMAN_REST_USER
-admin_pass: $MAILMAN_REST_PASSWORD
-
-[archiver.hyperkitty]
-class: mailman_hyperkitty.Archiver
-enable: yes
-configuration: /etc/mailman-hyperkitty.cfg
 EOF
 
-# Generate a basic configuration to use postfix.
-cat > /etc/postfix-mailman.cfg <<EOF
+cat > /etc/postfix-mailman.cfg << EOF
 [postfix]
 transport_file_type: regex
 # While in regex mode, postmap_command is never used, a placeholder
@@ -148,6 +154,33 @@ transport_file_type: regex
 postmap_command: true
 EOF
 
+# Generate a basic configuration to use postfix.
+cat > /tmp/postfix-mailman.cfg <<EOF
+[mta]
+incoming: mailman.mta.postfix.LMTP
+outgoing: mailman.mta.deliver.deliver
+lmtp_host: $MM_HOSTNAME
+lmtp_port: 8024
+smtp_host: $SMTP_HOST
+smtp_port: $SMTP_PORT
+configuration: /etc/postfix-mailman.cfg
+
+EOF
+
+if [ "$MTA" == "exim" ]
+then
+	echo "Using Exim configuration"
+	cat /tmp/exim-mailman.cfg >> /etc/mailman.cfg
+elif [ "$MTA" == "postfix" ]
+then
+	echo "Using Postfix configuration"
+	cat /tmp/postfix-mailman.cfg >> /etc/mailman.cfg
+else
+	echo "No MTA environment variable found, defaulting to Exim"
+	cat /tmp/exim-mailman.cfg >> /etc/mailman.cfg
+fi
+
+rm -f /tmp/{postfix,exim}-mailman.cfg
 
 if [[ -e /opt/mailman/mailman-extra.cfg ]]
 then
@@ -155,12 +188,23 @@ then
 	cat /opt/mailman/mailman-extra.cfg >> /etc/mailman.cfg
 fi
 
-
-if [[ ! -v HYPERKITTY_API_KEY ]]; then
-	echo "HYPERKITTY_API_KEY not defined, please set this environment variable..."
-	echo "exiting..."
-	exit 1
+if [[ -e /opt/mailman/gunicorn-extra.cfg ]]
+then
+       echo "Found [webserver] configuration file at /opt/mailman/gunicorn-extra.cfg"
+       cat /opt/mailman/gunicorn-extra.cfg > /etc/gunicorn.cfg
 fi
+
+if [[ -v HYPERKITTY_API_KEY ]]; then
+
+echo "HYPERKITTY_API_KEY found, setting up HyperKitty archiver..."
+
+cat >> /etc/mailman.cfg << EOF
+[archiver.hyperkitty]
+class: mailman_hyperkitty.Archiver
+enable: yes
+configuration: /etc/mailman-hyperkitty.cfg
+
+EOF
 
 if [[ ! -v HYPERKITTY_URL ]]; then
 	echo "HYPERKITTY_URL not set, using the default value of http://mailman-web:8000/hyperkitty"
@@ -174,10 +218,16 @@ base_url: $HYPERKITTY_URL
 api_key: $HYPERKITTY_API_KEY
 EOF
 
-# Generate the LMTP files for postfix if needed.
-mailman aliases
+else
+
+echo "HYPERKITTY_API_KEY not defined, skipping HyperKitty setup..."
+
+fi
 
 # Now chown the places where mailman wants to write stuff.
 chown -R mailman /opt/mailman
+
+# Generate the LMTP files for postfix if needed.
+su-exec mailman mailman aliases
 
 exec su-exec mailman "$@"

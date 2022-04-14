@@ -1,11 +1,12 @@
 # Place this file at
 # /etc/exim4/conf.d/main/25_mm3_macros
 
-domainlist mm_domains=MY_DOMAIN_NAME
-
+domainlist mm3_domains=MY_DOMAIN_NAME
+# Depending on your network configuration
+#MM3_LMTP_HOST=mailman-core
+MM3_LMTP_HOST=localhost
 MM3_LMTP_PORT=8024
 MM3_HOME=/opt/mailman/core/var
-
 
 ################################################################
 # The configuration below is boilerplate:

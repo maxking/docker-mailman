@@ -12,26 +12,19 @@ COPY docker-entrypoint.sh /usr/local/bin/
 RUN --mount=type=cache,target=/root/.cache \
     set -ex \
 	&& apk add --no-cache --virtual .build-deps gcc libc-dev linux-headers \
-           postgresql-dev mariadb-dev mariadb-connector-c python3-dev libffi-dev openldap-dev cargo rust \
+		postgresql-dev mariadb-dev mariadb-connector-c python3-dev libffi-dev openldap-dev cargo rust \
 	&& apk add --no-cache --virtual .mailman-rundeps bash sassc \
-	   postgresql-client mysql-client py3-mysqlclient curl mailcap gettext \
-	   python3 py3-pip xapian-core xapian-bindings-python3 libffi pcre-dev py-cryptography \
+		postgresql-client mysql-client py3-mysqlclient curl mailcap gettext \
+		python3 py3-pip libffi libuuid pcre-dev py-cryptography \
 	&& python3 -m pip install -U 'Django<3.2' pip setuptools wheel \
-	&& pip install mailmanclient==3.3.3 \
-		postorius==1.3.6 \
-		hyperkitty==1.3.5 \
-		django-mailman3==1.3.7 \
-		whoosh \
-		uwsgi \
+	&& python3 -m pip install postorius==1.3.6 \
+        uwsgi \
 		'psycopg2<2.9' \
 		dj-database-url \
 		mysqlclient \
 		typing \
-		xapian-haystack \
 		django-auth-ldap \
 		python-memcached \
-		diskcache \
-		django-utils-six \
 	&& apk del .build-deps \
 	&& addgroup -S mailman \
 	&& adduser -S -G mailman mailman \
@@ -48,5 +41,4 @@ EXPOSE 8000 8080
 STOPSIGNAL SIGINT
 
 ENTRYPOINT ["docker-entrypoint.sh"]
-
 CMD ["uwsgi", "--ini", "/opt/mailman-web/uwsgi.ini"]

@@ -111,15 +111,10 @@ fi
 # Collect static for the django installation.
 python3 manage.py collectstatic --noinput --clear --verbosity 0
 
-
 # Compile all the installed po files to mo.
 SITE_DIR=$(python3 -c 'import site; print(site.getsitepackages()[0])')
 echo "Compiling locale files in $SITE_DIR"
-cd $SITE_DIR && /opt/mailman-web/manage.py compilemessages &&  cd -
-
-# Compress static files.
-python3 manage.py compress --force
-
+cd $SITE_DIR && python3 /opt/mailman-web/manage.py compilemessages &&  cd -
 
 # Migrate all the data to the database if this is a new installation, otherwise
 # this command will upgrade the database.
@@ -148,7 +143,5 @@ fi
 # Create a mailman user with the specific UID and GID and do not create home
 # directory for it. Also chown the logs directory to write the files.
 chown mailman:mailman /opt/mailman-web-data -R
-
-[[ -v DISKCACHE_PATH ]] && chown mailman:mailman "${DISKCACHE_PATH}" -R
 
 exec $@

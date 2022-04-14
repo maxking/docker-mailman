@@ -16,7 +16,6 @@ services:
     - DATABASE_URL=postgres://mailman:mailmanpass@database/mailmandb
     - DATABASE_TYPE=postgres
     - DATABASE_CLASS=mailman.database.postgresql.PostgreSQLDatabase
-    - HYPERKITTY_API_KEY=someapikey
     ports:
     - "127.0.0.1:8001:8001" # API
     - "127.0.0.1:8024:8024" # LMTP - incoming emails
@@ -24,7 +23,7 @@ services:
       mailman:
 
   mailman-web:
-    image: maxking/mailman-web:0.4
+    image: maxking/postorius:0.4
     container_name: mailman-web
     hostname: mailman-web
     depends_on:
@@ -37,7 +36,8 @@ services:
     environment:
     - DATABASE_TYPE=postgres
     - DATABASE_URL=postgres://mailman:mailmanpass@database/mailmandb
-    - HYPERKITTY_API_KEY=someapikey
+    - SECRET_KEY=ksjdbaksdba
+    - UWSGI_STATIC_MAP=/static=/opt/mailman-web-data/static 
     ports:
     - "127.0.0.1:8000:8000" # HTTP
     - "127.0.0.1:8080:8080" # uwsgi
@@ -46,9 +46,10 @@ services:
 
   database:
     environment:
-    - POSTGRES_DB=mailmandb
-    - POSTGRES_USER=mailman
-    - POSTGRES_PASSWORD=mailmanpass
+      POSTGRES_DB: mailmandb
+      POSTGRES_USER: mailman
+      POSTGRES_PASSWORD: mailmanpass
+    restart: always
     image: postgres:9.6-alpine
     volumes:
     - /opt/mailman/database:/var/lib/postgresql/data
@@ -56,7 +57,7 @@ services:
       mailman:
 
 networks:
-  mailman:
+   mailman:
     driver: bridge
     ipam:
       driver: default

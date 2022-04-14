@@ -4,8 +4,8 @@ Mailman3 Core Docker Image
 When you spawn off this container, you must mount `/opt/mailman` to the
 container. Mailman's `var` directory will also be stored here so that it can
 persist across different sessions and containers. Any configuration at
-`/opt/mailman/mailman-extra.cfg` will be added to the mailman's default
-generated confifguration (See below).
+`/opt/mailman/core/mailman-extra.cfg` (on the host) will be added to the mailman's default
+generated confifguration (see below).
 
 It is not advised to run multiple mailman processes on the same host sharing the
 same `/opt/mailman` (`/opt/mailman/core` on the host) directory as this will
@@ -17,7 +17,7 @@ Configuration
 
 These are the variables that you MUST change before deploying:
 
-- `HYPERKITT_API_KEY`: Hyperkitty's API Key, should be set to the same value as
+- `HYPERKITTY_API_KEY`: Hyperkitty's API Key, should be set to the same value as
   set for the mailman-core.
 
 - `DATABASE_URL`: URL of the type
@@ -25,10 +25,10 @@ These are the variables that you MUST change before deploying:
   not set, the default is set to
   `sqlite:///opt/mailman-web-data/mailmanweb.db`. The standard
   docker-compose.yaml comes with it set to a postgres database. It is not must
-  to change this if you are happy with postgresql.
+  to change this if you are happy with PostgreSQL.
 
-- `DATABASE_TYPE`: It's value can be one of `sqlite`, `postgres` or `mysql` as
-  these are the only three database types that Mailman 3 supports. It's defualt
+- `DATABASE_TYPE`: Its value can be one of `sqlite`, `postgres` or `mysql` as
+  these are the only three database types that Mailman 3 supports. Its default
   value is set to `sqlite` along with the default database class and default
   database url above.
 
@@ -40,8 +40,8 @@ These are the variables that you MUST change before deploying:
 These are the variables that you don't need to change if you are using a
 standard version of docker-compose.yaml from this repository.
 
-- `MM_HOSTNAME`: Which IP should Core bind to for REST API and LMTP. If not
-  defined output for `hostname -i` command is used.
+- `MM_HOSTNAME`: Which hostname or IP should Core bind to for REST API and
+  LMTP. If not defined output from the `hostname -i` command is used.
 
 - `MAILMAN_REST_PORT`: Which port should Core use for the REST API. If not defined
   the default is `8001`.
@@ -52,19 +52,34 @@ standard version of docker-compose.yaml from this repository.
 - `MAILMAN_REST_PASSWORD`: Which password should Core use for the REST API. If
   not defined the default is `restpass`.
 
+- `MTA`: Mail Transfer Agent to use. Either `exim` or `postfix`. Default value is `exim`.
+
 - `SMTP_HOST`: IP Address/hostname from which you will be sending
-  emails. Default value is `172.19.199.1`, which is the address of the Host OS.
+  emails. Default value is the container's gateway retrieved from:
+    /sbin/ip route | awk '/default/ { print $3 }'
 
 - `SMTP_PORT`: Port used for SMTP. Default is `25`.
 
-- `HYPERKITTY_API_URL`: Default value is `http://mailman-web:8000/hyperkitty`
+- `HYPERKITTY_URL`: Default value is `http://mailman-web:8000/hyperkitty`
+
+In case of a need for fine tuning of REST API web-server that uses [Gunicorn](https://docs.gunicorn.org/en/stable/settings.html) (e.g. for raising of timeouts) `/opt/mailman/core/gunicorn-extra.cfg` file could be provided holding necessary configuration options.
+
+Configuration file, [shipped with Mailman Core](https://gitlab.com/mailman/mailman/-/blob/master/src/mailman/config/gunicorn.cfg), is used by default.
+
+For example, to increase the default 30 sec timeout, which won't work for some API calls to highly populated lists, provide the following `gunicorn-extra.cfg` file:
+
+```
+[gunicorn]
+graceful_timeout = 30
+timeout = 300
+```
 
 Running Mailman-Core
 ====================
 
 It is highly recomended that you run this image along with the
 docker-compose.yaml file provided at the [github repo][1] of this
-image. However, it is possibel to run this image as a standalone container if
+image. However, it is possible to run this image as a standalone container if
 you want just a mailman-core.
 
 ```bash
@@ -73,11 +88,11 @@ $ docker run -it -e "HYPERKITTY_API_KEY=changeme" -h mailman-core -v /opt/mailma
 ```
 
 However, if you don't provide the environment `DATABASE_URL`, the database _may_
-not be persistant. All the configuration options are explained in more detail.
+not be persisted. All the configuration options are explained in more detail.
 
 If you need mode advanced configuration for mailman, you can create
 `/opt/mailman/mailman.cfg` and it be added to the configuration inside the
-container. Note that, anything inside this configuration will override the
+container. Note that anything inside this configuration will override the
 settings provided via the environment variables and their default values.
 
 By default, the following settings are generated:
@@ -101,6 +116,7 @@ hostname: $MM_HOSTNAME
 port: $MAILMAN_REST_PORT
 admin_user: $MAILMAN_REST_USER
 admin_pass: $MAILMAN_REST_PASSWORD
+configuration: /etc/gunicorn.cfg
 
 [archiver.hyperkitty]
 class: mailman_hyperkitty.Archiver
@@ -126,7 +142,7 @@ You can use Postfix or [Exim][2] with this image to send emails. Mailman Core
 can interact with any modern MTA which can deliver emails over LMTP. The
 documentation for Mailman Core has configuration settigs for using them.
 
-Only Exim and Postfix has been tested with these images and are supported as of
+Only Exim and Postfix have been tested with these images and are supported as of
 now. There _might_ be some limitations with using other MTAs in a containerized
 environments. Contributions are welcome for anything additional needed to
 support other MTAs.

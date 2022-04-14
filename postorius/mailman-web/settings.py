@@ -46,7 +46,7 @@ ADMINS = (
 SITE_ID = 1
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
-# See https://docs.djangoproject.com/en/3.1/ref/settings/#allowed-hosts
+# See https://docs.djangoproject.com/en/1.8/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = [
     "localhost",  # Archiving API from Mailman, keep it.
     # "lists.your-domain.org",
@@ -61,14 +61,11 @@ ALLOWED_HOSTS = [
 MAILMAN_REST_API_URL = os.environ.get('MAILMAN_REST_URL', 'http://mailman-core:8001')
 MAILMAN_REST_API_USER = os.environ.get('MAILMAN_REST_USER', 'restadmin')
 MAILMAN_REST_API_PASS = os.environ.get('MAILMAN_REST_PASSWORD', 'restpass')
-MAILMAN_ARCHIVER_KEY = os.environ.get('HYPERKITTY_API_KEY')
-MAILMAN_ARCHIVER_FROM = (os.environ.get('MAILMAN_HOST_IP', gethostbyname(os.environ.get('MAILMAN_HOSTNAME', 'mailman-core'))),)
 
 # Application definition
 
 INSTALLED_APPS = []
 DEFAULT_APPS = [
-    'hyperkitty',
     'postorius',
     'django_mailman3',
     # Uncomment the next line to enable the admin:
@@ -81,17 +78,11 @@ DEFAULT_APPS = [
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',
     'django_gravatar',
-    'compressor',
-    'haystack',
-    'django_extensions',
-    'django_q',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
 ]
-
 MAILMAN_WEB_SOCIAL_AUTH = [
     'django_mailman3.lib.auth.fedora',
     'allauth.socialaccount.providers.openid',
@@ -132,7 +123,6 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django_mailman3.context_processors.common',
-                'hyperkitty.context_processors.common',
                 'postorius.context_processors.postorius',
             ],
         },
@@ -144,7 +134,9 @@ WSGI_APPLICATION = 'wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
-# dj_database_url uses $DATABASE_URL environment variable to create a
+
+
+# This uses $DATABASE_URL from the environment variable to create a
 # django-style-config-dict.
 # https://github.com/kennethreitz/dj-database-url
 DATABASES = {
@@ -160,16 +152,20 @@ USE_X_FORWARDED_HOST = True
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'NAME':
+'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'NAME':
+'django.contrib.auth.password_validation.MinimumLengthValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        'NAME':
+'django.contrib.auth.password_validation.CommonPasswordValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        'NAME':
+'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
 
@@ -198,7 +194,6 @@ STATIC_URL = '/static/'
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'compressor.finders.CompressorFinder',
 )
 
 
@@ -208,10 +203,11 @@ LOGIN_URL = 'account_login'
 LOGIN_REDIRECT_URL = 'list_index'
 LOGOUT_URL = 'account_logout'
 
+
 # Use SERVE_FROM_DOMAIN as the default domain in the email.
 hostname = os.environ.get('SERVE_FROM_DOMAIN', 'localhost.local')
-DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL','postorius@{}'.format(hostname))
-SERVER_EMAIL = os.environ.get('SERVER_EMAIL','root@{}'.format(hostname))
+DEFAULT_FROM_EMAIL = 'postorius@{}'.format(hostname)
+SERVER_EMAIL = 'root@{}'.format(hostname)
 
 # Change this when you have a real email backend
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -273,37 +269,6 @@ SOCIALACCOUNT_PROVIDERS = {
 }
 
 
-# django-compressor
-# https://pypi.python.org/pypi/django_compressor
-#
-COMPRESS_PRECOMPILERS = (
-   ('text/less', 'lessc {infile} {outfile}'),
-   ('text/x-scss', 'sassc -t compressed {infile} {outfile}'),
-   ('text/x-sass', 'sassc -t compressed {infile} {outfile}'),
-)
-
-# On a production setup, setting COMPRESS_OFFLINE to True will bring a
-# significant performance improvement, as CSS files will not need to be
-# recompiled on each requests. It means running an additional "compress"
-# management command after each code upgrade.
-# http://django-compressor.readthedocs.io/en/latest/usage/#offline-compression
-# COMPRESS_OFFLINE = True
-
-#
-# Full-text search engine
-#
-HAYSTACK_CONNECTIONS = {
-    'default': {
-        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
-        'PATH': "/opt/mailman-web-data/fulltext_index",
-        # You can also use the Xapian engine, it's faster and more accurate,
-        # but requires another library.
-        # http://django-haystack.readthedocs.io/en/v2.4.1/installing_search_engines.html#xapian
-        # Example configuration for Xapian:
-        #'ENGINE': 'xapian_backend.XapianEngine'
-    },
-}
-
 import sys
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
@@ -337,6 +302,8 @@ LOGGING = {
             'level': 'INFO',
             'stream': sys.stdout,
         },
+        # TODO: use an environment variable $DJ_LOG_URL to configure the logging
+        # using an environment variable.
     },
     'loggers': {
         'django.request': {
@@ -345,11 +312,6 @@ LOGGING = {
             'propagate': True,
         },
         'django': {
-            'handlers': ['file'],
-            'level': 'INFO',
-            'propagate': True,
-        },
-        'hyperkitty': {
             'handlers': ['file'],
             'level': 'INFO',
             'propagate': True,
@@ -368,40 +330,17 @@ LOGGING = {
             'format': '%(levelname)s %(message)s'
         },
     },
+    #'root': {
+    #    'handlers': ['file'],
+    #    'level': 'INFO',
+    #},
 }
 
 
 if os.environ.get('LOG_TO_CONSOLE') == 'yes':
     LOGGING['loggers']['django']['handlers'].append('console')
     LOGGING['loggers']['django.request']['handlers'].append('console')
-
-# HyperKitty-specific
-#
-# Only display mailing-lists from the same virtual host as the webserver
-FILTER_VHOST = False
-
-
-Q_CLUSTER = {
-    'timeout': 300,
-    'retry': 300,
-    'save_limit': 100,
-    'orm': 'default',
-}
-
 POSTORIUS_TEMPLATE_BASE_URL =  os.environ.get('POSTORIUS_TEMPLATE_BASE_URL', 'http://mailman-web:8000')
-
-DISKCACHE_PATH = os.environ.get('DISKCACHE_PATH', '/opt/mailman-web-data/diskcache')
-DISKCACHE_SIZE = os.environ.get('DISKCACHE_SIZE', 2 ** 30) # 1 gigabyte
-
-CACHES = {
-    'default': {
-        'BACKEND': 'diskcache.DjangoCache',
-        'LOCATION': DISKCACHE_PATH,
-        'OPTIONS': {
-            'size_limit': DISKCACHE_SIZE,
-        },
-    },
-}
 
 try:
     from settings_local import *

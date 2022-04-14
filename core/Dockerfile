@@ -1,18 +1,23 @@
-FROM python:3.6-alpine
-
-MAINTAINER Abhilash Raj
+# syntax = docker/dockerfile:1.3
+FROM alpine:3.12
 
 #Add startup script to container
 COPY docker-entrypoint.sh /usr/local/bin/
 
 #Install all required packages, add user for executing mailman and set execution rights for startup script
-RUN apk update \
+RUN --mount=type=cache,target=/root/.cache \
+    apk update \
     && apk add --virtual build-deps gcc python3-dev musl-dev postgresql-dev \
-    && apk add bash su-exec postgresql-client mysql-client curl \
-    && pip install psycopg2 \
-                   mailman==3.1.1 \
-                   mailman-hyperkitty==1.1.0 \
+       libffi-dev \
+  # psutil needs linux-headers to compile on musl c library.
+    && apk add --no-cache bash su-exec postgresql-client mysql-client curl python3 py3-pip linux-headers py-cryptography mariadb-connector-c \
+    && python3 -m pip install -U pip setuptools wheel \
+        && python3 -m pip install psycopg2 \
+                   gunicorn==19.9.0 \
+                   mailman==3.3.5 \
+                   mailman-hyperkitty==1.2.0 \
                    pymysql \
+                   'sqlalchemy<1.4.0' \
     && apk del build-deps \
     && adduser -S mailman
 
