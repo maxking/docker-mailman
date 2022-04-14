@@ -65,7 +65,7 @@ workflows:
           rolling: "yes"
           context: org-global
 
-  rolling-builds:
+  test-rolling:
     jobs:
       - build:
           rolling: "yes"
