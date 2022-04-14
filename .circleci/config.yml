@@ -45,15 +45,15 @@ jobs:
 
 workflows:
   version: 2
-  build-and-deploy-workflow:
+  test-stable:
     jobs:
-      - build:
+      - stable-build:
           rolling: "no"
           filters:
             tags:
               only: /^v\d+\.\d+\.\d+$/
 
-  cron-workflow:
+  cron-builds:
     triggers:
       - schedule:
           cron: "0 0 * * *"
@@ -61,13 +61,13 @@ workflows:
             branches:
               only: main
     jobs:
-      - build:
+      - cron-build:
           rolling: "yes"
           context: org-global
 
-  rolling-workflow:
+  rolling-builds:
     jobs:
-      - build:
+      - rolling-build:
           rolling: "yes"
           context: org-global
           filters:
