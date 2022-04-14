@@ -47,7 +47,7 @@ workflows:
   version: 2
   test-stable:
     jobs:
-      - stable-build:
+      - build:
           rolling: "no"
           filters:
             tags:
@@ -61,13 +61,13 @@ workflows:
             branches:
               only: main
     jobs:
-      - cron-build:
+      - build:
           rolling: "yes"
           context: org-global
 
   rolling-builds:
     jobs:
-      - rolling-build:
+      - build:
           rolling: "yes"
           context: org-global
           filters:
