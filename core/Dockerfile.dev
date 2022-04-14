@@ -15,7 +15,7 @@ RUN --mount=type=cache,target=/root/.cache \
     apk update \
 	&& apk add --no-cache --virtual build-deps gcc python3-dev musl-dev \
    	    postgresql-dev git libffi-dev  \
-    && apk add --no-cache bash su-exec postgresql-client mysql-client curl python3 py3-pip linux-headers \
+    && apk add --no-cache bash su-exec postgresql-client mysql-client curl python3 py3-pip linux-headers py-cryptography \
     && python3 -m pip install -U psycopg2 pymysql setuptools wheel \
     && python3 -m pip install \
         git+https://gitlab.com/mailman/mailman@${CORE_REF} \
