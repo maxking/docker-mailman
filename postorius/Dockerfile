@@ -12,7 +12,7 @@ COPY docker-entrypoint.sh /usr/local/bin/
 RUN --mount=type=cache,target=/root/.cache \
     set -ex \
 	&& apk add --no-cache --virtual .build-deps gcc libc-dev linux-headers \
-		postgresql-dev mariadb-dev python3-dev libffi-dev openldap-dev cargo rust \
+		postgresql-dev mariadb-dev mariadb-connector-c python3-dev libffi-dev openldap-dev cargo rust \
 	&& apk add --no-cache --virtual .mailman-rundeps bash sassc \
 		postgresql-client mysql-client py3-mysqlclient curl mailcap gettext \
 		python3 py3-pip libffi libuuid pcre-dev py-cryptography \
