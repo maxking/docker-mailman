@@ -21,6 +21,7 @@ RUN --mount=type=cache,target=/root/.cache \
 		postorius==1.3.6 \
 		hyperkitty==1.3.5 \
 		django-mailman3==1.3.7 \
+		mistune==2.0.0rc1 \
 		whoosh \
 		uwsgi \
 		'psycopg2<2.9' \
