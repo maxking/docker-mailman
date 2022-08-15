@@ -1,0 +1,52 @@
+version: '2'
+
+services:
+  mailman-core:
+    image: maxking/mailman-core:0.4
+    container_name: mailman-core
+    hostname: mailman-core
+    volumes:
+    - /opt/mailman/core:/opt/mailman/
+    - /var/run/mysqld/mysqld.sock:/opt/db.sock
+    stop_grace_period: 30s
+    environment:
+    - MTA=postfix
+    - DATABASE_URL=mysql+pymysql://mailman:mailmanpass@127.0.0.1/mailmandb?charset=utf8mb4&use_unicode=1&unix_socket=/opt/db.sock
+    - DATABASE_TYPE=mysql
+    - DATABASE_CLASS=mailman.database.mysql.MySQLDatabase
+    - HYPERKITTY_API_KEY=someapikey
+    ports:
+    - "127.0.0.1:8001:8001" # API
+    - "127.0.0.1:8024:8024" # LMTP - incoming emails
+    networks:
+      mailman:
+
+  mailman-web:
+    image: maxking/mailman-web:0.4
+    container_name: mailman-web
+    hostname: mailman-web
+    links:
+    - mailman-core:mailman-core
+    volumes:
+    - /opt/mailman/web:/opt/mailman-web-data
+    - /var/run/mysqld/mysqld.sock:/opt/db.sock
+    environment:
+    - DATABASE_TYPE=mysql
+    - DATABASE_URL=mysql://mailman:mailmanpass@%2Fopt%2Fdb.sock/mailmandb?charset=utf8mb4&unix_socket=/opt/db.sock
+    - HYPERKITTY_API_KEY=someapikey
+    - SECRET_KEY=thisisaverysecretkey
+    - DYLD_LIBRARY_PATH=/usr/local/mysql/lib/
+    ports:
+    - "127.0.0.1:8000:8000" # HTTP
+    - "127.0.0.1:8080:8080" # uwsgi
+    networks:
+      mailman:
+
+networks:
+  mailman:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      -
+        subnet: 172.19.199.0/24
