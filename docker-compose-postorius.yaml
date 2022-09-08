@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 
 services:
   mailman-core:
@@ -6,7 +6,7 @@ services:
     container_name: mailman-core
     hostname: mailman-core
     volumes:
-    - /opt/mailman/core:/opt/mailman/
+    - ${DOCKER_VOLUME_PATH}core:/opt/mailman/
     stop_grace_period: 30s
     links:
     - database:database
@@ -17,13 +17,13 @@ services:
     - DATABASE_TYPE=postgres
     - DATABASE_CLASS=mailman.database.postgresql.PostgreSQLDatabase
     ports:
-    - "127.0.0.1:8001:8001" # API
-    - "127.0.0.1:8024:8024" # LMTP - incoming emails
+    - "${CORE_BIND_IP-127.0.0.1}:8001:8001" # API
+    - "${CORE_BIND_IP-127.0.0.1}:8024:8024" # LMTP - incoming emails
     networks:
       mailman:
 
   mailman-web:
-    image: maxking/postorius:0.4
+    image: maxking/postorius:rolling
     container_name: mailman-web
     hostname: mailman-web
     depends_on:
@@ -32,15 +32,18 @@ services:
     - mailman-core:mailman-core
     - database:database
     volumes:
-    - /opt/mailman/web:/opt/mailman-web-data
+    - ${DOCKER_VOLUME_PATH}web:/opt/mailman-web-data
     environment:
     - DATABASE_TYPE=postgres
     - DATABASE_URL=postgres://mailman:mailmanpass@database/mailmandb
-    - SECRET_KEY=ksjdbaksdba
-    - UWSGI_STATIC_MAP=/static=/opt/mailman-web-data/static 
+    - SECRET_KEY=${DJANGO_RANDOM_SECRET_KEY:?DJANGO_RANDOM_SECRET_KEY must be specified}
+    - UWSGI_STATIC_MAP=/static=/opt/mailman-web-data/static
+    - MAILMAN_ADMIN_USER=${MAILMAN_SUPERUSER_USERNAME}
+    - MAILMAN_ADMIN_EMAIL=${MAILMAN_SUPERUSER_EMAIL}
+    - SERVE_FROM_DOMAIN=${MAILMAN_WEB_LISTEN_DOMAIN}
     ports:
-    - "127.0.0.1:8000:8000" # HTTP
-    - "127.0.0.1:8080:8080" # uwsgi
+    - "${MAILMAN_WEB_BIND_IP-127.0.0.1}:8000:8000" # HTTP
+    - "${MAILMAN_WEB_BIND_IP-127.0.0.1}:8080:8080" # uwsgi
     networks:
       mailman:
 
@@ -50,12 +53,17 @@ services:
       POSTGRES_USER: mailman
       POSTGRES_PASSWORD: mailmanpass
     restart: always
-    image: postgres:9.6-alpine
+    image: postgres:14-alpine
     volumes:
-    - /opt/mailman/database:/var/lib/postgresql/data
+    - ${DOCKER_VOLUME_PATH}database:/var/lib/postgresql/data
     networks:
       mailman:
 
+
+volumes:
+    core:
+    web:
+    database:
 networks:
    mailman:
     driver: bridge

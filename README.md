@@ -22,6 +22,30 @@ configurations that can be used to deploy the [Mailman 3 Suite][4].
 Please see [release page](https://github.com/maxking/docker-mailman/releases)
 for the releases and change log.
 
+## Quickstart for Testing
+
+It is highly recommended to read all these instructions before starting for production use.  If you are looking to quickly test a mailman setup here is a basic quickstart dev guide:
+
+* Clone this repo: `git clone https://github.com/maxking/docker-mailman.git` and change to that folder `cd docker-mailman`
+* Edit the `.env` file changing the following values:
+	- `MAILMAN_WEB_BIND_IP` set to the ip you want to access the container on (ie 192.168.1.50)
+	- `DJANGO_RANDOM_SECRET_KEY` any random string ie "Iax2iOB8lGZZf1235Lc4jkU3kw" used for signing cookies
+	- `MAILMAN_WEB_LISTEN_DOMAIN` to be the hostname (can be an ip) you plan to access the instance on (ie 192.168.1.50).
+	- `MAILMAN_ADMIN_USER` / `MAILMAN_ADMIN_EMAIL` to the initial superuser values you want, note you must have working SMTP to use this method, if you want to test without a mail server see the note at the end.
+	- `DOCKER_VOLUME_PATH` this can either be a path on the docker host (ie `/opt/mailman/`) or a volume name prefix (ie `mailman`) for volumes.  If you specify a host path these are stored directly on the host, if this is a prefix name these are normal docker volumes stored in the docker volume path.
+* Run `docker-compose -f .\docker-compose-postorius.yaml up` to create and bring up all 3 containers
+* Open a browser and go to http://MAILMAN_WEB_LISTEN_DOMAIN:8000/ you should see the mailing list welcome page.  Click login and click forgot password to email yourself the password link.
+* Follow the email instructions to set your password and login
+
+### Testing without an SMTP server
+If you want to test without a working SMTP server you can manually add a superuser with password and confirm the account:
+* Edit the .env FILE and comment out the variables `MAILMAN_ADMIN_USER` and `MAILMAN_ADMIN_EMAIL` before bringing the compose instance up for the first time
+* Run `docker exec -t -i mailman-web python3 manage.py createsuperuser` and create your admin user
+* bring the instance up with dockerr compose like above
+* Open the browser and try to login with the newly created user, you will get an error (it tries to email a confirmation)
+* run `docker exec -t -i mailman-web psql postgres://mailman:mailmanpass@database/mailmandb -c "UPDATE account_emailaddress SET verified=true WHERE id=1"`
+* You should now be able to login
+
 ## Release
 
 

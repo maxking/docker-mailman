@@ -114,7 +114,7 @@ python3 manage.py collectstatic --noinput --clear --verbosity 0
 # Compile all the installed po files to mo.
 SITE_DIR=$(python3 -c 'import site; print(site.getsitepackages()[0])')
 echo "Compiling locale files in $SITE_DIR"
-cd $SITE_DIR && python3 /opt/mailman-web/manage.py compilemessages &&  cd -
+cd $SITE_DIR && python3 /opt/mailman-web/manage.py compilemessages &> /dev/null &&  cd -
 
 # Migrate all the data to the database if this is a new installation, otherwise
 # this command will upgrade the database.
@@ -127,7 +127,7 @@ if [[ -v MAILMAN_ADMIN_USER ]] && [[ -v MAILMAN_ADMIN_EMAIL ]];
 then
 	echo "Creating admin user $MAILMAN_ADMIN_USER ..."
 	python3 manage.py createsuperuser --noinput --username "$MAILMAN_ADMIN_USER"\
-		   --email "$MAILMAN_ADMIN_EMAIL" 2> /dev/null || \
+			--email "$MAILMAN_ADMIN_EMAIL" 2> /dev/null || \
 		echo "Superuser $MAILMAN_ADMIN_USER already exists"
 fi
 
