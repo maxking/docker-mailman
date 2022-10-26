@@ -4,6 +4,9 @@ FROM alpine:3.16.2
 #Add startup script to container
 COPY docker-entrypoint.sh /usr/local/bin/
 
+# Add requirements file.
+COPY requirements.txt /tmp/
+
 #Install all required packages, add user for executing mailman and set execution rights for startup script
 RUN --mount=type=cache,target=/root/.cache \
     apk update \
@@ -14,10 +17,9 @@ RUN --mount=type=cache,target=/root/.cache \
     && python3 -m pip install -U pip setuptools wheel \
         && python3 -m pip install psycopg2 \
                    gunicorn==19.9.0 \
-                   mailman==3.3.5 \
-                   mailman-hyperkitty==1.2.0 \
                    pymysql \
                    'sqlalchemy<1.4.0' \
+                   -r /tmp/requirements.txt \
     && apk del build-deps \
     && adduser -S mailman
 
