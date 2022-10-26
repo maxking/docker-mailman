@@ -1,5 +1,5 @@
 # syntax = docker/dockerfile:1.3
-FROM alpine:3.12
+FROM alpine:3.16.2
 
 # Add needed files for uwsgi server + settings for django
 COPY mailman-web /opt/mailman-web
@@ -33,10 +33,11 @@ RUN --mount=type=cache,target=/root/.cache \
         mysqlclient \
         xapian-haystack \
         django-auth-ldap \
-		python-memcached \
+	python-memcached \
+	tzdata \
         diskcache \
         django-utils-six \
-    && python3 -m pip install -U 'Django<3.2' \
+    && python3 -m pip install -U 'Django<4.3' \
     && python3 -m pip install -U \
        git+https://gitlab.com/mailman/django-mailman3 \
     && apk del .build-deps \

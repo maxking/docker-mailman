@@ -49,7 +49,7 @@ services:
     - POSTGRES_DB=mailmandb
     - POSTGRES_USER=mailman
     - POSTGRES_PASSWORD=mailmanpass
-    image: postgres:9.6-alpine
+    image: postgres:11-alpine
     volumes:
     - /opt/mailman/database:/var/lib/postgresql/data
     networks:
