@@ -32,6 +32,7 @@ RUN --mount=type=cache,target=/root/.cache \
 		python-memcached \
 		diskcache \
 		django-utils-six \
+		tzdata \
 	&& apk del .build-deps \
 	&& addgroup -S mailman \
 	&& adduser -S -G mailman mailman \
