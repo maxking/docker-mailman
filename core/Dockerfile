@@ -10,9 +10,8 @@ RUN --mount=type=cache,target=/root/.cache \
     && apk add --virtual build-deps gcc python3-dev musl-dev postgresql-dev \
        libffi-dev \
   # Mailman html to plaintext conversion uses lynx.
-    && apk add --no-cache lynx \
   # psutil needs linux-headers to compile on musl c library.
-    && apk add --no-cache bash su-exec postgresql-client mysql-client curl python3 py3-pip linux-headers py-cryptography mariadb-connector-c \
+    && apk add --no-cache bash su-exec postgresql-client mysql-client curl python3 py3-pip linux-headers py-cryptography mariadb-connector-c lynx \
     && python3 -m pip install -U pip setuptools wheel \
         && python3 -m pip install psycopg2 \
                    gunicorn==19.9.0 \
