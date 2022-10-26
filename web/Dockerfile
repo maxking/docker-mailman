@@ -5,6 +5,8 @@ FROM alpine:3.16.2
 COPY mailman-web /opt/mailman-web
 # Add startup script to container
 COPY docker-entrypoint.sh /usr/local/bin/
+# Add requirements file.
+COPY requirements.txt /tmp/
 
 # Install packages and dependencies for postorius and hyperkitty Add user for
 # executing apps, change ownership for uwsgi+django files and set execution
