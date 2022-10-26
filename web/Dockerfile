@@ -16,11 +16,11 @@ RUN --mount=type=cache,target=/root/.cache \
 	&& apk add --no-cache --virtual .mailman-rundeps bash sassc \
 	   postgresql-client mysql-client py3-mysqlclient curl mailcap gettext \
 	   python3 py3-pip xapian-core xapian-bindings-python3 libffi pcre-dev py-cryptography \
-	&& python3 -m pip install -U 'Django<3.2' pip setuptools wheel \
-	&& pip install mailmanclient==3.3.3 \
-		postorius==1.3.6 \
-		hyperkitty==1.3.5 \
-		django-mailman3==1.3.7 \
+	&& python3 -m pip install -U 'Django<4.2' pip setuptools wheel \
+	&& pip install mailmanclient==3.3.4 \
+		postorius==1.3.7 \
+		hyperkitty==1.3.6 \
+		django-mailman3==1.3.8 \
 		mistune==2.0.0rc1 \
 		whoosh \
 		uwsgi \

@@ -14,7 +14,7 @@ RUN --mount=type=cache,target=/root/.cache \
     && python3 -m pip install -U pip setuptools wheel \
         && python3 -m pip install psycopg2 \
                    gunicorn==19.9.0 \
-                   mailman==3.3.5 \
+                   mailman==3.3.6 \
                    mailman-hyperkitty==1.2.0 \
                    pymysql \
                    'sqlalchemy<1.4.0' \
