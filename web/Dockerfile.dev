@@ -33,10 +33,11 @@ RUN --mount=type=cache,target=/root/.cache \
         mysqlclient \
         xapian-haystack \
         django-auth-ldap \
-		python-memcached \
+	python-memcached \
+	tzdata \
         diskcache \
         django-utils-six \
-    && python3 -m pip install -U 'Django<3.2' \
+    && python3 -m pip install -U 'Django<4.3' \
     && python3 -m pip install -U \
        git+https://gitlab.com/mailman/django-mailman3 \
     && apk del .build-deps \
