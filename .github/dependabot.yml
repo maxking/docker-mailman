@@ -12,15 +12,23 @@ updates:
   - package-ecosystem: "docker" # See documentation for possible values
     directory: "/web" # Location of package manifests
     schedule:
-      interval: "weekly"      
+      interval: "weekly"
   - package-ecosystem: "docker" # See documentation for possible values
     directory: "/postorius" # Location of package manifests
     schedule:
-      interval: "weekly"      
+      interval: "weekly"
   # Enable version updates for Actions
   - package-ecosystem: "github-actions"
     # Look for `.github/workflows` in the `root` directory
     directory: "/"
     # Check for updates once a week
     schedule:
-      interval: "weekly"      
+      interval: "weekly"
+  - package-ecosystem: "pip"
+    directory: "/core"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/web"
+    schedule:
+      interval: "daily"
