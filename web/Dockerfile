@@ -1,10 +1,12 @@
 # syntax = docker/dockerfile:1.3
-FROM alpine:3.12
+FROM alpine:3.16.2
 
 # Add needed files for uwsgi server + settings for django
 COPY mailman-web /opt/mailman-web
 # Add startup script to container
 COPY docker-entrypoint.sh /usr/local/bin/
+# Add requirements file.
+COPY requirements.txt /tmp/
 
 # Install packages and dependencies for postorius and hyperkitty Add user for
 # executing apps, change ownership for uwsgi+django files and set execution
@@ -16,12 +18,8 @@ RUN --mount=type=cache,target=/root/.cache \
 	&& apk add --no-cache --virtual .mailman-rundeps bash sassc \
 	   postgresql-client mysql-client py3-mysqlclient curl mailcap gettext \
 	   python3 py3-pip xapian-core xapian-bindings-python3 libffi pcre-dev py-cryptography \
-	&& python3 -m pip install -U 'Django<3.2' pip setuptools wheel \
-	&& pip install mailmanclient==3.3.3 \
-		postorius==1.3.6 \
-		hyperkitty==1.3.5 \
-		django-mailman3==1.3.7 \
-		mistune==2.0.0rc1 \
+	&& python3 -m pip install -U 'Django<4.2' pip setuptools wheel \
+	&& pip install -r /tmp/requirements.txt \
 		whoosh \
 		uwsgi \
 		'psycopg2<2.9' \
@@ -33,6 +31,7 @@ RUN --mount=type=cache,target=/root/.cache \
 		python-memcached \
 		diskcache \
 		django-utils-six \
+		tzdata \
 	&& apk del .build-deps \
 	&& addgroup -S mailman \
 	&& adduser -S -G mailman mailman \

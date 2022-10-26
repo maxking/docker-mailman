@@ -1,0 +1,5 @@
+# This is a separate file from Dockerfile so that we can use dependabot
+# for version updates that isn't supported for contents inside the
+# Dockerfile.
+mailman==3.3.6
+mailman-hyperkitty==1.2.0
