@@ -42,6 +42,11 @@ jobs:
           command: |
               python3 --version
               python3 deploy.py
+      - store_artifacts:
+          path: /opt/mailman/web/logs/
+      
+      - store_artifacts:
+          path: /opt/mailman/core/var/logs
 
 workflows:
   version: 2
