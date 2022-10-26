@@ -1,5 +1,5 @@
 # syntax = docker/dockerfile:1.3
-FROM alpine:3.12
+FROM alpine:3.16.2
 
 #Add startup script to container
 COPY docker-entrypoint.sh /usr/local/bin/
