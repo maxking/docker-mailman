@@ -18,7 +18,7 @@ RUN --mount=type=cache,target=/root/.cache \
 	&& apk add --no-cache --virtual .mailman-rundeps bash sassc \
 	   postgresql-client mysql-client py3-mysqlclient curl mailcap gettext \
 	   python3 py3-pip xapian-core xapian-bindings-python3 libffi pcre-dev py-cryptography \
-	&& python3 -m pip install -U 'Django<4.2' pip setuptools wheel \
+	&& python3 -m pip install -U 'Django<4.1' pip setuptools wheel \
 	&& pip install -r /tmp/requirements.txt \
 		whoosh \
 		uwsgi \
