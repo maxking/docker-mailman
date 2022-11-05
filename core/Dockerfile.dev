@@ -18,7 +18,7 @@ RUN --mount=type=cache,target=/root/.cache \
    	    postgresql-dev git libffi-dev g++ \
     && apk add --no-cache bash su-exec postgresql-client mysql-client \
         curl python3 py3-pip linux-headers py-cryptography mariadb-connector-c \
-    && python3 -m pip install -U psycopg2 pymysql setuptools wheel \
+    && python3 -m pip install -U psycopg2-binary pymysql setuptools wheel \
     && python3 -m pip install \
         git+https://gitlab.com/mailman/mailman \
         git+https://gitlab.com/mailman/mailman-hyperkitty \
