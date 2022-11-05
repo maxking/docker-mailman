@@ -13,7 +13,7 @@ services:
     depends_on:
     - database
     environment:
-    - DATABASE_URL=postgres://mailman:mailmanpass@database/mailmandb
+    - DATABASE_URL=postgresql://mailman:mailmanpass@database/mailmandb
     - DATABASE_TYPE=postgres
     - DATABASE_CLASS=mailman.database.postgresql.PostgreSQLDatabase
     - HYPERKITTY_API_KEY=someapikey
@@ -36,7 +36,7 @@ services:
     - /opt/mailman/web:/opt/mailman-web-data
     environment:
     - DATABASE_TYPE=postgres
-    - DATABASE_URL=postgres://mailman:mailmanpass@database/mailmandb
+    - DATABASE_URL=postgresql://mailman:mailmanpass@database/mailmandb
     - HYPERKITTY_API_KEY=someapikey
     ports:
     - "127.0.0.1:8000:8000" # HTTP
