@@ -15,8 +15,9 @@ ARG MM3_HK_REF
 RUN --mount=type=cache,target=/root/.cache \
     apk update \
 	&& apk add --no-cache --virtual build-deps gcc python3-dev musl-dev \
-   	    postgresql-dev git libffi-dev  \
-    && apk add --no-cache bash su-exec postgresql-client mysql-client curl python3 py3-pip linux-headers py-cryptography mariadb-connector-c \
+   	    postgresql-dev git libffi-dev gcc-c++ \
+    && apk add --no-cache bash su-exec postgresql-client mysql-client \
+        curl python3 py3-pip linux-headers py-cryptography mariadb-connector-c \
     && python3 -m pip install -U psycopg2 pymysql setuptools wheel \
     && python3 -m pip install \
         git+https://gitlab.com/mailman/mailman \
