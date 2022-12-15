@@ -22,7 +22,7 @@ from django.urls import path, reverse_lazy
 from django.views.generic import RedirectView
 
 urlpatterns = [
-    path(r'^$', RedirectView.as_view(
+    path(r'', RedirectView.as_view(
         url=reverse_lazy('list_index'),
         permanent=True)),
     path(r'postorius/', include('postorius.urls')),
@@ -30,5 +30,5 @@ urlpatterns = [
     path(r'', include('django_mailman3.urls')),
     path(r'accounts/', include('allauth.urls')),
     # Django admin
-    path(r'^admin/', admin.site.urls),
+    path(r'admin/', admin.site.urls),
 ]
