@@ -20,7 +20,6 @@ RUN --mount=type=cache,target=/root/.cache \
         && python3 -m pip install psycopg2 \
                    gunicorn==19.9.0 \
                    pymysql \
-                   'sqlalchemy<1.4.0' \
                    -r /tmp/requirements.txt \
     && apk del build-deps \
     && adduser -S mailman
