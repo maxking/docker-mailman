@@ -2,4 +2,4 @@
 # for version updates that isn't supported for contents inside the
 # Dockerfile.
 mailman==3.3.8
-mailman-hyperkitty==1.2.0
+mailman-hyperkitty==1.2.1
