@@ -60,19 +60,16 @@ The container images are available from multiple container registries:
 ### Mailman Core
 
 - `ghcr.io/maxking/mailman-core`
-- `quay.io/maxking/mailman-core`
 - `docker.io/maxking/mailman-core`
 
 ### Mailman Web
 
 - `ghcr.io/maxking/mailman-web`
-- `quay.io/maxking/mailman-web`
 - `docker.io/maxking/mailman-web`
 
 ### Postorius
 
 - `ghcr.io/maxking/postorius`
-- `quay.io/maxking/postorius`
 - `docker.io/maxking/postorius`
 
 ## Rolling Releases
