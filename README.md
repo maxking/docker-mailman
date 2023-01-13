@@ -211,6 +211,10 @@ These are the variables that you MUST change in your docker-compose.yaml before 
 - `DATABASE_CLASS`: Default value is
   `mailman.database.sqlite.SQLiteDatabase`. The values for this can be found in
   the mailman's documentation [here][11].
+- `SMTP_HOST`	: outgoing host for SMTP connections
+- `SMTP_PORT`	: use this port. 25, 587, whatever your host asks for.
+- `SMTP_HOST_USER`: authenticate this user
+- `SMTP_HOST_PASSWORD`: and use this password
 
 For more details on how to configure this image, please look [Mailman-core's
 Readme](core/)
