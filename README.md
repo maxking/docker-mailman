@@ -128,7 +128,7 @@ interacts directly with the application. There are two configuration files on
 the host that interact directly with Mailman's settings. These files exist on
 the host running the containers and are imported at runtime in the containers.
 
-* `/opt/mailman/core/mailman-extra.cfg` : This is the configuration for Mailman
+* `/opt/mailman/mailman-extra.cfg` : This is the configuration for Mailman
   Core and anything that you add here will be added to Core's configuration. You
   need to restart your mailman-core container for the changes in this file to
   take effect.
@@ -295,7 +295,7 @@ this. However, these are very easy to understand if you know how docker works.
   container. Mailman's var directory is stored there so that it is accessible
   from the host operating system. Configuration for Mailman core is generated on
   every run from the environment variables provided. Extra configuration can
-  also be provided at `/opt/mailman/core/mailman-extra.cfg` (on host), and will
+  also be provided at `/opt/mailman/mailman-extra.cfg` (on host), and will
   be added to generated configuration file. Mailman also needs another
   configuration file called
   [mailman-hyperkitty.cfg][3] and is also
@@ -416,7 +416,7 @@ for Postfix.
 
 ## Site Owner
 
-Setup site owner address. By default, mailman is setup with the site_owner set to 'changeme@example.com'. This should be pointing to a valid mailbox. Add the following to the '/opt/mailman/core/mailman-extra.cfg'.
+Setup site owner address. By default, mailman is setup with the site_owner set to 'changeme@example.com'. This should be pointing to a valid mailbox. Add the following to the '/opt/mailman/mailman-extra.cfg'.
 
 ```
 [mailman]

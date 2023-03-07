@@ -4,7 +4,7 @@ Mailman3 Core Docker Image
 When you spawn off this container, you must mount `/opt/mailman` to the
 container. Mailman's `var` directory will also be stored here so that it can
 persist across different sessions and containers. Any configuration at
-`/opt/mailman/core/mailman-extra.cfg` (on the host) will be added to the mailman's default
+`/opt/mailman/mailman-extra.cfg` (on the host) will be added to the mailman's default
 generated confifguration (see below).
 
 It is not advised to run multiple mailman processes on the same host sharing the
