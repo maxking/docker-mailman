@@ -22,6 +22,7 @@ RUN --mount=type=cache,target=/root/.cache \
 	&& pip install -r /tmp/requirements.txt \
 		whoosh \
 		uwsgi \
+		psycopg2 \
 		dj-database-url \
 		mysqlclient \
 		typing \
