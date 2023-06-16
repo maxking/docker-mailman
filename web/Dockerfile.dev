@@ -28,7 +28,6 @@ RUN --mount=type=cache,target=/root/.cache \
         git+https://gitlab.com/mailman/hyperkitty \
         whoosh \
         uwsgi \
-        'psycopg2<2.9' \
         dj-database-url \
         mysqlclient \
         xapian-haystack \
