@@ -2,7 +2,7 @@ version: '2'
 
 services:
   mailman-core:
-    image: maxking/mailman-core:0.4
+    image: maxking/mailman-core:0.4 # Use a specific version tag (tag latest is not published)
     container_name: mailman-core
     hostname: mailman-core
     volumes:
@@ -23,7 +23,7 @@ services:
       mailman:
 
   mailman-web:
-    image: maxking/mailman-web:0.4
+    image: maxking/mailman-web:0.4 # Use a specific version tag (tag latest is not published)
     container_name: mailman-web
     hostname: mailman-web
     depends_on:
