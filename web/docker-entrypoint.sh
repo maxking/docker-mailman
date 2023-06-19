@@ -7,7 +7,7 @@ function wait_for_postgres () {
 	# moving forward.
 	# TODO: Use python's psycopg2 module to do this in python instead of
 	# installing postgres-client in the image.
-	until psql $DATABASE_URL -c '\l'; do
+	until psql-P pager=off $DATABASE_URL -c '\l'; do
 		>&2 echo "Postgres is unavailable - sleeping"
 		sleep 1
 	done
