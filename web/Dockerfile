@@ -1,5 +1,5 @@
 # syntax = docker/dockerfile:1.3
-FROM alpine:3.17.3
+FROM alpine:3.18.0
 
 # Add needed files for uwsgi server + settings for django
 COPY mailman-web /opt/mailman-web
@@ -18,11 +18,11 @@ RUN --mount=type=cache,target=/root/.cache \
 	&& apk add --no-cache --virtual .mailman-rundeps bash sassc \
 	   postgresql-client mysql-client py3-mysqlclient curl mailcap gettext \
 	   python3 py3-pip xapian-core xapian-bindings-python3 libffi pcre-dev py-cryptography \
-	&& python3 -m pip install -U 'Django<4.1' pip setuptools wheel \
+	&& python3 -m pip install -U 'Django<4.2' pip setuptools wheel \
 	&& pip install -r /tmp/requirements.txt \
 		whoosh \
 		uwsgi \
-		'psycopg2<2.9' \
+		psycopg2 \
 		dj-database-url \
 		mysqlclient \
 		typing \
