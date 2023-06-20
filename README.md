@@ -54,8 +54,7 @@ Releases will follow the following rules:
 
 ## Container Registries
 
-
-The container images are available from multiple container registries:
+The container images are available from multiple container registries. Do specify an [explicit version tag](https://hub.docker.com/r/maxking/mailman-web/tags?page=1&ordering=last_updated&name=0.) (e.g. `0.4.5` , MAJOR.MINOR like `0.4` also works as floating tag pointing to latest patch version) as tag `latest` is **not** updated anymore.
 
 ### Mailman Core
 
