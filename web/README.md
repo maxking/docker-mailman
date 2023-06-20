@@ -56,7 +56,7 @@ change them unless you know what you want.
 - `SMTP_HOST_PASSWORD`: Default is an empty string.
 
 - `SMTP_USE_TLS`: Specifies wheather the SMTP connection is encrypted
-  via TLS. Default is `False`. (EMAIL_USE_TLS/EMAIL_USE_SSL are mutually exclusive, so only set one of those settings.)
+  via TLS. Default is `False`. (`EMAIL_USE_TLS`/`EMAIL_USE_SSL` are mutually exclusive, so only set one of those settings.)
 
 - `SMTP_USE_SSL`: Specifies wheather the SMTP connection is encrypted
   via SSL. Default is `False`. (EMAIL_USE_TLS/EMAIL_USE_SSL are mutually exclusive, so only set one of those settings.)
