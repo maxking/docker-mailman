@@ -65,7 +65,7 @@ change them unless you know what you want.
   `/opt/mailman-web-data/logs/mailmanweb.log`.
 
 - `DJANGO_ALLOWED_HOSTS`: Entry to add to ALLOWED_HOSTS in Django
-  configuration. This is a separate configuration from`SERVE_FROM_DOMAIN` as
+  configuration. Format as comma-separated list (no whitespace). This is a separate configuration from`SERVE_FROM_DOMAIN` as
   latter is used for other purposes too.
 
 - `POSTORIUS_TEMPLATE_BASE_URL`: The base url at which the `mailman-web`
