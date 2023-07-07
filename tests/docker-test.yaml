@@ -8,3 +8,4 @@ services:
     image: maxking/mailman-web:rolling
     environment:
     - SECRET_KEY=abcdefghijklmnopqrstuv
+    - SERVE_FROM_DOMAIN=araj.me
