@@ -1,11 +1,6 @@
 # syntax = docker/dockerfile:1.3
 FROM alpine:3.18.4
 
-# Add needed files for uwsgi server + settings for django
-COPY mailman-web /opt/mailman-web
-# Add startup script to container
-COPY docker-entrypoint.sh /usr/local/bin/
-
 # Install packages and dependencies for postorius and hyperkitty Add user for
 # executing apps, change ownership for uwsgi+django files and set execution
 # rights for management script
@@ -27,8 +22,14 @@ RUN --mount=type=cache,target=/root/.cache \
 		python-memcached \
 	&& apk del .build-deps \
 	&& addgroup -S mailman \
-	&& adduser -S -G mailman mailman \
-	&& chown -R mailman /opt/mailman-web/ \
+	&& adduser -S -G mailman mailman
+
+# Add needed files for uwsgi server + settings for django
+COPY mailman-web /opt/mailman-web
+# Add startup script to container
+COPY docker-entrypoint.sh /usr/local/bin/
+
+RUN chown -R mailman /opt/mailman-web/ \
 	&& chmod u+x /opt/mailman-web/manage.py
 
 WORKDIR /opt/mailman-web
