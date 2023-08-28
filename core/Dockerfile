@@ -21,6 +21,7 @@ RUN --mount=type=cache,target=/root/.cache \
                    gunicorn==19.9.0 \
                    pymysql \
                    -r /tmp/requirements.txt \
+                   'importlib-resources<6.0.0' \
     && apk del build-deps \
     && adduser -S mailman
 
