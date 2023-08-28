@@ -67,7 +67,7 @@ function setup_database () {
 	# Translate mysql:// urls to mysql+mysql:// backend:
 	if [[ "$DATABASE_URL" == mysql://* ]]; then
 		DATABASE_URL="mysql+pymysql://${DATABASE_URL:8}"
-		echo "Database URL was automatically rewritten to: $DATABASE_URL"
+		echo "Database URL prefix was automatically rewritten to: mysql+pymysql://"
 	fi
 
 	# If DATABASE_CLASS is not set, guess it for common databases:
