@@ -19,15 +19,17 @@ function wait_for_mysql () {
 	readarray -d' ' -t ENDPOINT <<< $(python3 -c "from urllib.parse import urlparse; from urllib.parse import parse_qs; o = urlparse('$DATABASE_URL'); q = parse_qs(o.query); print('%s %s %s %s' % (o.hostname, o.port if o.port else '3306', q['unix_socket'][0] if 'unix_socket' in q else 'NONE_SPECIFIED', 'LAST_ELEMENT'));")
 	COMMAND=""
 	COMMAND_ARG=""
+	PORT_ARG=""
 	if  [[ "${ENDPOINT[2]}" == "NONE_SPECIFIED" ]] ;
 	then
 		COMMAND="--host"
 		COMMAND_ARG="${ENDPOINT[0]}"
+		PORT_ARG="--port ${ENDPOINT[1]}"
 	else
 		COMMAND="-S"
 		COMMAND_ARG="${ENDPOINT[2]}"
 	fi
-	until mysqladmin ping ${COMMAND} ${COMMAND_ARG} --port ${ENDPOINT[1]} --silent; do
+	until mysqladmin ping ${COMMAND} ${COMMAND_ARG} ${PORT_ARG} --silent; do
 		>&2 echo "MySQL is unavailable - sleeping"
 		sleep 1
 	done
