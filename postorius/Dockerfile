@@ -25,6 +25,7 @@ RUN --mount=type=cache,target=/root/.cache \
 		typing \
 		django-auth-ldap \
 		python-memcached \
+  		tzdata \
 	&& apk del .build-deps \
 	&& addgroup -S mailman \
 	&& adduser -S -G mailman mailman \
