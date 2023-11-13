@@ -13,9 +13,10 @@ services:
     depends_on:
     - database
     environment:
-    - DATABASE_URL=postgres://mailman:mailmanpass@database/mailmandb
+    - DATABASE_URL=postgresql://${DATABASE_USER}:${DATABASE_PASSWORD}@database/${DATABASE_NAME}
     - DATABASE_TYPE=postgres
     - DATABASE_CLASS=mailman.database.postgresql.PostgreSQLDatabase
+    - TZ=${TZ}
     ports:
     - "127.0.0.1:8001:8001" # API
     - "127.0.0.1:8024:8024" # LMTP - incoming emails
@@ -34,10 +35,11 @@ services:
     volumes:
     - /opt/mailman/web:/opt/mailman-web-data
     environment:
+    - DATABASE_URL=postgresql://${DATABASE_USER}:${DATABASE_PASSWORD}@database/${DATABASE_NAME}
     - DATABASE_TYPE=postgres
-    - DATABASE_URL=postgres://mailman:mailmanpass@database/mailmandb
-    - SECRET_KEY=ksjdbaksdba
-    - UWSGI_STATIC_MAP=/static=/opt/mailman-web-data/static 
+    - SECRET_KEY=${DJANGO_SECRET_KEY}
+    - UWSGI_STATIC_MAP=/static=/opt/mailman-web-data/static
+    - TZ=${TZ}
     ports:
     - "127.0.0.1:8000:8000" # HTTP
     - "127.0.0.1:8080:8080" # uwsgi
@@ -46,9 +48,9 @@ services:
 
   database:
     environment:
-      POSTGRES_DB: mailmandb
-      POSTGRES_USER: mailman
-      POSTGRES_PASSWORD: mailmanpass
+    - POSTGRES_DB=${DATABASE_NAME}
+    - POSTGRES_USER=${DATABASE_USER}
+    - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
     restart: always
     image: postgres:9.6-alpine
     volumes:

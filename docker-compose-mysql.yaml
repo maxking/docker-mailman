@@ -12,10 +12,11 @@ services:
     - database:database
     depends_on:
     - database
-    environment:
-    - DATABASE_URL=mysql+pymysql://mailman:mailmanpass@database/mailmandb?charset=utf8mb4&use_unicode=1 # Do use mysql+pymysql:// here
+    environment: # 
+    - DATABASE_URL=mysql+pymysql://${DATABASE_USER}:${DATABASE_PASSWORD}@database/${DATABASE_NAME}?charset=utf8mb4&use_unicode=1 # Do use mysql+pymysql:// here
     - DATABASE_TYPE=mysql
-    - HYPERKITTY_API_KEY=someapikey
+    - HYPERKITTY_API_KEY=${HYPERKITTY_API_KEY}
+    - TZ=${TZ}
     ports:
     - "127.0.0.1:8001:8001" # API
     - "127.0.0.1:8024:8024" # LMTP - incoming emails
@@ -35,10 +36,11 @@ services:
     - /opt/mailman/web:/opt/mailman-web-data
     environment:
     - DATABASE_TYPE=mysql
-    - DATABASE_URL=mysql://mailman:mailmanpass@database/mailmandb?charset=utf8mb4 # Do use mysql:// here
-    - HYPERKITTY_API_KEY=someapikey
-    - SECRET_KEY=thisisaverysecretkey
+    - mysql+pymysql://${DATABASE_USER}:${DATABASE_PASSWORD}@database/${DATABASE_NAME}?charset=utf8mb4 # Do use mysql:// here
+    - HYPERKITTY_API_KEY=${HYPERKITTY_API_KEY}
+    - SECRET_KEY=${DJANGO_SECRET_KEY}
     - DYLD_LIBRARY_PATH=/usr/local/mysql/lib/
+    - TZ=${TZ}
     ports:
     - "127.0.0.1:8000:8000" # HTTP
     - "127.0.0.1:8080:8080" # uwsgi
@@ -47,9 +49,9 @@ services:
 
   database:
     environment:
-      MYSQL_DATABASE: mailmandb
-      MYSQL_USER: mailman
-      MYSQL_PASSWORD: mailmanpass
+      MYSQL_DATABASE: ${DATABASE_NAME}
+      MYSQL_USER: ${DATABASE_USER}
+      MYSQL_PASSWORD: ${DATABASE_PASSWORD}
       MYSQL_RANDOM_ROOT_PASSWORD: "yes"
     image: mariadb:10.5
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
