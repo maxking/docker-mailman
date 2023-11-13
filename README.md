@@ -121,7 +121,7 @@ For other systems, you can read the official Docker documentation to install
 
 ## Configuration
 
-Most of the common configuration is defined in `mailman.cfg`. Further custom
+Most of the common configuration is defined in `.env`. Further custom
 environment variables should be set via a newly created docker-compose.override.yaml.
 
 Additionally, there is need for some extra configuration that
@@ -153,7 +153,7 @@ mounted inside the containers.
    container.
 
 ### Mailman-web
-These are the settings that you MUST change in your mailman.cfg before deploying:
+These are the settings that you MUST change in your `.env` before deploying:
 
 - `SERVE_FROM_DOMAIN`: The domain name from which Django will be served. To be
   added to `ALLOWED_HOSTS` in django settings. Default value is not set. This
@@ -192,7 +192,7 @@ For more details on how to configure this image, please look at
 
 ### Mailman-Core
 
-These are the variables that you MUST change in your mailman.cfg before deploying:
+These are the variables that you MUST change in your `.env` before deploying:
 
 - `HYPERKITTY_API_KEY`: Hyperkitty's API Key, should be set to the same value as
   set for the mailman-web. Skip the variable in case of non-Hyperkitty deployment.
