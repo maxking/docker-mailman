@@ -121,8 +121,9 @@ For other systems, you can read the official Docker documentation to install
 
 ## Configuration
 
-Most of the common configuration is defined in `.env`. Further custom
-environment variables should be set via a newly created docker-compose.override.yaml.
+Most of the common configuration is defined in `.env`. Please copy the content of `.env.example`
+into a fresh `.env` file (i.e. by running `cp -a .env.example .env`) and customise it there.
+Further custom environment variables should be set via a newly created docker-compose.override.yaml.
 
 Additionally, there is need for some extra configuration that
 interacts directly with the application. There are two configuration files on
