@@ -5,6 +5,7 @@ services:
     image: maxking/mailman-core:0.4 # Use a specific version tag (tag latest is not published)
     container_name: mailman-core
     hostname: mailman-core
+    restart: unless-stopped
     volumes:
     - /opt/mailman/core:/opt/mailman/
     stop_grace_period: 30s
@@ -26,6 +27,7 @@ services:
     image: maxking/postorius:0.4 # Use a specific version tag (tag latest is not published)
     container_name: mailman-web
     hostname: mailman-web
+    restart: unless-stopped
     depends_on:
     - database
     links:
