@@ -1,10 +1,5 @@
 # syntax = docker/dockerfile:1.3
-FROM alpine:3.18.3
-
-# Add needed files for uwsgi server + settings for django
-COPY mailman-web /opt/mailman-web
-# Add startup script to container
-COPY docker-entrypoint.sh /usr/local/bin/
+FROM alpine:3.18.4
 
 ARG POSTORIUS_REF
 ARG HYPERKITTY_REF
@@ -42,9 +37,15 @@ RUN --mount=type=cache,target=/root/.cache \
        git+https://gitlab.com/mailman/django-mailman3 \
     && apk del .build-deps \
     && addgroup -S mailman \
-    && adduser -S -G mailman mailman \
-    && chown -R mailman /opt/mailman-web/ \
-    && chmod u+x /opt/mailman-web/manage.py
+    && adduser -S -G mailman mailman
+
+# Add needed files for uwsgi server + settings for django
+COPY mailman-web /opt/mailman-web
+# Add startup script to container
+COPY docker-entrypoint.sh /usr/local/bin/
+
+RUN chown -R mailman /opt/mailman-web/ \
+	&& chmod u+x /opt/mailman-web/manage.py
 
 WORKDIR /opt/mailman-web
 

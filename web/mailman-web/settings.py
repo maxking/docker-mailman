@@ -107,6 +107,7 @@ MIDDLEWARE = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
     'django_mailman3.middleware.TimezoneMiddleware',
     'postorius.middleware.PostoriusMiddleware',
 )
