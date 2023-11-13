@@ -2,9 +2,6 @@
 # Use 3.15 for Core since it has Python 3.9
 FROM alpine:3.18
 
-#Add startup script to container
-COPY docker-entrypoint.sh /usr/local/bin/
-
 # Add requirements file.
 COPY requirements.txt /tmp/
 
@@ -24,6 +21,9 @@ RUN --mount=type=cache,target=/root/.cache \
                    'importlib-resources<6.0.0' \
     && apk del build-deps \
     && adduser -S mailman
+
+#Add startup script to container
+COPY docker-entrypoint.sh /usr/local/bin/
 
 # Change the working directory.
 WORKDIR /opt/mailman

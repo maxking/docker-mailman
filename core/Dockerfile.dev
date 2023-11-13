@@ -2,13 +2,9 @@
 # Use 3.15 for Core since it has Python 3.9
 FROM alpine:3.18
 
-#Add startup script to container
-COPY docker-entrypoint.sh /usr/local/bin/
-
 # Set the commits that we are building.
 ARG CORE_REF
 ARG MM3_HK_REF
-
 
 #Install all required packages, add user for executing mailman and set execution
 #rights for startup script
@@ -25,6 +21,9 @@ RUN --mount=type=cache,target=/root/.cache \
         gunicorn==19.9.0 \
     && apk del build-deps \
     && adduser -S mailman
+
+#Add startup script to container
+COPY docker-entrypoint.sh /usr/local/bin/
 
 # Change the working directory.
 WORKDIR /opt/mailman
