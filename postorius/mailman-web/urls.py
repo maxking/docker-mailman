@@ -18,16 +18,16 @@
 
 from django.conf.urls import include
 from django.contrib import admin
-from django.urls import path, reverse_lazy
+from django.urls import re_path, reverse_lazy
 from django.views.generic import RedirectView
 
 urlpatterns = [
-    path(r'^$', RedirectView.as_view(
+    re_path(r'^$', RedirectView.as_view(
         url=reverse_lazy('list_index'),
         permanent=True)),
-    path(r'postorius/', include('postorius.urls')),
-    path(r'', include('django_mailman3.urls')),
-    path(r'accounts/', include('allauth.urls')),
+    re_path(r'postorius/', include('postorius.urls')),
+    re_path(r'', include('django_mailman3.urls')),
+    re_path(r'accounts/', include('allauth.urls')),
     # Django admin
-    path(r'^admin/', admin.site.urls),
+    re_path(r'^admin/', admin.site.urls),
 ]

@@ -1,5 +1,5 @@
 # syntax = docker/dockerfile:1.3
-FROM alpine:3.18.4
+FROM alpine:3.19.0
 
 ARG POSTORIUS_REF
 ARG DJ_MM3_REF
@@ -15,8 +15,8 @@ RUN --mount=type=cache,target=/root/.cache \
 	&& apk add --no-cache --virtual .mailman-rundeps bash sassc tzdata \
 		postgresql-client mysql-client py3-mysqlclient curl mailcap \
 		python3 py3-pip libffi gettext py-cryptography \
-    && python3 -m pip install -U pip setuptools wheel \
-    && python3 -m pip install -U \
+    && python3 -m pip install --break-system-packages -U pip setuptools wheel \
+    && python3 -m pip install --break-system-packages -U \
         git+https://gitlab.com/mailman/mailmanclient \
         git+https://gitlab.com/mailman/postorius \
 		uwsgi \
@@ -25,8 +25,8 @@ RUN --mount=type=cache,target=/root/.cache \
 		mysqlclient \
 		typing \
 		django-utils-six \
-    && python3 -m pip install -U 'Django<3.2' \
-    && python3 -m pip install -U \
+    && python3 -m pip install --break-system-packages -U 'Django<3.2' \
+    && python3 -m pip install --break-system-packages -U \
        git+https://gitlab.com/mailman/django-mailman3 \
 	&& apk del .build-deps \
 	&& addgroup -S mailman \
