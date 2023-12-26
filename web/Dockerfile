@@ -1,5 +1,5 @@
 # syntax = docker/dockerfile:1.3
-FROM alpine:3.18.4
+FROM alpine:3.19.0
 
 # Add requirements file.
 COPY requirements.txt /tmp/
