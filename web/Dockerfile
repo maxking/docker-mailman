@@ -9,7 +9,7 @@ COPY requirements.txt /tmp/
 # rights for management script
 RUN --mount=type=cache,target=/root/.cache \
     set -ex \
-	&& apk add --no-cache --virtual .build-deps gcc libc-dev linux-headers \
+	&& apk add --no-cache --virtual .build-deps gcc libc-dev linux-headers libldap \
            postgresql-dev mariadb-dev mariadb-connector-c python3-dev libffi-dev openldap-dev cargo rust \
 	&& apk add --no-cache --virtual .mailman-rundeps bash sassc tzdata \
 	   postgresql-client mysql-client py3-mysqlclient curl mailcap gettext \
