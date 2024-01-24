@@ -28,8 +28,8 @@ RUN --mount=type=cache,target=/root/.cache \
         mysqlclient \
         xapian-haystack \
         django-auth-ldap \
-	python-memcached \
-	tzdata \
+        pymemcache \
+	    tzdata \
         diskcache \
         django-utils-six \
     && python3 -m pip install --break-system-packages -U 'Django<4.2' \

@@ -24,7 +24,7 @@ RUN --mount=type=cache,target=/root/.cache \
 		typing \
 		xapian-haystack \
 		django-auth-ldap \
-		python-memcached \
+		pymemcache \
 		diskcache \
 		django-utils-six \
 		tzdata \
