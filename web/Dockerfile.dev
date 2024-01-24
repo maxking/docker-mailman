@@ -28,7 +28,7 @@ RUN --mount=type=cache,target=/root/.cache \
         mysqlclient \
         xapian-haystack \
         django-auth-ldap \
-	python-memcached \
+	pylibmc \
 	tzdata \
         diskcache \
         django-utils-six \
