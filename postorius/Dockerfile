@@ -12,9 +12,9 @@ RUN --mount=type=cache,target=/root/.cache \
 		postgresql-client mysql-client py3-mysqlclient curl mailcap gettext \
 		python3 py3-pip libffi libuuid pcre-dev py-cryptography \
 	&& python3 -m pip install --break-system-packages -U 'Django<4.2' pip setuptools wheel \
-	&& python3 -m pip install --break-system-packages postorius==1.3.7 \
+	&& python3 -m pip install --break-system-packages postorius==1.3.10 \
         uwsgi \
-		'psycopg2<2.9' \
+		psycopg2 \
 		dj-database-url \
 		mysqlclient \
 		typing \
