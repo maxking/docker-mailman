@@ -60,6 +60,8 @@ standard version of docker-compose.yaml from this repository.
 
 - `SMTP_PORT`: Port used for SMTP. Default is `25`.
 
+- `SMTP_SECURE_MODE`: Security mode (encryption) used for SMTP. Default is `smtp`. Can also be `starttls` or `smtps`.
+
 - `HYPERKITTY_URL`: Default value is `http://mailman-web:8000/hyperkitty`
 
 In case of a need for fine tuning of REST API web-server that uses [Gunicorn](https://docs.gunicorn.org/en/stable/settings.html) (e.g. for raising of timeouts) `/opt/mailman/core/gunicorn-extra.cfg` file could be provided holding necessary configuration options.
@@ -106,6 +108,9 @@ lmtp_host: $MM_HOSTNAME
 lmtp_port: 8024
 smtp_host: $SMTP_HOST
 smtp_port: $SMTP_PORT
+smtp_secure_mode: $SMTP_SECURE_MODE
+smtp_verify_hostname: $SMTP_VERIFY_HOSTNAME
+smtp_verify_cert: $SMTP_VERIFY_CERT
 configuration: python:mailman.config.exim4
 
 [runner.retry]
