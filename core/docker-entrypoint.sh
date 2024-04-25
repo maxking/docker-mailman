@@ -44,15 +44,15 @@ if [[ ! -v SMTP_PORT ]]; then
 fi
 
 if [[ ! -v SMTP_SECURE_MODE ]]; then
-	export SMTP_SECURE_MODE="starttls"
+	export SMTP_SECURE_MODE="smtp"
 fi
 
 if [[ ! -v SMTP_VERIFY_HOSTNAME ]]; then
-	export SMTP_VERIFY_HOSTNAME="True"
+	export SMTP_VERIFY_HOSTNAME="true"
 fi
 
 if [[ ! -v SMTP_VERIFY_CERT ]]; then
-	export SMTP_VERIFY_CERT="True"
+	export SMTP_VERIFY_CERT="true"
 fi
 
 # Check if REST port, username, and password are set, if not, set them
