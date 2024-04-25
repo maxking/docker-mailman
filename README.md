@@ -214,6 +214,9 @@ These are the variables that you MUST change in your docker-compose.yaml before 
 - `SMTP_PORT`	: use this port. 25, 587, whatever your host asks for.
 - `SMTP_HOST_USER`: authenticate this user
 - `SMTP_HOST_PASSWORD`: and use this password
+- `SMTP_SECURE_MODE`: security mode for smtp connection - can be `smtp` (no encryption), `smtps` or `starttls`
+- `SMTP_VERIFY_HOSTNAME`: defaults to `true` - verify, that certificate hostname is identical to `SMTP_HOST`
+- `SMTP_VERIFY_CERT`: defaults to `true` - verify, that certificate is valid
 
 For more details on how to configure this image, please look [Mailman-core's
 Readme](core/)
