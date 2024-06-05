@@ -32,7 +32,7 @@ RUN --mount=type=cache,target=/root/.cache \
 	    tzdata \
         diskcache \
         django-utils-six \
-        'python3-openid>=3.0.8' \
+		'django-allauth[socialaccount]' \
     && python3 -m pip install --break-system-packages -U 'Django<4.3' \
     && python3 -m pip install --break-system-packages -U \
        git+https://gitlab.com/mailman/django-mailman3 \
