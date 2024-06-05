@@ -37,8 +37,8 @@ jobs:
             DB: mysql
           name: MySQL Test
           command: bash tests/test.sh
-      - deploy:
-          name: Deploy
+      - run:
+          name: Run version
           command: |
               python3 --version
               python3 deploy.py
