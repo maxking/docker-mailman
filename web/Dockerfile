@@ -28,6 +28,7 @@ RUN --mount=type=cache,target=/root/.cache \
 		diskcache \
 		django-utils-six \
 		tzdata \
+		'python3-openid>=3.0.8' \
 	&& apk del .build-deps \
 	&& addgroup -S mailman \
 	&& adduser -S -G mailman mailman
