@@ -7,7 +7,7 @@ jobs:
         type: string
         default: "no"
     machine:
-      image: ubuntu-2004:202010-01
+      image: default
     environment:
       DOCKER_BUILDKIT: 1
       BUILDKIT_PROGRESS: plain
