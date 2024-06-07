@@ -28,8 +28,7 @@ RUN --mount=type=cache,target=/root/.cache \
 		diskcache \
 		django-utils-six \
 		tzdata \
-		'django-allauth[socialaccount]' \
-		python-openid \
+		'django-allauth[socialaccount,openid]' \
 	&& apk del .build-deps \
 	&& addgroup -S mailman \
 	&& adduser -S -G mailman mailman
