@@ -20,12 +20,12 @@ RUN --mount=type=cache,target=/root/.cache \
         git+https://gitlab.com/mailman/mailmanclient \
         git+https://gitlab.com/mailman/postorius \
 		uwsgi \
-		'psycopg2<2.9' \
+		psycopg2 \
 		dj-database-url \
 		mysqlclient \
 		typing \
 		django-utils-six \
-    && python3 -m pip install --break-system-packages -U 'Django<3.2' \
+    && python3 -m pip install --break-system-packages -U 'Django<4.3' \
     && python3 -m pip install --break-system-packages -U \
        git+https://gitlab.com/mailman/django-mailman3 \
 	&& apk del .build-deps \
