@@ -1,5 +1,5 @@
 # syntax = docker/dockerfile:1.3
-FROM alpine:3.19.1
+FROM alpine:3.20.0
 
 # Add requirements file.
 COPY requirements.txt /tmp/
@@ -14,7 +14,7 @@ RUN --mount=type=cache,target=/root/.cache \
 	&& apk add --no-cache --virtual .mailman-rundeps bash sassc tzdata \
 	   postgresql-client mysql-client py3-mysqlclient curl mailcap gettext \
 	   python3 py3-pip xapian-core xapian-bindings-python3 libffi pcre-dev py-cryptography \
-	&& python3 -m pip install --break-system-packages -U 'Django<4.2' pip setuptools wheel \
+	&& python3 -m pip install --break-system-packages -U 'Django<4.3' pip setuptools wheel \
 	&& pip install --break-system-packages -r /tmp/requirements.txt \
 		whoosh \
 		uwsgi \
@@ -28,6 +28,7 @@ RUN --mount=type=cache,target=/root/.cache \
 		diskcache \
 		django-utils-six \
 		tzdata \
+		'django-allauth[socialaccount,openid]' \
 	&& apk del .build-deps \
 	&& addgroup -S mailman \
 	&& adduser -S -G mailman mailman
