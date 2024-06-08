@@ -1,25 +1,29 @@
 # syntax = docker/dockerfile:1.3
-FROM alpine:3.12
+# Use 3.15 for Core since it has Python 3.9
+FROM alpine:3.19
 
-#Add startup script to container
-COPY docker-entrypoint.sh /usr/local/bin/
+# Add requirements file.
+COPY requirements.txt /tmp/
 
 #Install all required packages, add user for executing mailman and set execution rights for startup script
 RUN --mount=type=cache,target=/root/.cache \
     apk update \
     && apk add --virtual build-deps gcc python3-dev musl-dev postgresql-dev \
        libffi-dev \
+  # Mailman html to plaintext conversion uses lynx.
   # psutil needs linux-headers to compile on musl c library.
-    && apk add --no-cache bash su-exec postgresql-client mysql-client curl python3 py3-pip linux-headers py-cryptography mariadb-connector-c \
-    && python3 -m pip install -U pip setuptools wheel \
-        && python3 -m pip install psycopg2 \
+    && apk add --no-cache bash su-exec postgresql-client mysql-client curl python3 py3-pip linux-headers py-cryptography mariadb-connector-c lynx tzdata \
+    && python3 -m pip install --break-system-packages -U pip setuptools wheel \
+        && python3 -m pip install --break-system-packages psycopg2 \
                    gunicorn==19.9.0 \
-                   mailman==3.3.5 \
-                   mailman-hyperkitty==1.2.0 \
                    pymysql \
-                   'sqlalchemy<1.4.0' \
+                   -r /tmp/requirements.txt \
+                   'importlib-resources<6.0.0' \
     && apk del build-deps \
     && adduser -S mailman
+
+#Add startup script to container
+COPY docker-entrypoint.sh /usr/local/bin/
 
 # Change the working directory.
 WORKDIR /opt/mailman

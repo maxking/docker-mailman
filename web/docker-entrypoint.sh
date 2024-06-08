@@ -7,7 +7,7 @@ function wait_for_postgres () {
 	# moving forward.
 	# TODO: Use python's psycopg2 module to do this in python instead of
 	# installing postgres-client in the image.
-	until psql $DATABASE_URL -c '\l'; do
+	until psql -P pager=off $DATABASE_URL -c '\l'; do
 		>&2 echo "Postgres is unavailable - sleeping"
 		sleep 1
 	done
@@ -118,12 +118,12 @@ echo "Compiling locale files in $SITE_DIR"
 cd $SITE_DIR && /opt/mailman-web/manage.py compilemessages &&  cd -
 
 # Compress static files.
-python3 manage.py compress --force
+python3 /opt/mailman-web/manage.py compress --force
 
 
 # Migrate all the data to the database if this is a new installation, otherwise
 # this command will upgrade the database.
-python3 manage.py migrate
+python3 /opt/mailman-web/manage.py migrate
 
 # If MAILMAN_ADMIN_USER and MAILMAN_ADMIN_EMAIL is defined create a new
 # superuser for Django. There is no password setup so it can't login yet unless
@@ -131,7 +131,7 @@ python3 manage.py migrate
 if [[ -v MAILMAN_ADMIN_USER ]] && [[ -v MAILMAN_ADMIN_EMAIL ]];
 then
 	echo "Creating admin user $MAILMAN_ADMIN_USER ..."
-	python3 manage.py createsuperuser --noinput --username "$MAILMAN_ADMIN_USER"\
+	python3 /opt/mailman-web/manage.py createsuperuser --noinput --username "$MAILMAN_ADMIN_USER"\
 		   --email "$MAILMAN_ADMIN_EMAIL" 2> /dev/null || \
 		echo "Superuser $MAILMAN_ADMIN_USER already exists"
 fi
@@ -141,7 +141,7 @@ fi
 if [[ -v SERVE_FROM_DOMAIN ]];
 then
 	echo "Setting $SERVE_FROM_DOMAIN as the default domain ..."
-	python3 manage.py shell -c \
+	python3 /opt/mailman-web/manage.py shell -c \
 	"from django.contrib.sites.models import Site; Site.objects.filter(domain='example.com').update(domain='$SERVE_FROM_DOMAIN', name='$SERVE_FROM_DOMAIN')"
 fi
 

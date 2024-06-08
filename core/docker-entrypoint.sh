@@ -6,7 +6,7 @@ function wait_for_postgres () {
 	# moving forward.
 	# TODO: Use python3's psycopg2 module to do this in python3 instead of
 	# installing postgres-client in the image.
-	until psql $DATABASE_URL -c '\l'; do
+	until psql -P pager=off $DATABASE_URL -c '\l'; do
 		>&2 echo "Postgres is unavailable - sleeping"
 		sleep 1
 	done
@@ -67,7 +67,7 @@ function setup_database () {
 	# Translate mysql:// urls to mysql+mysql:// backend:
 	if [[ "$DATABASE_URL" == mysql://* ]]; then
 		DATABASE_URL="mysql+pymysql://${DATABASE_URL:8}"
-		echo "Database URL was automatically rewritten to: $DATABASE_URL"
+		echo "Database URL prefix was automatically rewritten to: mysql+pymysql://"
 	fi
 
 	# If DATABASE_CLASS is not set, guess it for common databases:
@@ -142,6 +142,8 @@ lmtp_host: $MM_HOSTNAME
 lmtp_port: 8024
 smtp_host: $SMTP_HOST
 smtp_port: $SMTP_PORT
+smtp_user: $SMTP_HOST_USER
+smtp_pass: $SMTP_HOST_PASSWORD
 configuration: python:mailman.config.exim4
 
 EOF
@@ -163,6 +165,8 @@ lmtp_host: $MM_HOSTNAME
 lmtp_port: 8024
 smtp_host: $SMTP_HOST
 smtp_port: $SMTP_PORT
+smtp_user: $SMTP_HOST_USER
+smtp_pass: $SMTP_HOST_PASSWORD
 configuration: /etc/postfix-mailman.cfg
 
 EOF

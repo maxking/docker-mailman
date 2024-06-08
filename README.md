@@ -54,25 +54,21 @@ Releases will follow the following rules:
 
 ## Container Registries
 
-
-The container images are available from multiple container registries:
+The container images are available from multiple container registries. Do specify an [explicit version tag](https://hub.docker.com/r/maxking/mailman-web/tags?page=1&ordering=last_updated&name=0.) (e.g. `0.4.5` , MAJOR.MINOR like `0.4` also works as floating tag pointing to latest patch version) as tag `latest` is **not** updated anymore.
 
 ### Mailman Core
 
 - `ghcr.io/maxking/mailman-core`
-- `quay.io/maxking/mailman-core`
 - `docker.io/maxking/mailman-core`
 
 ### Mailman Web
 
 - `ghcr.io/maxking/mailman-web`
-- `quay.io/maxking/mailman-web`
 - `docker.io/maxking/mailman-web`
 
 ### Postorius
 
 - `ghcr.io/maxking/postorius`
-- `quay.io/maxking/postorius`
 - `docker.io/maxking/postorius`
 
 ## Rolling Releases
@@ -214,6 +210,10 @@ These are the variables that you MUST change in your docker-compose.yaml before 
 - `DATABASE_CLASS`: Default value is
   `mailman.database.sqlite.SQLiteDatabase`. The values for this can be found in
   the mailman's documentation [here][11].
+- `SMTP_HOST`	: outgoing host for SMTP connections
+- `SMTP_PORT`	: use this port. 25, 587, whatever your host asks for.
+- `SMTP_HOST_USER`: authenticate this user
+- `SMTP_HOST_PASSWORD`: and use this password
 
 For more details on how to configure this image, please look [Mailman-core's
 Readme](core/)

@@ -7,7 +7,7 @@ jobs:
         type: string
         default: "no"
     machine:
-      image: ubuntu-2004:202010-01
+      image: default
     environment:
       DOCKER_BUILDKIT: 1
       BUILDKIT_PROGRESS: plain
@@ -37,11 +37,16 @@ jobs:
             DB: mysql
           name: MySQL Test
           command: bash tests/test.sh
-      - deploy:
-          name: Deploy
+      - run:
+          name: Run version
           command: |
               python3 --version
               python3 deploy.py
+      - store_artifacts:
+          path: /opt/mailman/web/logs/
+      
+      - store_artifacts:
+          path: /opt/mailman/core/var/logs
 
 workflows:
   version: 2

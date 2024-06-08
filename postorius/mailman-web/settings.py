@@ -46,16 +46,14 @@ ADMINS = (
 SITE_ID = 1
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
-# See https://docs.djangoproject.com/en/1.8/ref/settings/#allowed-hosts
+# See https://docs.djangoproject.com/en/3.1/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = [
     "localhost",  # Archiving API from Mailman, keep it.
-    # "lists.your-domain.org",
-    # Add here all production URLs you may have.
     "mailman-web",
     gethostbyname("mailman-web"),
     os.environ.get('SERVE_FROM_DOMAIN'),
-    os.environ.get('DJANGO_ALLOWED_HOSTS'),
 ]
+ALLOWED_HOSTS.extend(os.getenv("DJANGO_ALLOWED_HOSTS", "").split(","))
 
 # Mailman API credentials
 MAILMAN_REST_API_URL = os.environ.get('MAILMAN_REST_URL', 'http://mailman-core:8001')
@@ -78,6 +76,7 @@ DEFAULT_APPS = [
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     'django_gravatar',
     'allauth',
     'allauth.account',
@@ -101,6 +100,7 @@ MIDDLEWARE = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django_mailman3.middleware.TimezoneMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
     'postorius.middleware.PostoriusMiddleware',
 )
 
@@ -142,6 +142,11 @@ WSGI_APPLICATION = 'wsgi.application'
 DATABASES = {
     'default': dj_database_url.config(conn_max_age=600)
 }
+
+# Avoid Django 3.2+ warning
+# https://github.com/maxking/docker-mailman/issues/595
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
 
 # If you're behind a proxy, use the X-Forwarded-Host header
 # See https://docs.djangoproject.com/en/1.8/ref/settings/#use-x-forwarded-host

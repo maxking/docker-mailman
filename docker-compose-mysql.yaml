@@ -2,9 +2,10 @@ version: '2'
 
 services:
   mailman-core:
-    image: maxking/mailman-core:0.4
+    image: maxking/mailman-core:0.4 # Use a specific version tag (tag latest is not published)
     container_name: mailman-core
     hostname: mailman-core
+    restart: unless-stopped
     volumes:
     - /opt/mailman/core:/opt/mailman/
     stop_grace_period: 30s
@@ -13,9 +14,8 @@ services:
     depends_on:
     - database
     environment:
-    - DATABASE_URL=mysql+pymysql://mailman:mailmanpass@database/mailmandb?charset=utf8mb4&use_unicode=1
+    - DATABASE_URL=mysql+pymysql://mailman:mailmanpass@database/mailmandb?charset=utf8mb4&use_unicode=1 # Do use mysql+pymysql:// here
     - DATABASE_TYPE=mysql
-    - DATABASE_CLASS=mailman.database.mysql.MySQLDatabase
     - HYPERKITTY_API_KEY=someapikey
     ports:
     - "127.0.0.1:8001:8001" # API
@@ -24,9 +24,10 @@ services:
       mailman:
 
   mailman-web:
-    image: maxking/mailman-web:0.4
+    image: maxking/mailman-web:0.4 # Use a specific version tag (tag latest is not published)
     container_name: mailman-web
     hostname: mailman-web
+    restart: unless-stopped
     depends_on:
     - database
     links:
@@ -36,7 +37,7 @@ services:
     - /opt/mailman/web:/opt/mailman-web-data
     environment:
     - DATABASE_TYPE=mysql
-    - DATABASE_URL=mysql://mailman:mailmanpass@database/mailmandb?charset=utf8mb4
+    - DATABASE_URL=mysql://mailman:mailmanpass@database/mailmandb?charset=utf8mb4 # Do use mysql:// here
     - HYPERKITTY_API_KEY=someapikey
     - SECRET_KEY=thisisaverysecretkey
     - DYLD_LIBRARY_PATH=/usr/local/mysql/lib/
