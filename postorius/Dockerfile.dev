@@ -10,9 +10,9 @@ ARG CLIENT_REF
 # rights for management script
 RUN --mount=type=cache,target=/root/.cache \
     set -ex \
-	&& apk add --no-cache --virtual .build-deps gcc libc-dev linux-headers libldap \
+	&& apk add --no-cache --virtual .build-deps gcc libc-dev linux-headers \
 		postgresql-dev mariadb-dev mariadb-connector-c python3-dev libffi-dev git cargo rust \
-	&& apk add --no-cache --virtual .mailman-rundeps bash sassc tzdata \
+	&& apk add --no-cache --virtual .mailman-rundeps bash sassc tzdata libldap \
 		postgresql-client mysql-client py3-mysqlclient curl mailcap \
 		python3 py3-pip libffi gettext py-cryptography \
     && python3 -m pip install --break-system-packages -U pip setuptools wheel \
