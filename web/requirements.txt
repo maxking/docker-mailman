@@ -1,4 +1,4 @@
 mailmanclient==3.3.5
 postorius==1.3.10
 hyperkitty==1.3.9
-django-mailman3==1.3.12
+django-mailman3==1.3.15
