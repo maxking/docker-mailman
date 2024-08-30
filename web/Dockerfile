@@ -28,7 +28,7 @@ RUN --mount=type=cache,target=/root/.cache \
 		diskcache \
 		django-utils-six \
 		tzdata \
-             pytz \
+                pytz \
 		'django-allauth[socialaccount,openid]' \
 	&& apk del .build-deps \
 	&& addgroup -S mailman \
