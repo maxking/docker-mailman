@@ -247,7 +247,17 @@ echo "HYPERKITTY_API_KEY not defined, skipping HyperKitty setup..."
 fi
 
 # Now chown the places where mailman wants to write stuff.
-chown -R mailman /opt/mailman/var
+VAR_DIR="/opt/mailman/var"
+# Check if the directory exists
+if [ ! -d "$VAR_DIR" ]; then
+  # Directory does not exist, so create it
+  mkdir -p "$VAR_DIR"
+  echo "Directory $VAR_DIR created."
+else
+  echo "Directory $VAR_DIR already exists."
+fi
+
+chown -R mailman $VAR_DIR
 
 # Generate the LMTP files for postfix if needed.
 su-exec mailman mailman aliases
