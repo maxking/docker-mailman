@@ -18,7 +18,6 @@ RUN --mount=type=cache,target=/root/.cache \
     && python3 -m pip install --break-system-packages \
         git+https://gitlab.com/mailman/mailman \
         git+https://gitlab.com/mailman/mailman-hyperkitty \
-        gunicorn==19.9.0 \
     && apk del build-deps \
     && adduser -S mailman
 

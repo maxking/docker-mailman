@@ -15,7 +15,6 @@ RUN --mount=type=cache,target=/root/.cache \
     && apk add --no-cache bash su-exec postgresql-client mysql-client curl python3 py3-pip linux-headers py-cryptography mariadb-connector-c lynx tzdata \
     && python3 -m pip install --break-system-packages -U pip setuptools wheel \
         && python3 -m pip install --break-system-packages psycopg2 \
-                   gunicorn==19.9.0 \
                    pymysql \
                    -r /tmp/requirements.txt \
                    'importlib-resources<6.0.0' \
