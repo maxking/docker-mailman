@@ -1,5 +1,5 @@
 # syntax = docker/dockerfile:1.3
-FROM alpine:3.20.1
+FROM alpine:3.20.3
 
 # Add requirements file.
 COPY requirements.txt /tmp/
@@ -28,6 +28,7 @@ RUN --mount=type=cache,target=/root/.cache \
 		diskcache \
 		django-utils-six \
 		tzdata \
+		pytz \
 		'django-allauth[socialaccount,openid]' \
 	&& apk del .build-deps \
 	&& addgroup -S mailman \
