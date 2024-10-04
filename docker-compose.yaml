@@ -12,7 +12,8 @@ services:
     links:
     - database:database
     depends_on:
-    - database
+      database:
+        condition: service_healthy
     environment:
     - DATABASE_URL=postgresql://mailman:mailmanpass@database/mailmandb
     - DATABASE_TYPE=postgres
@@ -30,7 +31,8 @@ services:
     hostname: mailman-web
     restart: unless-stopped
     depends_on:
-    - database
+      database:
+        condition: service_healthy
     links:
     - mailman-core:mailman-core
     - database:database
@@ -54,6 +56,11 @@ services:
     image: postgres:12-alpine
     volumes:
     - /opt/mailman/database:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready --dbname mailmandb --username mailman"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks:
       mailman:
 
