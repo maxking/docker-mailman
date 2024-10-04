@@ -4,10 +4,10 @@ set -e
 # If the DB environment variable is not set, use postgres.x
 if [ "$DB" = "postgres" ] || [ -z $DB ]
 then
-	docker-compose -f docker-compose.yaml -f tests/docker-test.yaml up -d
+	docker compose -f docker-compose.yaml -f tests/docker-test.yaml up -d
 elif [ "$DB" = "mysql" ]
 then
-	docker-compose -f docker-compose-mysql.yaml -f tests/docker-test.yaml up -d
+	docker compose -f docker-compose-mysql.yaml -f tests/docker-test.yaml up -d
 fi
 
 # Print the IP Addresses of the Containers.
@@ -15,7 +15,7 @@ docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' mai
 docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' mailman-web
 
 # Make sure all the containers are running.
-docker-compose ps
+docker compose ps
 
 # Sleep for a while and check again if the containers are up.
 sleep 60

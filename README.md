@@ -107,16 +107,16 @@ $ docker inspect --format '{{json .Config.Labels }}' mailman-web | python -m jso
 ## Dependencies
 
 - Docker
-- Docker-compose
+- Docker-compose-plugin
 
 To install these on Ubuntu/Debian:
 
 ```
-$ sudo apt install docker.io docker-compose
+$ sudo apt install docker.io docker-compose-plugin
 ```
 
 For other systems, you can read the official Docker documentation to install
-[Docker from here][5] and [docker-compose from here][6].
+[Docker from here][5] and [docker compose from here][6].
 
 
 ## Configuration
@@ -239,7 +239,7 @@ $ mkdir -p /opt/mailman/web
 $ git clone https://github.com/maxking/docker-mailman
 $ cd docker-mailman
 # Change some configuration variables as mentioned above.
-$ docker-compose up -d
+$ docker compose up -d
 ```
 
 Note that the web frontend in the mailman-web container is, by default, only
@@ -453,7 +453,7 @@ If you have been using the default search indexing engine, you might have to
 re-index emails using the following command:
 
 ```bash
-$ docker-compose exec mailman-web ./manage.py rebuild_index
+$ docker compose exec mailman-web ./manage.py rebuild_index
 ```
 
 This command can take some time if you a lot of emails, so please be patient!
