@@ -29,7 +29,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 import os
 import dj_database_url
 import sys
-from socket import gethostbyname
+from socket import gethostbyname, gaierror
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -50,9 +50,14 @@ SITE_ID = 1
 ALLOWED_HOSTS = [
     "localhost",  # Archiving API from Mailman, keep it.
     "mailman-web",
-    gethostbyname("mailman-web"),
     os.environ.get('SERVE_FROM_DOMAIN'),
 ]
+
+try:
+    ALLOWED_HOSTS.append(gethostbyname("mailman-web")) # only add if this resolves
+except gaierror:
+    pass
+
 ALLOWED_HOSTS.extend(os.getenv("DJANGO_ALLOWED_HOSTS", "").split(","))
 
 # Mailman API credentials
@@ -79,6 +84,7 @@ DEFAULT_APPS = [
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     'rest_framework',
     'django_gravatar',
     'compressor',
@@ -149,6 +155,11 @@ WSGI_APPLICATION = 'wsgi.application'
 DATABASES = {
     'default': dj_database_url.config(conn_max_age=600)
 }
+
+# Avoid Django 3.2+ warning
+# https://github.com/maxking/docker-mailman/issues/595
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
 
 # If you're behind a proxy, use the X-Forwarded-Host header
 # See https://docs.djangoproject.com/en/1.8/ref/settings/#use-x-forwarded-host

@@ -1,5 +1,5 @@
 # syntax = docker/dockerfile:1.3
-FROM alpine:3.18.4
+FROM alpine:3.20.3
 
 # Add requirements file.
 COPY requirements.txt /tmp/
@@ -11,11 +11,11 @@ RUN --mount=type=cache,target=/root/.cache \
     set -ex \
 	&& apk add --no-cache --virtual .build-deps gcc libc-dev linux-headers \
            postgresql-dev mariadb-dev mariadb-connector-c python3-dev libffi-dev openldap-dev cargo rust \
-	&& apk add --no-cache --virtual .mailman-rundeps bash sassc tzdata \
+	&& apk add --no-cache --virtual .mailman-rundeps bash sassc tzdata libldap \
 	   postgresql-client mysql-client py3-mysqlclient curl mailcap gettext \
 	   python3 py3-pip xapian-core xapian-bindings-python3 libffi pcre-dev py-cryptography \
-	&& python3 -m pip install -U 'Django<4.2' pip setuptools wheel \
-	&& pip install -r /tmp/requirements.txt \
+	&& python3 -m pip install --break-system-packages -U 'Django<4.3' pip setuptools wheel \
+	&& pip install --break-system-packages -r /tmp/requirements.txt \
 		whoosh \
 		uwsgi \
 		psycopg2 \
@@ -24,10 +24,12 @@ RUN --mount=type=cache,target=/root/.cache \
 		typing \
 		xapian-haystack \
 		django-auth-ldap \
-		python-memcached \
+		pymemcache \
 		diskcache \
 		django-utils-six \
 		tzdata \
+		pytz \
+		'django-allauth[socialaccount,openid]' \
 	&& apk del .build-deps \
 	&& addgroup -S mailman \
 	&& adduser -S -G mailman mailman

@@ -76,6 +76,7 @@ DEFAULT_APPS = [
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     'django_gravatar',
     'allauth',
     'allauth.account',
@@ -141,6 +142,11 @@ WSGI_APPLICATION = 'wsgi.application'
 DATABASES = {
     'default': dj_database_url.config(conn_max_age=600)
 }
+
+# Avoid Django 3.2+ warning
+# https://github.com/maxking/docker-mailman/issues/595
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
 
 # If you're behind a proxy, use the X-Forwarded-Host header
 # See https://docs.djangoproject.com/en/1.8/ref/settings/#use-x-forwarded-host

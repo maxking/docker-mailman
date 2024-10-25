@@ -43,6 +43,18 @@ if [[ ! -v SMTP_PORT ]]; then
 	export SMTP_PORT=25
 fi
 
+if [[ ! -v SMTP_SECURE_MODE ]]; then
+	export SMTP_SECURE_MODE="smtp"
+fi
+
+if [[ ! -v SMTP_VERIFY_HOSTNAME ]]; then
+	export SMTP_VERIFY_HOSTNAME="true"
+fi
+
+if [[ ! -v SMTP_VERIFY_CERT ]]; then
+	export SMTP_VERIFY_CERT="true"
+fi
+
 # Check if REST port, username, and password are set, if not, set them
 # to default values.
 if [[ ! -v MAILMAN_REST_PORT ]]; then
@@ -144,6 +156,9 @@ smtp_host: $SMTP_HOST
 smtp_port: $SMTP_PORT
 smtp_user: $SMTP_HOST_USER
 smtp_pass: $SMTP_HOST_PASSWORD
+smtp_secure_mode: $SMTP_SECURE_MODE
+smtp_verify_hostname: $SMTP_VERIFY_HOSTNAME
+smtp_verify_cert: $SMTP_VERIFY_CERT
 configuration: python:mailman.config.exim4
 
 EOF
@@ -167,6 +182,9 @@ smtp_host: $SMTP_HOST
 smtp_port: $SMTP_PORT
 smtp_user: $SMTP_HOST_USER
 smtp_pass: $SMTP_HOST_PASSWORD
+smtp_secure_mode: $SMTP_SECURE_MODE
+smtp_verify_hostname: $SMTP_VERIFY_HOSTNAME
+smtp_verify_cert: $SMTP_VERIFY_CERT
 configuration: /etc/postfix-mailman.cfg
 
 EOF
@@ -229,7 +247,17 @@ echo "HYPERKITTY_API_KEY not defined, skipping HyperKitty setup..."
 fi
 
 # Now chown the places where mailman wants to write stuff.
-chown -R mailman /opt/mailman
+VAR_DIR="/opt/mailman/var"
+# Check if the directory exists
+if [ ! -d "$VAR_DIR" ]; then
+  # Directory does not exist, so create it
+  mkdir -p "$VAR_DIR"
+  echo "Directory $VAR_DIR created."
+else
+  echo "Directory $VAR_DIR already exists."
+fi
+
+chown -R mailman $VAR_DIR
 
 # Generate the LMTP files for postfix if needed.
 su-exec mailman mailman aliases
