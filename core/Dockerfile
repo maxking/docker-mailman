@@ -1,6 +1,6 @@
 # syntax = docker/dockerfile:1.3
 # Use 3.15 for Core since it has Python 3.9
-FROM alpine:3.20
+FROM alpine:3.21
 
 # Add requirements file.
 COPY requirements.txt /tmp/
