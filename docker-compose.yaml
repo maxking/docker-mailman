@@ -19,6 +19,10 @@ services:
     - DATABASE_TYPE=postgres
     - DATABASE_CLASS=mailman.database.postgresql.PostgreSQLDatabase
     - HYPERKITTY_API_KEY=someapikey
+    - SMTP_HOST=localhost
+    - SMTP_PORT=25
+    - SMTP_HOST_USER=postfix
+
     ports:
     - "127.0.0.1:8001:8001" # API
     - "127.0.0.1:8024:8024" # LMTP - incoming emails
@@ -42,6 +46,10 @@ services:
     - DATABASE_TYPE=postgres
     - DATABASE_URL=postgresql://mailman:mailmanpass@database/mailmandb
     - HYPERKITTY_API_KEY=someapikey
+    - SERVE_FROM_DOMAIN=devmailman.hks.harvard.edu
+    - MAILMAN_ADMIN_USER=pthornton
+    - MAILMAN_ADMIN_EMAIL=peter_thornton@hks.harvard.edu
+    - SECRET_KEY=somesecretkey
     ports:
     - "127.0.0.1:8000:8000" # HTTP
     - "127.0.0.1:8080:8080" # uwsgi
