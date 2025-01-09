@@ -230,8 +230,8 @@ EMAIL_HOST = os.environ.get('SMTP_HOST', '')
 EMAIL_PORT = os.environ.get('SMTP_PORT', 25)
 EMAIL_HOST_USER = os.environ.get('SMTP_HOST_USER', '')
 EMAIL_HOST_PASSWORD = os.environ.get('SMTP_HOST_PASSWORD', '')
-EMAIL_USE_TLS = os.environ.get('SMTP_USE_TLS', False)
-EMAIL_USE_SSL = os.environ.get('SMTP_USE_SSL', False)
+EMAIL_USE_TLS = (os.environ.get('SMTP_USE_TLS', 'false').lower() == 'true')
+EMAIL_USE_SSL = (os.environ.get('SMTP_USE_SSL', 'false').lower() == 'true')
 
 # Compatibility with Bootstrap 3
 from django.contrib.messages import constants as messages  # flake8: noqa
