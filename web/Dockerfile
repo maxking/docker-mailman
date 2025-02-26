@@ -17,7 +17,8 @@ RUN --mount=type=cache,target=/root/.cache \
 	&& python3 -m pip install --break-system-packages -U 'Django<4.3' pip setuptools wheel \
 	&& pip install --break-system-packages -r /tmp/requirements.txt \
 		whoosh \
-		uwsgi \
+		# later builds of uwsgi don't compile on aarch64
+		uwsgi==2.0.25 \
 		psycopg2 \
 		dj-database-url \
 		mysqlclient \
