@@ -10,26 +10,53 @@ export BUILD_ROLLING="${1:-no}"
 
 DOCKER=docker
 
+# The following variables can be overridden using env-variables
+
+# Set tag namespace (i.e. ghcr.io/<org> for github package registry)
+TAG_NS="${TAG_NS:-maxking}"
+# Set default platforms to build
+BUILD_PLATFORM="${BUILD_PLATFORM:-linux/arm64/v8,linux/amd64}"
+# Platform to load into docker after build
+# Can only load one platform, should match host
+# mostly used: linux/amd64 and linux/arm64
+CURRENT_PLATFORM="${CURRENT_PLATFORM:-linux/amd64}"
+# set env-var PUSH to yes to push to registry
+PUSH="${PUSH:-no}"
+
+build() {
+    if [ "$PUSH" = "yes" ]; then
+        $DOCKER buildx build --platform $BUILD_PLATFORM $@ --push
+    else
+        $DOCKER buildx build --platform $BUILD_PLATFORM $@
+    fi
+    $DOCKER buildx build --platform $CURRENT_PLATFORM $@ --load
+}
+
+# Check if the builder with name "multiarch" exists, if not create it
+if ! docker buildx ls | grep -q multiarch; then
+  docker buildx create --name multiarch --driver docker-container --use
+fi
+
 if [ "$BUILD_ROLLING" = "yes" ]; then
     echo "Building rolling releases..."
     # Build the mailman-core image.
-    $DOCKER build -f core/Dockerfile.dev \
+    build -f core/Dockerfile.dev \
             --label version.git_commit="$COMMIT_ID" \
-            -t maxking/mailman-core:rolling core/
+            -t $TAG_NS/mailman-core:rolling core/
 
     # Build the mailman-web image.
-    $DOCKER build -f web/Dockerfile.dev \
+    build -f web/Dockerfile.dev \
             --label version.git_commit="$COMMIT_ID" \
-            -t maxking/mailman-web:rolling web/
+            -t $TAG_NS/mailman-web:rolling web/
 
     # build the postorius image.
-    $DOCKER build -f postorius/Dockerfile.dev\
-			--label version.git_commit="$COMMIT_ID"\
-			-t maxking/postorius:rolling postorius/
+    build -f postorius/Dockerfile.dev\
+            --label version.git_commit="$COMMIT_ID"\
+            -t $TAG_NS/postorius:rolling postorius/
 else
     echo "Building stable releases..."
     # Build the stable releases.
-    $DOCKER build -t maxking/mailman-core:rolling core/
-    $DOCKER build -t maxking/mailman-web:rolling web/
-    $DOCKER build -t maxking/postorius:rolling postorius/
+    build --tag $TAG_NS/mailman-core:rolling core/
+    build --tag $TAG_NS/mailman-web:rolling web/ 
+    build --tag $TAG_NS/postorius:rolling postorius/ 
 fi
