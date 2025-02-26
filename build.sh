@@ -15,20 +15,21 @@ DOCKER=docker
 # Set tag namespace (i.e. ghcr.io/<org> for github package registry)
 TAG_NS="${TAG_NS:-maxking}"
 # Set default platforms to build
-PLATFORM="${PLATFORM:-linux/arm64/v8,linux/amd64}"
+BUILD_PLATFORM="${BUILD_PLATFORM:-linux/arm64/v8,linux/amd64}"
 # Platform to load into docker after build
 # Can only load one platform, should match host
-PLATFORM_TO_LOAD="linux/amd64"
+# mostly used: linux/amd64 and linux/arm64
+CURRENT_PLATFORM="${CURRENT_PLATFORM:-linux/amd64}"
 # set env-var PUSH to yes to push to registry
 PUSH="${PUSH:-no}"
 
 build() {
     if [ "$PUSH" = "yes" ]; then
-        $DOCKER buildx build --platform $PLATFORM $@ --push
+        $DOCKER buildx build --platform $BUILD_PLATFORM $@ --push
     else
-        $DOCKER buildx build --platform $PLATFORM $@
+        $DOCKER buildx build --platform $BUILD_PLATFORM $@
     fi
-    $DOCKER buildx build --platform $PLATFORM_TO_LOAD $@ --load
+    $DOCKER buildx build --platform $CURRENT_PLATFORM $@ --load
 }
 
 # Check if the builder with name "multiarch" exists, if not create it
