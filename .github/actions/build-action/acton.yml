@@ -1,0 +1,33 @@
+name: Build Docker Images
+
+description: |
+  This action builds Docker images for multiple platforms using docker buildx.
+
+inputs:
+  platform:
+    description: 'Target platform for build (e.g., linux/amd64, linux/arm64)'
+    required: true
+  commit_id:
+    description: 'Git commit hash to tag the image'
+    required: true
+  tag_ns:
+    description: 'DockerHub namespace (e.g., your-dockerhub-username)'
+    required: true
+  dockerfile_path:
+    description: 'Path to the Dockerfile'
+    required: true
+  build_dir:
+    description: 'Directory of the build context'
+    required: true
+
+runs:
+  using: 'bash'
+  steps:
+    - name: Build Docker image for ${{ inputs.platform }}
+      run: |
+        docker buildx build \
+          --platform ${{ inputs.platform }} \
+          --label version.git_commit=${{ inputs.commit_id }} \
+          -t ${{ inputs.tag_ns }}/mailman-core:rolling-${{ inputs.platform }} \
+          -f ${{ inputs.dockerfile_path }} ${{ inputs.build_dir }} \
+          --push

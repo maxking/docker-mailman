@@ -1,0 +1,36 @@
+name: Push Multi-Arch Docker Manifests
+
+description: |
+  This action creates and pushes multi-architecture Docker image manifests.
+
+inputs:
+  tag_ns:
+    description: 'DockerHub namespace (e.g., your-dockerhub-username)'
+    required: true
+  commit_id:
+    description: 'Git commit hash to tag the image'
+    required: true
+
+runs:
+  using: 'bash'
+  steps:
+    - name: Push multi-arch manifests for mailman-core
+      run: |
+        docker manifest create ${{ inputs.tag_ns }}/mailman-core:rolling \
+          --amend ${{ inputs.tag_ns }}/mailman-core:rolling-linux/amd64 \
+          --amend ${{ inputs.tag_ns }}/mailman-core:rolling-linux/arm64
+        docker manifest push ${{ inputs.tag_ns }}/mailman-core:rolling
+
+    - name: Push multi-arch manifests for mailman-web
+      run: |
+        docker manifest create ${{ inputs.tag_ns }}/mailman-web:rolling \
+          --amend ${{ inputs.tag_ns }}/mailman-web:rolling-linux/amd64 \
+          --amend ${{ inputs.tag_ns }}/mailman-web:rolling-linux/arm64
+        docker manifest push ${{ inputs.tag_ns }}/mailman-web:rolling
+
+    - name: Push multi-arch manifests for postorius
+      run: |
+        docker manifest create ${{ inputs.tag_ns }}/postorius:rolling \
+          --amend ${{ inputs.tag_ns }}/postorius:rolling-linux/amd64 \
+          --amend ${{ inputs.tag_ns }}/postorius:rolling-linux/arm64
+        docker manifest push ${{ inputs.tag_ns }}/postorius:rolling
