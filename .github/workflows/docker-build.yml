@@ -82,24 +82,24 @@ jobs:
           dockerfile_path: postorius/Dockerfile.dev
           build_dir: postorius/
 
-  manifest:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      # https://github.com/actions/checkout
-      - name: Checkout code
-        uses: actions/checkout@v4
+  # manifest:
+  #   needs: build
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     # https://github.com/actions/checkout
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4
 
-      # https://github.com/docker/login-action
-      - name: Login to DockerHub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+  #     # https://github.com/docker/login-action
+  #     - name: Login to DockerHub
+  #       uses: docker/login-action@v3
+  #       with:
+  #         username: ${{ secrets.DOCKERHUB_USERNAME }}
+  #         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # Push multi-arch manifests
-      - name: Create and Push Multi-Arch Manifests
-        uses: ./.github/actions/manifest-action
-        with:
-          tag_ns: ${{ env.TAG_NS }}
-          commit_id: ${{ env.COMMIT_ID }}
+  #     # Push multi-arch manifests
+  #     - name: Create and Push Multi-Arch Manifests
+  #       uses: ./.github/actions/manifest-action
+  #       with:
+  #         tag_ns: ${{ env.TAG_NS }}
+  #         commit_id: ${{ env.COMMIT_ID }}
