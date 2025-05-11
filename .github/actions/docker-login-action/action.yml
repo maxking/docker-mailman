@@ -12,8 +12,7 @@ inputs:
     required: true
 
 runs:
-  using: 'docker'
-  image: 'docker://docker.io/docker:latest'
+  using: "composite"
   steps:
     - name: Log in to DockerHub
       uses: docker/login-action@v3

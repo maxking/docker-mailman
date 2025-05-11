@@ -42,6 +42,10 @@ jobs:
       # Log in to DockerHub using your composite action
       - name: DockerHub Login
         uses: ./.github/actions/docker-login-action
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
 
       - name: Set COMMIT_ID
         run: echo "COMMIT_ID=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
