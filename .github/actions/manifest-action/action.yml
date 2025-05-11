@@ -18,22 +18,22 @@ runs:
       shell: bash
       run: |
         docker manifest create ${{ inputs.tag_ns }}/mailman-core:rolling \
-          --amend ${{ inputs.tag_ns }}/mailman-core:rolling-linux/amd64 \
-          --amend ${{ inputs.tag_ns }}/mailman-core:rolling-linux/arm64
+          --amend ${{ inputs.tag_ns }}/mailman-core:rolling-linux-amd64 \
+          --amend ${{ inputs.tag_ns }}/mailman-core:rolling-linux-arm64
         docker manifest push ${{ inputs.tag_ns }}/mailman-core:rolling
 
     - name: Push multi-arch manifests for mailman-web
       shell: bash
       run: |
         docker manifest create ${{ inputs.tag_ns }}/mailman-web:rolling \
-          --amend ${{ inputs.tag_ns }}/mailman-web:rolling-linux/amd64 \
-          --amend ${{ inputs.tag_ns }}/mailman-web:rolling-linux/arm64
+          --amend ${{ inputs.tag_ns }}/mailman-web:rolling-linux-amd64 \
+          --amend ${{ inputs.tag_ns }}/mailman-web:rolling-linux-arm64
         docker manifest push ${{ inputs.tag_ns }}/mailman-web:rolling
 
     - name: Push multi-arch manifests for postorius
       shell: bash
       run: |
         docker manifest create ${{ inputs.tag_ns }}/postorius:rolling \
-          --amend ${{ inputs.tag_ns }}/postorius:rolling-linux/amd64 \
-          --amend ${{ inputs.tag_ns }}/postorius:rolling-linux/arm64
+          --amend ${{ inputs.tag_ns }}/postorius:rolling-linux-amd64 \
+          --amend ${{ inputs.tag_ns }}/postorius:rolling-linux-arm64
         docker manifest push ${{ inputs.tag_ns }}/postorius:rolling
