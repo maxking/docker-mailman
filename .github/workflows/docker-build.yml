@@ -16,7 +16,7 @@ on:
 
 env:
   DOCKER_BUILDKIT: 1
-  TAG_NS: your-dockerhub-username
+  TAG_NS: basictheprogram
   PUSH: yes
 
 jobs:
