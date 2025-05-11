@@ -56,7 +56,7 @@ jobs:
         run: echo "COMMIT_ID=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
       - name: Extract version info
-        id: versioning
+        id: version
         run: |
           if [[ "${GITHUB_REF}" == refs/tags/v* ]]; then
             RAW_TAG="${GITHUB_REF##*/}"
