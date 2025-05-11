@@ -25,7 +25,6 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    needs: [version]
     strategy:
       matrix:
         platform: [linux/amd64, linux/arm64]
