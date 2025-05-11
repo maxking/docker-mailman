@@ -81,9 +81,9 @@ jobs:
           tag_ns: ${{ env.TAG_NS }}
           dockerfile_path: core/Dockerfile.dev
           build_dir: core/
-          version_full: ${{ needs.version.outputs.full }}
-          version_minor: ${{ needs.version.outputs.minor }}
-          version_major: ${{ needs.version.outputs.major }}
+          version_full: ${{ steps.version.outputs.full }}
+          version_minor: ${{ steps.version.outputs.minor }}
+          version_major: ${{ steps.version.outputs.major }}
 
       # Build mailman-web
       - name: Build mailman-web for ${{ matrix.platform }}
