@@ -21,13 +21,14 @@ inputs:
     required: true
 
 runs:
-  using: 'bash'
+  using: "composite"
   steps:
-    - name: Build Docker image for ${{ inputs.platform }}
+    - name: Build Docker image
+      shell: bash
       run: |
         docker buildx build \
-          --platform ${{ inputs.platform }} \
-          --label version.git_commit=${{ inputs.commit_id }} \
-          -t ${{ inputs.tag_ns }}/mailman-core:rolling-${{ inputs.platform }} \
-          -f ${{ inputs.dockerfile_path }} ${{ inputs.build_dir }} \
+          --platform "${{ inputs.platform }}" \
+          --label version.git_commit="${{ inputs.commit_id }}" \
+          -t "${{ inputs.tag_ns }}/mailman-core:rolling-${{ inputs.platform }}" \
+          -f "${{ inputs.dockerfile_path }}" "${{ inputs.build_dir }}" \
           --push
