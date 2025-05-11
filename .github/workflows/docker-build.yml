@@ -1,12 +1,18 @@
 name: Docker Multi-Arch Build
 
 on:
+  # Manual trigger from GitHub UI
   workflow_dispatch:
     inputs:
       build_rolling:
         description: 'Build rolling images?'
         required: false
         default: 'no'
+  # Auto-trigger on push to these branches
+  push:
+    branches:
+      - main
+      - issue-731
 
 env:
   DOCKER_BUILDKIT: 1
@@ -21,21 +27,26 @@ jobs:
         platform: [linux/amd64, linux/arm64]
 
     steps:
+      # https://github.com/actions/checkout
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # https://github.com/docker/setup-qemu-action
       - name: Set up QEMU for multi-platform builds
         uses: docker/setup-qemu-action@v3
 
+      # https://github.com/docker/setup-buildx-action
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Log in to DockerHub
+      # Log in to DockerHub using your composite action
+      - name: DockerHub Login
         uses: ./.github/actions/docker-login-action
 
       - name: Set COMMIT_ID
         run: echo "COMMIT_ID=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
+      # Build mailman-core
       - name: Build mailman-core for ${{ matrix.platform }}
         uses: ./.github/actions/build-action
         with:
@@ -45,6 +56,7 @@ jobs:
           dockerfile_path: core/Dockerfile.dev
           build_dir: core/
 
+      # Build mailman-web
       - name: Build mailman-web for ${{ matrix.platform }}
         uses: ./.github/actions/build-action
         with:
@@ -54,6 +66,7 @@ jobs:
           dockerfile_path: web/Dockerfile.dev
           build_dir: web/
 
+      # Build postorius
       - name: Build postorius for ${{ matrix.platform }}
         uses: ./.github/actions/build-action
         with:
@@ -63,14 +76,15 @@ jobs:
           dockerfile_path: postorius/Dockerfile.dev
           build_dir: postorius/
 
-  # Optional: Combine the architectures into multi-arch manifests
   manifest:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Log in to DockerHub
+      # Log in to DockerHub again (separate job)
+      - name: DockerHub Login
         uses: ./.github/actions/docker-login-action
 
+      # Push multi-arch manifests
       - name: Create and Push Multi-Arch Manifests
         uses: ./.github/actions/manifest-action
         with:
