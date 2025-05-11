@@ -36,6 +36,6 @@ runs:
         docker buildx build \
           --platform "${{ inputs.platform }}" \
           --label version.git_commit="${{ inputs.commit_id }}" \
-          -t "${{ inputs.tag_ns }}/${{ image_name }}:rolling-${safe_platform}" \
+          -t "${{ inputs.tag_ns }}/${{ inputs.image_name }}:rolling-${safe_platform}" \
           -f "${{ inputs.dockerfile_path }}" "${{ inputs.build_dir }}" \
           --push
