@@ -4,6 +4,9 @@ description: |
   This action builds Docker images for multiple platforms using docker buildx.
 
 inputs:
+  image_name:
+    description: 'Name of the Docker image (e.g., mailman-core, mailman-web, postorius)'
+    required: true
   platform:
     description: 'Target platform for build (e.g., linux/amd64, linux/arm64)'
     required: true
@@ -33,6 +36,6 @@ runs:
         docker buildx build \
           --platform "${{ inputs.platform }}" \
           --label version.git_commit="${{ inputs.commit_id }}" \
-          -t "${{ inputs.tag_ns }}/mailman-core:rolling-${safe_platform}" \
+          -t "${{ inputs.tag_ns }}/${{ image_name }}:rolling-${safe_platform}" \
           -f "${{ inputs.dockerfile_path }}" "${{ inputs.build_dir }}" \
           --push
