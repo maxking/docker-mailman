@@ -59,7 +59,7 @@ runs:
           safe_platform="${{ inputs.platform }}"
           safe_platform="${safe_platform//\//-}"
 
-          for version_tag in "${{ inputs.version_full }}" "${{ inputs.version_major }}"; do
+          for version_tag in "${{ inputs.version_full }}" "${{ inputs.version_major }}."${{ inputs.version_minor }}"; do
             echo "Tagging and pushing: $version_tag"
             docker buildx build \
               --platform "${{ inputs.platform }}" \
