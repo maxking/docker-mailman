@@ -54,15 +54,20 @@ runs:
       shell: bash
       run: |
         set -e
-        safe_platform="${{ inputs.platform }}"
-        safe_platform="${safe_platform//\//-}"
+        if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
 
-        for version_tag in "${{ inputs.version_full }}" "${{ inputs.version_minor }}" "${{ inputs.version_major }}"; do
-          echo "Tagging and pushing: $version_tag"
-          docker buildx build \
-            --platform "${{ inputs.platform }}" \
-            --label version.git_commit="${{ inputs.commit_id }}" \
-            -t "${{ inputs.tag_ns }}/${{ inputs.image_name }}:${version_tag}" \
-            -f "${{ inputs.dockerfile_path }}" "${{ inputs.build_dir }}" \
-            --push
-        done
+          safe_platform="${{ inputs.platform }}"
+          safe_platform="${safe_platform//\//-}"
+
+          for version_tag in "${{ inputs.version_full }}" "${{ inputs.version_major }}"; do
+            echo "Tagging and pushing: $version_tag"
+            docker buildx build \
+              --platform "${{ inputs.platform }}" \
+              --label version.git_commit="${{ inputs.commit_id }}" \
+              -t "${{ inputs.tag_ns }}/${{ inputs.image_name }}:${version_tag}" \
+              -f "${{ inputs.dockerfile_path }}" "${{ inputs.build_dir }}" \
+              --push
+          done
+        else
+          echo "No git tag detected; skipping versioned image tagging."
+        fi
