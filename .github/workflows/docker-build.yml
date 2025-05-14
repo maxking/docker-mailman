@@ -95,6 +95,9 @@ jobs:
           tag_ns: ${{ env.TAG_NS }}
           dockerfile_path: web/Dockerfile.dev
           build_dir: web/
+          version_full: ${{ steps.version.outputs.full }}
+          version_minor: ${{ steps.version.outputs.minor }}
+          version_major: ${{ steps.version.outputs.major }}
 
       # Build postorius
       - name: Build postorius for ${{ matrix.platform }}
@@ -106,6 +109,9 @@ jobs:
           tag_ns: ${{ env.TAG_NS }}
           dockerfile_path: postorius/Dockerfile.dev
           build_dir: postorius/
+          version_full: ${{ steps.version.outputs.full }}
+          version_minor: ${{ steps.version.outputs.minor }}
+          version_major: ${{ steps.version.outputs.major }}
 
   # manifest:
   #   needs: build
