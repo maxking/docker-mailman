@@ -60,8 +60,8 @@ runs:
           safe_platform="${safe_platform//\//-}"
 
           version_full="${{ inputs.version_full }}"
-          version_minor="${{ inputs.version_minor }}"
           version_major="${{ inputs.version_major }}"
+          version_minor="${{ inputs.version_minor }}"
 
           for version_tag in "$version_full" "${version_major}.${version_minor}"; do
             echo "Tagging and pushing: $version_tag"
