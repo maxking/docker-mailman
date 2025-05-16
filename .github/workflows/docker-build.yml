@@ -28,6 +28,17 @@ jobs:
     strategy:
       matrix:
         platform: [linux/amd64, linux/arm64]
+        alpine_version: [3.20, 3.21, 3.21.3]
+        image:
+          - name: mailman-core
+            dockerfile: core/Dockerfile.dev
+            context: core/
+          - name: mailman-web
+            dockerfile: web/Dockerfile.dev
+            context: web/
+          - name: postorius
+            dockerfile: postorius/Dockerfile.dev
+            context: postorius/
       fail-fast: false
 
     continue-on-error: true
@@ -52,85 +63,13 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Set COMMIT_ID
-        run: echo "COMMIT_ID=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-
-      - name: Extract version info
-        id: version
-        run: |
-          if [[ "${GITHUB_REF}" == refs/tags/v* ]]; then
-            RAW_TAG="${GITHUB_REF##*/}"
-            VERSION="${RAW_TAG#v}"
-          else
-            VERSION="0.5.2"
-          fi
-
-          IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION"
-
-          echo "full=$VERSION" >> $GITHUB_OUTPUT
-          echo "minor=${MAJOR}.${MINOR}" >> $GITHUB_OUTPUT
-          echo "major=${MAJOR}" >> $GITHUB_OUTPUT
-
-      # Build mailman-core
-      - name: Build mailman-core for ${{ matrix.platform }}
+      - name: Build ${{ matrix.image.name }} for ${{ matrix.platform }}
         uses: ./.github/actions/build-action
         with:
-          image_name: mailman-core
+          image_name: ${{ matrix.image.name }}
           platform: ${{ matrix.platform }}
           commit_id: ${{ env.COMMIT_ID }}
           tag_ns: ${{ env.TAG_NS }}
-          dockerfile_path: core/Dockerfile.dev
-          build_dir: core/
-          version_full: ${{ steps.version.outputs.full }}
-          version_minor: ${{ steps.version.outputs.minor }}
-          version_major: ${{ steps.version.outputs.major }}
-
-      # Build mailman-web
-      - name: Build mailman-web for ${{ matrix.platform }}
-        uses: ./.github/actions/build-action
-        with:
-          image_name: mailman-web
-          platform: ${{ matrix.platform }}
-          commit_id: ${{ env.COMMIT_ID }}
-          tag_ns: ${{ env.TAG_NS }}
-          dockerfile_path: web/Dockerfile.dev
-          build_dir: web/
-          version_full: ${{ steps.version.outputs.full }}
-          version_minor: ${{ steps.version.outputs.minor }}
-          version_major: ${{ steps.version.outputs.major }}
-
-      # Build postorius
-      - name: Build postorius for ${{ matrix.platform }}
-        uses: ./.github/actions/build-action
-        with:
-          image_name: postorius
-          platform: ${{ matrix.platform }}
-          commit_id: ${{ env.COMMIT_ID }}
-          tag_ns: ${{ env.TAG_NS }}
-          dockerfile_path: postorius/Dockerfile.dev
-          build_dir: postorius/
-          version_full: ${{ steps.version.outputs.full }}
-          version_minor: ${{ steps.version.outputs.minor }}
-          version_major: ${{ steps.version.outputs.major }}
-
-  # manifest:
-  #   needs: build
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     # https://github.com/actions/checkout
-  #     - name: Checkout code
-  #       uses: actions/checkout@v4
-
-  #     # https://github.com/docker/login-action
-  #     - name: Login to DockerHub
-  #       uses: docker/login-action@v3
-  #       with:
-  #         username: ${{ secrets.DOCKERHUB_USERNAME }}
-  #         password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-  #     # Push multi-arch manifests
-  #     - name: Create and Push Multi-Arch Manifests
-  #       uses: ./.github/actions/manifest-action
-  #       with:
-  #         tag_ns: ${{ env.TAG_NS }}
-  #         commit_id: ${{ env.COMMIT_ID }}
+          dockerfile_path: ${{ matrix.image.dockerfile }}
+          build_dir: ${{ matrix.image.context }}
+          alpine_version: ${{ matrix.alpine_version }}

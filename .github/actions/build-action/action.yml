@@ -22,31 +22,46 @@ inputs:
   build_dir:
     description: 'Directory of the build context'
     required: true
-  version_full:
-    description: 'Full version string (e.g., 0.5.2)'
-    required: true
-  version_minor:
-    description: 'Minor version string (e.g., 0.5)'
-    required: true
-  version_major:
-    description: 'Major version string (e.g., 0)'
+  alpine_version:
+    description: 'Alpine version to use in the Dockerfile'
     required: true
 
 runs:
   using: "composite"
   steps:
+    - name: Determine commit and version info
+      id: meta
+      shell: bash
+      run: |
+        set -e
+        echo "commit_id=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+        if [[ "${GITHUB_REF}" == refs/tags/v* ]]; then
+          RAW_TAG="${GITHUB_REF##*/}"
+          VERSION="${RAW_TAG#v}"
+        else
+          VERSION="0.5.2"
+        fi
+
+        IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION"
+
+        echo "version_full=$VERSION" >> $GITHUB_OUTPUT
+        echo "version_major=$MAJOR" >> $GITHUB_OUTPUT
+        echo "version_minor=${MAJOR}.${MINOR}" >> $GITHUB_OUTPUT
+        echo "version_patch=$PATCH" >> $GITHUB_OUTPUT
+
     - name: Build Rolling Release for ${{ inputs.platform }}
       shell: bash
       run: |
-        # Replace '/' with '-' to make it tag-safe
         set -e
         safe_platform="${{ inputs.platform }}"
         safe_platform="${safe_platform//\//-}"
 
         docker buildx build \
           --platform "${{ inputs.platform }}" \
-          --label version.git_commit="${{ inputs.commit_id }}" \
-          -t "${{ inputs.tag_ns }}/${{ inputs.image_name }}:rolling-${safe_platform}" \
+          --label version.git_commit="${{ steps.meta.outputs.commit_id }}" \
+          --build-arg ALPINE_VERSION="${{ inputs.alpine_version }}" \
+          -t "${{ inputs.tag_ns }}/${{ inputs.image_name }}:rolling-${build_date}" \
           -f "${{ inputs.dockerfile_path }}" "${{ inputs.build_dir }}" \
           --push
 
@@ -55,20 +70,16 @@ runs:
       run: |
         set -e
         if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
-
           safe_platform="${{ inputs.platform }}"
           safe_platform="${safe_platform//\//-}"
 
-          version_full="${{ inputs.version_full }}"
-          version_major="${{ inputs.version_major }}"
-          version_minor="${{ inputs.version_minor }}"    # version_minor is ${MAJOR}.${MINOR}
-
-          for version_tag in "$version_full" "${version_minor}"; do
+          for version_tag in "${{ steps.meta.outputs.version_full }}" "${{ steps.meta.outputs.version_minor }}"; do
             echo "Tagging and pushing: $version_tag"
             docker buildx build \
               --platform "${{ inputs.platform }}" \
-              --label version.git_commit="${{ inputs.commit_id }}" \
-              -t "${{ inputs.tag_ns }}/${{ inputs.image_name }}:${version_tag}" \
+              --label version.git_commit="${{ steps.meta.outputs.commit_id }}" \
+              --build-arg ALPINE_VERSION="${{ inputs.alpine_version }}" \
+              -t "${{ inputs.tag_ns }}/${{ inputs.image_name }}:${safe_platform}-${version_tag}" \
               -f "${{ inputs.dockerfile_path }}" "${{ inputs.build_dir }}" \
               --push
           done
