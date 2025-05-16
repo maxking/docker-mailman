@@ -37,6 +37,7 @@ runs:
         if [[ "${GITHUB_REF}" == refs/tags/v* ]]; then
           RAW_TAG="${GITHUB_REF##*/}"
           VERSION="${RAW_TAG#v}"
+        fi
 
         IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION"
 
