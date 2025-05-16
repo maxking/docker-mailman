@@ -27,7 +27,6 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        platform: [linux/amd64, linux/arm64]
         alpine_version: [3.20, 3.21, 3.21.3]
         image:
           - name: mailman-core
@@ -63,11 +62,10 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build ${{ matrix.image.name }} for ${{ matrix.platform }}
+      - name: Build ${{ matrix.image.name }} (Multi-Arch)
         uses: ./.github/actions/build-action
         with:
           image_name: ${{ matrix.image.name }}
-          platform: ${{ matrix.platform }}
           commit_id: ${{ env.COMMIT_ID }}
           tag_ns: ${{ env.TAG_NS }}
           dockerfile_path: ${{ matrix.image.dockerfile }}
