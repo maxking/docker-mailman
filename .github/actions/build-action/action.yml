@@ -61,9 +61,9 @@ runs:
 
           version_full="${{ inputs.version_full }}"
           version_major="${{ inputs.version_major }}"
-          version_minor="${{ inputs.version_minor }}"
+          version_minor="${{ inputs.version_minor }}"    # version_minor is ${MAJOR}.${MINOR}
 
-          for version_tag in "$version_full" "${version_major}.${version_minor}"; do
+          for version_tag in "$version_full" "${version_minor}"; do
             echo "Tagging and pushing: $version_tag"
             docker buildx build \
               --platform "${{ inputs.platform }}" \
