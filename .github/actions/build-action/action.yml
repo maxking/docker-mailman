@@ -65,16 +65,14 @@ runs:
       run: |
         set -e
         if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
-          safe_platform="${{ inputs.platform }}"
-          safe_platform="${safe_platform//\//-}"
 
           for version_tag in "${{ steps.meta.outputs.version_full }}" "${{ steps.meta.outputs.version_minor }}"; do
             echo "Tagging and pushing: $version_tag"
             docker buildx build \
-              --platform "${{ inputs.platform }}" \
+              --platform linux/amd64,linux/arm64 \
               --label version.git_commit="${{ steps.meta.outputs.commit_id }}" \
               --build-arg ALPINE_VERSION="${{ inputs.alpine_version }}" \
-              -t "${{ inputs.tag_ns }}/${{ inputs.image_name }}:${safe_platform}-${version_tag}" \
+              -t "${{ inputs.tag_ns }}/${{ inputs.image_name }}:${version_tag}-alpine${{ inputs.alpine_version }}" \
               -f "${{ inputs.dockerfile_path }}" "${{ inputs.build_dir }}" \
               --push
           done
