@@ -1,0 +1,1346 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Container images for GNU Mailman">
+      
+      
+      
+      
+      
+        <link rel="next" href="core/">
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.17">
+    
+    
+      
+        <title>docker-mailman</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.bcfcd587.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#gnu-mailman-3-deployment-with-docker" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="." title="docker-mailman" class="md-header__button md-logo" aria-label="docker-mailman" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            docker-mailman
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Home
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/maxking/docker-mailman" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    maxking/docker-mailman
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="." title="docker-mailman" class="md-nav__button md-logo" aria-label="docker-mailman" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    docker-mailman
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/maxking/docker-mailman" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    maxking/docker-mailman
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="." class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#release" class="md-nav__link">
+    <span class="md-ellipsis">
+      Release
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#container-registries" class="md-nav__link">
+    <span class="md-ellipsis">
+      Container Registries
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Container Registries">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mailman-core" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mailman Core
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mailman-web" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mailman Web
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#postorius" class="md-nav__link">
+    <span class="md-ellipsis">
+      Postorius
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rolling-releases" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rolling Releases
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dependencies
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mailman-web_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mailman-web
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mailman-core_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mailman-Core
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#running" class="md-nav__link">
+    <span class="md-ellipsis">
+      Running
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setting-up-your-mta" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setting up your MTA
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Setting up your MTA">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exim4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exim4
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#postfix" class="md-nav__link">
+    <span class="md-ellipsis">
+      Postfix
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#site-owner" class="md-nav__link">
+    <span class="md-ellipsis">
+      Site Owner
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setting-up-search-indexing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setting up search indexing
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setting-up-your-web-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setting up your web server
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Setting up your web server">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#uwsgi" class="md-nav__link">
+    <span class="md-ellipsis">
+      uwsgi
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#serving-static-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      Serving static files
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ssl-certificates" class="md-nav__link">
+    <span class="md-ellipsis">
+      SSL certificates
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#license" class="md-nav__link">
+    <span class="md-ellipsis">
+      LICENSE
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="core/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Mailman Core
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="web/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Mailman Web
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="news/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    News
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#release" class="md-nav__link">
+    <span class="md-ellipsis">
+      Release
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#container-registries" class="md-nav__link">
+    <span class="md-ellipsis">
+      Container Registries
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Container Registries">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mailman-core" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mailman Core
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mailman-web" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mailman Web
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#postorius" class="md-nav__link">
+    <span class="md-ellipsis">
+      Postorius
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rolling-releases" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rolling Releases
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dependencies
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mailman-web_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mailman-web
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mailman-core_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mailman-Core
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#running" class="md-nav__link">
+    <span class="md-ellipsis">
+      Running
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setting-up-your-mta" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setting up your MTA
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Setting up your MTA">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exim4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exim4
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#postfix" class="md-nav__link">
+    <span class="md-ellipsis">
+      Postfix
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#site-owner" class="md-nav__link">
+    <span class="md-ellipsis">
+      Site Owner
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setting-up-search-indexing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setting up search indexing
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setting-up-your-web-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setting up your web server
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Setting up your web server">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#uwsgi" class="md-nav__link">
+    <span class="md-ellipsis">
+      uwsgi
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#serving-static-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      Serving static files
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ssl-certificates" class="md-nav__link">
+    <span class="md-ellipsis">
+      SSL certificates
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#license" class="md-nav__link">
+    <span class="md-ellipsis">
+      LICENSE
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="gnu-mailman-3-deployment-with-docker">GNU Mailman 3 Deployment with Docker<a class="headerlink" href="#gnu-mailman-3-deployment-with-docker" title="Permanent link">&para;</a></h1>
+<p><a href="https://circleci.com/gh/maxking/docker-mailman/tree/main"><img alt="CircleCI" src="https://circleci.com/gh/maxking/docker-mailman/tree/main.svg?style=svg" /></a></p>
+<p>This repository hosts code for two docker images <code>maxking/mailman-core</code> and
+<code>maxking/mailman-web</code> both of which are meant to deploy <a href="http://list.org">GNU Mailman 3</a> in
+a production environment.</p>
+<p><a href="https://www.docker.com/">Docker</a> is a container ecosystem which can run containers on several
+platforms. It consists of a tool called <a href="https://docs.docker.com/compose/">docker-compose</a> which can be used to
+run multi-container applications. This repository consists of a
+<a href="https://github.com/maxking/docker-mailman/blob/master/docker-compose.yaml"><code>docker-compose.yaml</code></a> file which is a set of
+configurations that can be used to deploy the <a href="http://docs.mailman3.org/en/latest/">Mailman 3 Suite</a>.</p>
+<p>Please see <a href="https://github.com/maxking/docker-mailman/releases">release page</a>
+for the releases and change log.</p>
+<h2 id="release">Release<a class="headerlink" href="#release" title="Permanent link">&para;</a></h2>
+<p>The tags for the images are assumed to be release versions for images. This is
+going to be a somewhat common philosophy of distributing Container images where
+the images with same tags are usually updated with the new functionality.</p>
+<p>Releases will follow the following rules:</p>
+<ul>
+<li>
+<p>Images tagged like A.B.C will never change. If you want to pin down versions
+  of Images, use these tags.</p>
+</li>
+<li>
+<p>Images tagged with A.B will correspond to the latest A.B.C version
+  released. Releases in A.B series are supposed to be backwards compatible,
+  i.e., any existing installation should not break when upgrading between
+  subversions of A.B.C. So, if you want the latest updates and want to
+  frequently update your installation without having to change the version
+  numbers, you can use this.</p>
+</li>
+<li>
+<p>Any changes in the minor version of Mailman components of the images will
+  cause a bump in the minor version, e.g., A.(B+1) can have one or more
+  updated Mailman components from A.B. Also, significant change in functionality,
+  that might change how Images work or how people interact with the containers
+  can also cause a bump in the minor version.</p>
+</li>
+<li>
+<p>Major versions will change either when there are backwards incompatible
+  changes or when the releases reach a certain set milestone or when there are
+  bugfix releases for the internal components or both.</p>
+</li>
+</ul>
+<h2 id="container-registries">Container Registries<a class="headerlink" href="#container-registries" title="Permanent link">&para;</a></h2>
+<p>The container images are available from multiple container registries. Do specify an <a href="https://hub.docker.com/r/maxking/mailman-web/tags?page=1&amp;ordering=last_updated&amp;name=0.">explicit version tag</a> (e.g. <code>0.4.5</code> , MAJOR.MINOR like <code>0.4</code> also works as floating tag pointing to latest patch version) as tag <code>latest</code> is <strong>not</strong> updated anymore.</p>
+<h3 id="mailman-core">Mailman Core<a class="headerlink" href="#mailman-core" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>ghcr.io/maxking/mailman-core</code></li>
+<li><code>docker.io/maxking/mailman-core</code></li>
+</ul>
+<h3 id="mailman-web">Mailman Web<a class="headerlink" href="#mailman-web" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>ghcr.io/maxking/mailman-web</code></li>
+<li><code>docker.io/maxking/mailman-web</code></li>
+</ul>
+<h3 id="postorius">Postorius<a class="headerlink" href="#postorius" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>ghcr.io/maxking/postorius</code></li>
+<li><code>docker.io/maxking/postorius</code></li>
+</ul>
+<h2 id="rolling-releases">Rolling Releases<a class="headerlink" href="#rolling-releases" title="Permanent link">&para;</a></h2>
+<p>Rolling releases are made up of Mailman Components installed from <a href="https://gitlab.com/mailman">git
+source</a>. <strong>Note that these releases are made up of
+un-released software and should be assumed to be beta quality.</strong></p>
+<p>Every commit is tested with Mailman's CI infrastructure and is included in
+rolling releases only if they have passed the complete test suite.</p>
+<pre><code class="language-bash">$ docker pull docker.io/maxking/mailman-web:rolling
+$ docker pull docker.io/maxking/mailman-core:rolling
+</code></pre>
+<p>Rolling releases are built with every commit and also re-generated nightly. You
+can inspect the images to get which commit it was built using:</p>
+<pre><code class="language-bash">$ docker inspect --format '{{json .Config.Labels }}' mailman-core | python -m json.tool
+{
+    &quot;version.git_commit&quot;: &quot;45a4d7805b2b3d0e7c51679f59682d64ba02f05f&quot;,
+}
+
+$ docker inspect --format '{{json .Config.Labels }}' mailman-web | python -m json.tool
+{
+    &quot;version.git_commit&quot;: &quot;45a4d7805b2b3d0e7c51679f59682d64ba02f05f&quot;,
+}
+
+</code></pre>
+<ul>
+<li><code>version.git_commit</code> : This is the commit hash of the Dockerfile in the
+  <a href="https://github.com/maxking/docker-mailman">Github repo</a></li>
+</ul>
+<h2 id="dependencies">Dependencies<a class="headerlink" href="#dependencies" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Docker</li>
+<li>Docker-compose-plugin</li>
+</ul>
+<p>To install these on Ubuntu/Debian:</p>
+<pre><code>$ sudo apt install docker.io docker-compose-plugin
+</code></pre>
+<p>For other systems, you can read the official Docker documentation to install
+<a href="https://docs.docker.com/engine/installation/">Docker from here</a> and <a href="https://docs.docker.com/compose/install/">docker compose from here</a>.</p>
+<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
+<p>Most of the common configuration is handled through environment variables in the
+<code>docker-compose.yaml</code>. However, there is need for some extra configuration that
+interacts directly with the application. There are two configuration files on
+the host that interact directly with Mailman's settings. These files exist on
+the host running the containers and are imported at runtime in the containers.</p>
+<ul>
+<li>
+<p><code>/opt/mailman/core/mailman-extra.cfg</code> : This is the configuration for Mailman
+  Core and anything that you add here will be added to Core's configuration. You
+  need to restart your mailman-core container for the changes in this file to
+  take effect.</p>
+</li>
+<li>
+<p><code>/opt/mailman/web/settings_local.py</code> : This is the Django configuration that
+  is imported by the <a href="https://www.docker.com/">existing configuration</a>
+  provided by the mailman-web container. <strong>This file is referred to as
+  <code>settings.py</code> in most of the Postorius and Django documentation.</strong> To change
+  or override any settings in Django/Postorius, you need to create/edit this file.
+  A useful configuration for troubleshooting is <code>DEBUG = True</code>.</p>
+</li>
+</ul>
+<p>Also, note that if you need any other files to be accessible from the host to
+inside the container, you can place them at certain directories which are
+mounted inside the containers.</p>
+<ul>
+<li><code>/opt/mailman/core</code> in host maps to <code>/opt/mailman/</code> in mailman-core container.</li>
+<li><code>/opt/mailman/web</code> in host maps to <code>/opt/mailman-web-data</code> in mailman-web
+   container.</li>
+</ul>
+<h3 id="mailman-web_1">Mailman-web<a class="headerlink" href="#mailman-web_1" title="Permanent link">&para;</a></h3>
+<p>These are the settings that you MUST change in your docker-compose.yaml before deploying:</p>
+<ul>
+<li>
+<p><code>SERVE_FROM_DOMAIN</code>: The domain name from which Django will be served. To be
+  added to <code>ALLOWED_HOSTS</code> in django settings. Default value is not set. This
+  also replaces Django's default <code>example.com</code> SITE and becomes the default SITE
+  (with SITE_ID=1).</p>
+</li>
+<li>
+<p><code>HYPERKITTY_API_KEY</code>: Hyperkitty's API Key, should be set to the same value
+  as set for the mailman-core. (Not needed in case of Postorius-only version.)</p>
+</li>
+<li>
+<p><code>MAILMAN_ADMIN_USER</code>: The username for the admin user to be created by default.</p>
+</li>
+<li>
+<p><code>MAILMAN_ADMIN_EMAIL</code>: The email for the admin user to be created by default.</p>
+</li>
+<li>
+<p><code>SECRET_KEY</code>: Django's secret key, mainly used for signing cookies and others.</p>
+</li>
+</ul>
+<p>Please note here that if you choose to create the admin user using the
+environment variables mentioned above (<code>MAILMAN_ADMIN_USER</code> &amp;
+<code>MAILMAN_ADMIN_EMAIL</code>), no password is set for your admin account. To set a
+password, plese follow the "Forgot Password" link on the "Sign In" page.</p>
+<p>Mailman web is already configured to send emails through <code>$SMTP_HOST</code> as the
+MTA's address. If you want to modify it, you can set the value in under
+docker-compose.yaml for mailman-web container. By default, <code>SMTP_HOST</code> points
+to the gateway of the web container, which is the host itself.</p>
+<p>You can also use the environment variables <code>SMTP_HOST</code> (defaults to
+the container's gateway), <code>SMTP_PORT</code> (defaults to <code>25</code>), <code>SMTP_HOST_USER</code> (defaults to
+an empty string), <code>SMTP_HOST_PASSWORD</code> (defaults to an empty string),
+<code>SMTP_USE_TLS</code> (defaults to <code>False</code>) and <code>SMTP_USE_SSL</code> (defaults to <code>False</code>).</p>
+<p>This is required in addition to the <a href="#setting-up-your-mta">Setup your MTA</a>
+section below, which covers email setup for Mailman Core.</p>
+<p>For more details on how to configure this image, please look at
+<a href="web/">Mailman-web's Readme</a></p>
+<h3 id="mailman-core_1">Mailman-Core<a class="headerlink" href="#mailman-core_1" title="Permanent link">&para;</a></h3>
+<p>These are the variables that you MUST change in your docker-compose.yaml before deploying:</p>
+<ul>
+<li>
+<p><code>HYPERKITTY_API_KEY</code>: Hyperkitty's API Key, should be set to the same value as
+  set for the mailman-web. Skip the variable in case of non-Hyperkitty deployment.</p>
+</li>
+<li>
+<p><code>DATABASE_URL</code>: URL of the type
+  <code>driver://user:password@hostname:port/databasename</code> for the django to use. If
+  not set, the default is set to
+  <code>sqlite:///opt/mailman-web-data/mailmanweb.db</code>. The standard
+  docker-compose.yaml comes with it set to a postgres database. There is no need
+  to change this if you are happy with PostgreSQL.</p>
+</li>
+<li>
+<p><code>DATABASE_TYPE</code>: Its value can be one of <code>sqlite</code>, <code>postgres</code> or <code>mysql</code> as
+  these are the only three database types that Mailman 3 supports. Its default
+  value is set to <code>sqlite</code> along with the default database class and default
+  database url above.</p>
+</li>
+<li>
+<p><code>DATABASE_CLASS</code>: Default value is
+  <code>mailman.database.sqlite.SQLiteDatabase</code>. The values for this can be found in
+  the mailman's documentation <a href="https://mailman.readthedocs.io/en/latest/src/mailman/docs/database.html">here</a>.</p>
+</li>
+<li><code>SMTP_HOST</code>   : outgoing host for SMTP connections</li>
+<li><code>SMTP_PORT</code>   : use this port. 25, 587, whatever your host asks for.</li>
+<li><code>SMTP_HOST_USER</code>: authenticate this user</li>
+<li><code>SMTP_HOST_PASSWORD</code>: and use this password</li>
+<li><code>SMTP_SECURE_MODE</code>: security mode for smtp connection - can be <code>smtp</code> (no encryption), <code>smtps</code> or <code>starttls</code></li>
+<li><code>SMTP_VERIFY_HOSTNAME</code>: defaults to <code>true</code> - verify, that certificate hostname is identical to <code>SMTP_HOST</code></li>
+<li><code>SMTP_VERIFY_CERT</code>: defaults to <code>true</code> - verify, that certificate is valid</li>
+</ul>
+<p>For more details on how to configure this image, please look <a href="core/">Mailman-core's
+Readme</a></p>
+<p>While the above configuration will allow you to run the images and possibly view
+the Web Frontend, it won't be functional until it is fully configured to to send
+emails.</p>
+<p>To configure the mailman-core container to send emails, see the <a href="#setting-up-your-mta">Setting your MTA
+section below</a>.</p>
+<h2 id="running">Running<a class="headerlink" href="#running" title="Permanent link">&para;</a></h2>
+<p>To run the containers, simply run:</p>
+<pre><code class="language-bash">$ mkdir -p /opt/mailman/core
+$ mkdir -p /opt/mailman/web
+$ git clone https://github.com/maxking/docker-mailman
+$ cd docker-mailman
+# Change some configuration variables as mentioned above.
+$ docker compose up -d
+</code></pre>
+<p>Note that the web frontend in the mailman-web container is, by default, only
+configured to serve dynamic content. Anything static like stylesheets, etc., is
+expected to be served directly by the web server. The static content exists at
+<code>/opt/mailman/web/static</code> and should be <em>aliased</em> to <code>/static/</code> in the web
+server configuration.</p>
+<p>See <a href="https://docs.mailman3.org/en/latest/install/virtualenv.html#nginx-configuration">the nginx configuration</a> as an example.</p>
+<p>This command will do several things, most importantly:</p>
+<ul>
+<li>
+<p>Run a wsgi server using <a href="https://uwsgi-docs.readthedocs.io/en/latest/"><code>uwsgi</code></a> for the Mailman's Django-based web
+  frontend listening on port 8000. It will run 2 worker
+  processes with 4 threads each. You may want to change the setting
+  <code>ALLOWED_HOSTS</code> in the settings before deploying the application in
+  production.</p>
+</li>
+<li>
+<p>Run a PostgreSQL server with a default database, username, and password as
+  mentioned in the <code>docker-compose.yaml</code>. You will have to change configuration
+  files too if you change any of these.</p>
+</li>
+<li>
+<p>Run mailman-core listening on port 8001 for REST API and port 8024 (LMTP
+  server) for messages from your MTA. You will have to configure your MTA to
+  send messages at this address.</p>
+</li>
+</ul>
+<p>Some more details about what the above system achieves is mentioned below. If you
+are only going to deploy a simple configuration, you don't need to read
+this. However, these are very easy to understand if you know how docker works.</p>
+<ul>
+<li>
+<p>First create a bridge network called <code>mailman</code> in the
+  <code>docker-compose.yaml</code>. It will probably be named something else in your
+  machine. All the containers
+  mentioned (mailman-core, mailman-web, database) will join this network and are
+  assigned static IPs. The host operating system is the default gateway
+  from within these containers.</p>
+</li>
+<li>
+<p>Spin off a mailman-core container attached to the mailman bridge network created above. It has
+  GNU Mailman 3 core running inside it. Mailman core's REST API is available at
+  port 8001 and LMTP server listens at port 8024.</p>
+</li>
+<li>
+<p>Spin off a mailman-web container which has a Django application running with
+  both Mailman's web frontend Postorius and Mailman's web-based Archiver
+  running. <a href="https://uwsgi-docs.readthedocs.io/en/latest/">Uwsgi</a> server is used to run a web server with the configuration
+  provided in this repository <a href="https://www.docker.com/">here</a>. You may want to
+  change the setting <code>ALLOWED_HOSTS</code> in the settings before deploying the
+  application in production. You can do that by adding a
+  <code>/opt/mailman/web/settings_local.py</code> which is imported by the Django when
+  running.</p>
+</li>
+<li>
+<p>Spin off a PostgreSQL database container which is used by both mailman-core
+  and mailman-web as their primary database.</p>
+</li>
+<li>
+<p>mailman-core mounts <code>/opt/mailman/core</code> from host OS at <code>/opt/mailman</code> in the
+  container. Mailman's var directory is stored there so that it is accessible
+  from the host operating system. Configuration for Mailman core is generated on
+  every run from the environment variables provided. Extra configuration can
+  also be provided at <code>/opt/mailman/core/mailman-extra.cfg</code> (on host), and will
+  be added to generated configuration file. Mailman also needs another
+  configuration file called
+  <a href="https://docs.docker.com/compose/">mailman-hyperkitty.cfg</a> and is also
+  expected to be at <code>/opt/mailman/core/</code> on the host OS.</p>
+</li>
+<li>
+<p>mailman-web mounts <code>/opt/mailman/web</code> from the host OS to
+  <code>/opt/mailman-web-data</code> in the container. It consists of the logs and
+  settings_local.py file for Django.</p>
+</li>
+<li>
+<p>database mounts <code>/opt/mailman/database</code> at <code>/var/lib/postgresql/data</code> so that
+  PostgreSQL can persist its data even if the database containers are
+  updated/changed/removed.</p>
+</li>
+</ul>
+<h2 id="setting-up-your-mta">Setting up your MTA<a class="headerlink" href="#setting-up-your-mta" title="Permanent link">&para;</a></h2>
+<p>The provided docker containers do not have an MTA in-built. You can either run
+your own MTA inside a container and have them relay emails to the mailman-core
+container or just install an MTA on the host and have them relay emails.</p>
+<h3 id="exim4">Exim4<a class="headerlink" href="#exim4" title="Permanent link">&para;</a></h3>
+<p>To use <a href="http://exim.org/">Exim4</a>, it should be setup to relay emails from mailman-core and
+mailman-web. The mailman specific configuration is provided in the
+repository at <code>core/assets/exim</code>. There are three files</p>
+<ul>
+<li>
+<p><a href="core/assets/exim/25_mm3_macros">25_mm3_macros</a> to be placed at
+  <code>/etc/exim4/conf.d/main/25_mm3_macros</code> in a typical Debian install of
+  exim4. Please change MY_DOMAIN_NAME to the domain name that will be used to
+  serve mailman. Multi-domain setups will be added later.</p>
+</li>
+<li>
+<p><a href="core/assets/exim/455_mm3_router">455_mm3_router</a> to be placed at
+  <code>/etc/exim4/conf.d/router/455_mm3_router</code> in a typical Debian install of exim4.</p>
+</li>
+<li>
+<p><a href="core/assets/exim/55_mm3_transport">55_mm3_transport</a> to be placed at
+  <code>/etc/exim4/conf.d/transport/55_mm3_transport</code> in a typical Debian install of exim4.</p>
+</li>
+</ul>
+<p>Also, the default configuration inside the mailman-core image has the MTA set
+to Exim, but just for reference, it looks like this:</p>
+<pre><code># mailman.cfg
+[mta]
+incoming: mailman.mta.exim4.LMTP
+outgoing: mailman.mta.deliver.deliver
+lmtp_host: $MM_HOSTNAME
+lmtp_port: 8024
+smtp_host: $SMTP_HOST
+smtp_port: $SMTP_PORT
+configuration: python:mailman.config.exim4
+</code></pre>
+<h3 id="postfix">Postfix<a class="headerlink" href="#postfix" title="Permanent link">&para;</a></h3>
+<p>To use <a href="http://www.postfix.org/">Postfix</a>, edit the <code>main.cf</code> configuration file, which is typically
+at <code>/etc/postfix/main.cf</code> on Debian-based operating systems.  Add
+mailman-core and mailman-web to <code>mynetworks</code> so it will relay emails from
+the containers and add the following configuration lines:</p>
+<pre><code># main.cf
+
+# Support the default VERP delimiter.
+recipient_delimiter = +
+unknown_local_recipient_reject_code = 550
+owner_request_special = no
+
+transport_maps =
+    regexp:/opt/mailman/core/var/data/postfix_lmtp
+local_recipient_maps =
+    regexp:/opt/mailman/core/var/data/postfix_lmtp
+relay_domains =
+    regexp:/opt/mailman/core/var/data/postfix_domains
+</code></pre>
+<p>To configure Mailman to use Postfix, add <code>MTA=postfix</code> under mailman-core's
+environment section in the <code>docker-compose.yaml</code>:</p>
+<pre><code>  mailman-core:
+    &lt;snip&gt;
+    environment:
+    - MTA=postfix
+</code></pre>
+<p>This will auto-generate the configuration to talk to Postfix assuming that
+Postfix is available at the gateway address for the container's bridge network
+at port 25. The final configuration can be found by executing:</p>
+<pre><code>$ docker exec mailman-core cat /etc/mailman.cfg
+</code></pre>
+<p>The postfix configuration that is generated looks like this:</p>
+<pre><code>[mta]
+incoming: mailman.mta.postfix.LMTP
+outgoing: mailman.mta.deliver.deliver
+lmtp_host: $MM_HOSTNAME
+lmtp_port: 8024
+smtp_host: $SMTP_HOST
+smtp_port: $SMTP_PORT
+configuration: /etc/postfix-mailman.cfg
+</code></pre>
+<p>So, if you need to update the values, you can set <code>SMTP_HOST</code>, <code>SMTP_PORT</code>,
+<code>MM_HOSTNAME</code> environment variables in <code>mailman-core</code> container.</p>
+<p>Please verify the output for <code>[mta]</code> section to ensure that it points to
+the right <code>smtp_host</code> (address to reach postfix from mailman-core container)
+and <code>lmtp_host</code> (address to reach mailman-core container from postfix).</p>
+<p>The configuration file <code>/etc/postfix-mailman.cfg</code> is also generated automatically
+inside the <code>mailman-core</code> container and contains the configuration specific
+for Postfix.</p>
+<h2 id="site-owner">Site Owner<a class="headerlink" href="#site-owner" title="Permanent link">&para;</a></h2>
+<p>Setup site owner address. By default, mailman is setup with the site_owner set to 'changeme@example.com'. This should be pointing to a valid mailbox. Add the following to the '/opt/mailman/core/mailman-extra.cfg'.</p>
+<pre><code>[mailman]
+# This address is the &quot;site owner&quot; address.  Certain messages which must be
+# delivered to a human, but which can't be delivered to a list owner (e.g. a
+# bounce from a list owner), will be sent to this address.  It should point to
+# a human.
+site_owner: changeme@example.com
+</code></pre>
+<h2 id="setting-up-search-indexing">Setting up search indexing<a class="headerlink" href="#setting-up-search-indexing" title="Permanent link">&para;</a></h2>
+<p>Hyperkitty in mailman-web image support full-text indexing. The current default
+indexing engine is <a href="https://whoosh.readthedocs.io/en/latest/intro.html">Whoosh</a>
+for historical reasons. It is highly recommended that you instead use Xapian for
+production use cases. The default will change when the next major version bump
+happens.</p>
+<p>To configure your Mailman-web container to use Xapian, add the following to your
+<code>settings_local.py</code>:</p>
+<pre><code class="language-python">HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'xapian_backend.XapianEngine',
+        'PATH': &quot;/opt/mailman-web-data/fulltext_index&quot;,
+    },
+}
+</code></pre>
+<p>If you have been using the default search indexing engine, you might have to
+re-index emails using the following command:</p>
+<pre><code class="language-bash">$ docker compose exec mailman-web ./manage.py rebuild_index
+</code></pre>
+<p>This command can take some time if you a lot of emails, so please be patient!</p>
+<h2 id="setting-up-your-web-server">Setting up your web server<a class="headerlink" href="#setting-up-your-web-server" title="Permanent link">&para;</a></h2>
+<p>It is advisable to run your Django (interfaced through WSGI server) through an
+<em>actual</em> webserver in production for better performance.</p>
+<p>If you are using v0.1.0, the uwsgi server is configured to listen to requests at
+port <code>8000</code> using the <code>HTTP</code> protocol. Make sure that you preserve the <code>HOST</code>
+header when you proxy the requests from your Web Server. In Nginx you can do
+that by adding the following to your configuration:</p>
+<pre><code>    # Nginx configuration.
+    location /static {
+        alias /opt/mailman/web/static;
+        autoindex off;
+    }
+
+    location / {
+          proxy_pass http://127.0.0.1:8000;
+          include uwsgi_params;
+          uwsgi_read_timeout 300;
+          proxy_set_header Host $host;
+          proxy_set_header X-Forwarded-For $remote_addr;
+    }
+
+</code></pre>
+<p>Make sure you are using <code>proxy_pass</code> for the <code>HTTP</code> protocol.</p>
+<h3 id="uwsgi">uwsgi<a class="headerlink" href="#uwsgi" title="Permanent link">&para;</a></h3>
+<p>Starting from v0.1.1, the uwsgi server is configured to listen to requests at
+port <code>8000</code> with the http protocol and port <code>8080</code> for the uwsgi
+protocol.</p>
+<p><strong>Please make sure that you are using port 8080 for uwsgi protocol.</strong></p>
+<p>It is advised to use the uwsgi protocol as it has better performance. Both
+Apache and Nginx have native support for the uwsgi protocol through plugins which
+are generally included in the distro packages.</p>
+<p>To move to uwsgi protocol in the above nginx configuration use this</p>
+<pre><code>    # Nginx configuration.
+    location /static {
+        alias /opt/mailman/web/static;
+        autoindex off;
+    }
+
+    location / {
+          uwsgi_pass localhost:8080;
+          include uwsgi_params;
+          uwsgi_read_timeout 300;
+    }
+</code></pre>
+<p>Please make sure that you are using v0.1.1 or greater if you use this configuration.</p>
+<h3 id="serving-static-files">Serving static files<a class="headerlink" href="#serving-static-files" title="Permanent link">&para;</a></h3>
+<p>UWSGI by default doesn't serve static files so, when running
+<code>mailman-web</code> using the provided <code>docker-compose.yaml</code> file, you won't see any
+CSS or JS files being served.</p>
+<p>To enable serving of static files using UWSGI, add the following environment
+variable to your <code>docker-compose.yaml</code> file under <code>mailman-web</code>:</p>
+<pre><code>UWSGI_STATIC_MAP=/static=/opt/mailman-web-data/static
+</code></pre>
+<p>It is recommended to use web-server to serve static files instead of UWSGI for
+better performance. You will have to add an alias rule in your web server to
+serve the static files. See <a href="http://docs.list.org/en/latest/pre-installation-guide.html#django-static-files">here</a> for instructions on how to configure your
+web server. The STATIC_ROOT for you would be <code>/opt/mailman/web/static</code>.</p>
+<h3 id="ssl-certificates">SSL certificates<a class="headerlink" href="#ssl-certificates" title="Permanent link">&para;</a></h3>
+<p>SSL Certificates from Lets Encrypt need to be renewed every 90 days. You can
+setup a cron job to do the job. I have this small shell script (certbot-renew.sh)
+that you can put up in <code>/etc/cron.monthly</code> to get the job done.</p>
+<pre><code>#! /bin/bash
+
+cd /opt/letsencrypt/
+./certbot-auto --config /etc/letsencrypt/renewal/MY_DOMAIN_NAME.conf certonly
+
+if [ $? -ne 0 ]
+ then
+        ERRORLOG=`tail /var/log/letsencrypt/letsencrypt.log`
+        echo -e &quot;The Let's Encrypt cert has not been renewed! \n \n&quot; \
+                 $ERRORLOG
+ else
+        nginx -s reload
+fi
+
+exit 0
+</code></pre>
+<p><strong>Please do not forget to make the script executable (<code>chmod +x certbot-renew.sh</code>).</strong></p>
+<h2 id="license">LICENSE<a class="headerlink" href="#license" title="Permanent link">&para;</a></h2>
+<p>This repository is licensed under the MIT License. Please see the LICENSE file for
+more details.</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": ".", "features": [], "search": "assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="assets/javascripts/bundle.1e8ae164.min.js"></script>
+      
+    
+  </body>
+</html>
