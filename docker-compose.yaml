@@ -15,10 +15,11 @@ services:
       database:
         condition: service_healthy
     environment:
-    - DATABASE_URL=postgresql://mailman:mailmanpass@database/mailmandb
+    - DATABASE_URL=postgresql://${DATABASE_USER}:${DATABASE_PASSWORD}@database/${DATABASE_NAME}
     - DATABASE_TYPE=postgres
     - DATABASE_CLASS=mailman.database.postgresql.PostgreSQLDatabase
-    - HYPERKITTY_API_KEY=someapikey
+    - HYPERKITTY_API_KEY=${HYPERKITTY_API_KEY}
+    - TZ=${TZ}
     ports:
     - "127.0.0.1:8001:8001" # API
     - "127.0.0.1:8024:8024" # LMTP - incoming emails
@@ -39,9 +40,14 @@ services:
     volumes:
     - /opt/mailman/web:/opt/mailman-web-data
     environment:
+    - DATABASE_URL=postgresql://${DATABASE_USER}:${DATABASE_PASSWORD}@database/${DATABASE_NAME}
     - DATABASE_TYPE=postgres
-    - DATABASE_URL=postgresql://mailman:mailmanpass@database/mailmandb
-    - HYPERKITTY_API_KEY=someapikey
+    - HYPERKITTY_API_KEY=${HYPERKITTY_API_KEY}
+    - SECRET_KEY=${DJANGO_SECRET_KEY}
+    - TZ=${TZ}
+    - SERVE_FROM_DOMAIN=${SERVE_FROM_DOMAIN}
+    - MAILMAN_ADMIN_USER=${MAILMAN_ADMIN_USER}
+    - MAILMAN_ADMIN_EMAIL=${MAILMAN_ADMIN_EMAIL}
     ports:
     - "127.0.0.1:8000:8000" # HTTP
     - "127.0.0.1:8080:8080" # uwsgi
@@ -50,6 +56,10 @@ services:
 
   database:
     environment:
+    - POSTGRES_DB=${DATABASE_NAME}
+    - POSTGRES_USER=${DATABASE_USER}
+    - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+    image: postgres:11-alpine
     - POSTGRES_DB=mailmandb
     - POSTGRES_USER=mailman
     - POSTGRES_PASSWORD=mailmanpass
