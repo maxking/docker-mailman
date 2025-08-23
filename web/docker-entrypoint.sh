@@ -68,7 +68,7 @@ fi
 
 if [[ ! -v DATABASE_URL ]]; then
 	echo "DATABASE_URL is not defined. Using sqlite database..."
-	export DATABASE_URL=sqlite:////opt/mail-web-data/mailmanweb.db
+	export DATABASE_URL=sqlite:////opt/mailman-web-data/mailmanweb.db
 	export DATABASE_TYPE='sqlite'
 fi
 
