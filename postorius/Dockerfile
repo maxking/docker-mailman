@@ -1,5 +1,5 @@
 # syntax = docker/dockerfile:1.3
-FROM alpine:3.22.1
+FROM alpine:3.22.2
 
 # Install packages and dependencies for postorius and hyperkitty Add user for
 # executing apps, change ownership for uwsgi+django files and set execution
