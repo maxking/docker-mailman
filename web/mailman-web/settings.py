@@ -212,8 +212,6 @@ STATICFILES_FINDERS = (
 )
 
 
-SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
-
 LOGIN_URL = 'account_login'
 LOGIN_REDIRECT_URL = 'list_index'
 LOGOUT_URL = 'account_logout'
@@ -249,8 +247,8 @@ AUTHENTICATION_BACKENDS = (
 )
 
 # Django Allauth
-ACCOUNT_AUTHENTICATION_METHOD = "username_email"
-ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_LOGIN_METHODS = {"username", "email"}
+ACCOUNT_SIGNUP_FIELDS = ["email*", "username*", "password1*", "password2*"]
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 # You probably want https in production, but this is a dev setup file
 ACCOUNT_DEFAULT_HTTP_PROTOCOL = "https"
