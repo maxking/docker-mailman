@@ -3,3 +3,6 @@
 # Dockerfile.
 mailman==3.3.10
 mailman-hyperkitty==1.2.1
+# SQLAlchemy 2.1 defaults to the psycopg (v3) driver for postgresql:// URLs,
+# but this image installs psycopg2.
+SQLAlchemy<2.1
